@@ -1,0 +1,4727 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<script>
+/* 图标兜底：优先尝试 ./ 路径，仍失败则还原 Emoji */
+function uiIconErr(img){
+  var s=img.getAttribute("src")||"";
+  if(s.indexOf("./")>-1 && !img.getAttribute("data-fb")){
+    img.setAttribute("data-fb","1");
+    img.setAttribute("src", s.replace("./",""));
+    return;
+  }
+  img.replaceWith(document.createTextNode(img.alt));
+}
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🍊 砂糖橘的果园直播间</title>
+<style>
+/* ===== 字体 ===== */
+@font-face{
+  font-family:'ZLabsCN';
+  src:url('./zlab_cn.woff2') format('woff2');
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:'Uranus Pixel 11Px';
+  src:url('./Uranus_Pixel_11Px.ttf') format('truetype');
+  unicode-range:U+0030-0039,U+002E,U+002C,U+003A,U+0025,U+002B,U+002D;
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;image-rendering:pixelated;}
+
+/* ================= 设计令牌（统一设计语言） ================= */
+:root{
+  /* 色板 */
+  --orange:#F08A3C;
+  --orange-light:#F7B475;
+  --orange-deep:#C9651E;
+  --leaf:#7FB069;
+  --leaf-deep:#5E8C4B;
+  --cream:#FFF8EE;
+  --cream-2:#F5EBDC;
+  --wood:#8A6247;
+  --wood-dark:#6B4A34;
+  --brown:#3B2A1E;
+  --sky:#A8D8EA;
+  --live-red:#E85D5D;
+  --gold:#D9A441;
+  --gold-deep:#B98A2E;
+  --panel:linear-gradient(180deg,#FFFCF6 0%,#F6EDDF 100%);
+  --panel-edge:#E5D6C0;
+  --line:#E8DCC8;
+  --success:#7FB069;
+  --danger:#D97A6C;
+
+  --font-cn:'ZLabsCN','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  --font-num:'Uranus Pixel 11Px','ZLabsCN','PingFang SC',sans-serif;
+  --font-emoji:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Segoe UI Symbol',sans-serif;
+
+  /* 统一圆角 */
+  --r-sm:12px;--r-md:16px;--r-lg:20px;--r-pill:999px;
+  /* 统一边框 */
+  --bw:2px;--bw-panel:3px;
+
+  /* 统一缓动 */
+  --ease-soft:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-spring:cubic-bezier(.34,1.3,.5,1);
+
+  /* 统一投影层次 */
+  --shadow-panel:
+    inset 0 0 0 2px #FFFCF6,
+    inset 0 0 0 3px rgba(138,98,71,.07),
+    0 5px 0 rgba(107,74,52,.20),
+    0 12px 24px rgba(59,42,30,.10);
+  --shadow-card:
+    inset 0 2px 0 rgba(255,255,255,.85),
+    0 3px 0 rgba(107,74,52,.13),
+    0 6px 12px rgba(59,42,30,.06);
+  --shadow-btn:
+    inset 0 2px 0 rgba(255,255,255,.75),
+    0 4px 0 var(--brown),
+    0 6px 14px rgba(59,42,30,.16);
+
+  --fs-page-title:24px;
+  --fs-panel-title:13px;
+  --fs-body:12.5px;
+  --fs-small:12px;
+  --fs-tiny:11px;
+  --fs-num:20px;
+
+  --gap-h-xs:8px;
+  --gap-h-sm:16px;
+  --gap-v-xs:8px;
+  --gap-v-sm:12px;
+}
+
+html,body{
+  width:100%;min-height:100vh;
+  background:var(--cream);
+  background-image:
+    linear-gradient(90deg,rgba(138,98,71,.028) 1px,transparent 1px),
+    linear-gradient(rgba(138,98,71,.028) 1px,transparent 1px);
+  background-size:12px 12px;
+  font-family:var(--font-cn);
+  color:var(--brown);
+  font-size:var(--fs-body);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+/* 全局柔和光晕装饰 */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(600px 420px at 10% -8%, rgba(240,138,60,.11), transparent 65%),
+    radial-gradient(520px 380px at 94% 6%, rgba(127,176,105,.11), transparent 65%),
+    radial-gradient(720px 480px at 50% 110%, rgba(217,164,65,.10), transparent 68%);
+}
+html{scroll-behavior:smooth;}
+::-webkit-scrollbar{width:9px;}
+::-webkit-scrollbar-track{background:#F5EBDC;border-radius:var(--r-pill);}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,var(--orange-light),var(--orange));
+  border-radius:var(--r-pill);border:2px solid #F5EBDC;
+}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--orange),var(--orange-deep));}
+
+.num{
+  font-family:var(--font-num);
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1;
+  font-weight:800;
+  -webkit-font-smoothing:none;
+}
+
+/* ===== 容器 ===== */
+.pixel-container{
+  max-width:520px;margin:0 auto;
+  padding:10px 12px calc(76px + env(safe-area-inset-bottom,0px));
+  min-height:100vh;position:relative;z-index:1;
+}
+@media(max-width:460px){
+  .pixel-container{padding:8px 9px calc(70px + env(safe-area-inset-bottom,0px));}
+}
+
+/* ================= 面板 ================= */
+.pixel-panel{
+  background-image:var(--panel);
+  border:var(--bw-panel) solid var(--wood);
+  box-shadow:var(--shadow-panel);
+  border-radius:var(--r-md);
+  padding:12px 15px;
+  margin-bottom:var(--gap-v-sm);
+  position:relative;
+}
+.pixel-panel::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(255,255,255,.55), transparent 62%),
+    radial-gradient(90% 50% at 0% 100%, rgba(240,138,60,.055), transparent 72%);
+}
+.pixel-panel > *{position:relative;z-index:1;}
+
+.pixel-panel-title{
+  font-size:var(--fs-panel-title);
+  letter-spacing:.5px;line-height:1.3;
+  background-image:linear-gradient(180deg,var(--orange-light) 0%,var(--orange) 100%);
+  color:#FFFBF3;
+  padding:5px 13px;
+  display:inline-flex;align-items:center;gap:6px;
+  border:var(--bw) solid var(--orange-deep);
+  box-shadow:
+    0 3px 0 rgba(107,74,52,.85),
+    inset 0 2px 0 rgba(255,255,255,.32);
+  margin-bottom:var(--gap-v-xs);
+  border-radius:var(--r-pill);
+  font-weight:800;
+  text-shadow:1px 1px 0 rgba(59,42,30,.42);
+}
+
+/* ================= 按钮 ================= */
+.pixel-btn{
+  font-family:var(--font-cn);font-weight:700;font-size:var(--fs-body);
+  padding:11px 15px;
+  background-image:linear-gradient(180deg,#FFFCF6 0%,#F1E6D4 100%);
+  color:var(--brown);
+  border:var(--bw) solid var(--wood);
+  box-shadow:var(--shadow-btn);
+  border-radius:var(--r-sm);
+  cursor:pointer;letter-spacing:.4px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-width:44px;min-height:44px;
+  position:relative;overflow:hidden;
+  text-shadow:1px 1px 0 rgba(255,255,255,.45);
+  white-space:nowrap;
+  transition:
+    transform .16s var(--ease-soft),
+    box-shadow .16s var(--ease-soft),
+    filter .14s linear,
+    border-color .16s var(--ease-soft);
+  -webkit-tap-highlight-color:transparent;
+}
+/* 光泽扫过 */
+.pixel-btn::after{
+  content:'';position:absolute;top:-10%;left:0;width:55%;height:120%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.62) 50%,transparent 100%);
+  transform:translateX(-180%) skewX(-18deg);
+  pointer-events:none;
+  transition:transform .55s var(--ease-out);
+}
+.pixel-btn:hover{filter:brightness(1.04);transform:translateY(-2px);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.8),0 6px 0 var(--brown),0 10px 18px rgba(59,42,30,.18);
+}
+.pixel-btn:hover::after{transform:translateX(240%) skewX(-18deg);}
+.pixel-btn:active{
+  transform:translateY(2px) scale(.975);
+  box-shadow:inset 0 2px 6px rgba(59,42,30,.22),0 1px 0 var(--brown);
+}
+.pixel-btn:active::after{transition:none;transform:translateX(-180%) skewX(-18deg);}
+.pixel-btn:disabled{opacity:.5;filter:saturate(.45);box-shadow:none;transform:none;pointer-events:none;}
+
+.pixel-btn.primary{
+  background-image:linear-gradient(180deg,var(--orange-light),var(--orange));
+  color:#FFFBF3;border-color:var(--orange-deep);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 4px 0 var(--wood-dark),0 6px 14px rgba(201,101,30,.22);
+  text-shadow:1px 1px 0 rgba(59,42,30,.45);
+}
+.pixel-btn.primary:hover{
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.42),0 6px 0 var(--wood-dark),0 10px 18px rgba(201,101,30,.28);
+}
+.pixel-btn.primary:active{
+  box-shadow:inset 0 2px 6px rgba(120,50,10,.35),0 1px 0 var(--wood-dark);
+}
+.pixel-btn.green{
+  background-image:linear-gradient(180deg,#BEDDA9,var(--leaf));
+  color:#2E4A24;border-color:var(--leaf-deep);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.55),0 4px 0 var(--leaf-deep),0 6px 14px rgba(94,140,75,.22);
+}
+.pixel-btn.gold{
+  background-image:linear-gradient(180deg,#F7E3B0,var(--gold));
+  color:#5A3C10;border-color:var(--gold-deep);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 4px 0 var(--gold-deep),0 6px 14px rgba(185,138,46,.22);
+}
+.pixel-btn.red{
+  background-image:linear-gradient(180deg,#F5A8A8,var(--live-red));
+  color:#FFF8F8;border-color:#B94242;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.4),0 4px 0 #9E3838,0 6px 14px rgba(185,66,66,.24);
+  text-shadow:1px 1px 0 rgba(59,42,30,.38);
+}
+.pixel-btn.danger{
+  background-image:linear-gradient(180deg,#F0DAC6,#DDB79C);
+  color:#6B3A22;border-color:#A9714B;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 4px 0 #8C5A3A,0 6px 14px rgba(140,90,58,.18);
+}
+.pixel-btn.choco{
+  background-image:linear-gradient(180deg,#E0B98B,#B57F4F);
+  color:#FFF6EA;border-color:#8A5A32;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.42),0 4px 0 #7A4E2A,0 6px 14px rgba(122,78,42,.24);
+  text-shadow:1px 1px 0 rgba(59,42,30,.42);
+}
+.pixel-btn.small{
+  padding:8px 12px;font-size:var(--fs-small);
+  min-width:56px;min-height:44px;border-radius:10px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.7),0 3px 0 var(--brown),0 5px 10px rgba(59,42,30,.12);
+}
+.pixel-btn.small:hover{
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.75),0 5px 0 var(--brown),0 8px 14px rgba(59,42,30,.16);
+}
+.pixel-btn.small:active{
+  transform:translateY(2px) scale(.975);
+  box-shadow:inset 0 2px 5px rgba(59,42,30,.2),0 1px 0 var(--brown);
+}
+.pixel-btn.w-full{width:100%;}
+
+/* ================= 输入 ================= */
+.pixel-input,.pixel-select{
+  font-family:var(--font-cn);font-weight:700;font-size:var(--fs-body);
+  padding:10px 12px;min-height:44px;
+  border:var(--bw) solid var(--panel-edge);
+  background:#FFFDF8;
+  box-shadow:inset 0 2px 5px rgba(59,42,30,.08);
+  border-radius:var(--r-sm);width:100%;color:var(--brown);
+  outline:none;
+  transition:border-color .2s var(--ease-soft),box-shadow .2s var(--ease-soft),background .2s;
+}
+.pixel-input:hover,.pixel-select:hover{border-color:#D8C6AC;}
+.pixel-input:focus,.pixel-select:focus{
+  border-color:var(--orange);background:#FFFEFB;
+  box-shadow:0 0 0 3px rgba(240,138,60,.22),inset 0 2px 5px rgba(59,42,30,.04);
+}
+.pixel-checkbox{
+  width:24px;height:24px;border:var(--bw) solid var(--panel-edge);
+  background:#FFFDF8;appearance:none;cursor:pointer;
+  position:relative;flex-shrink:0;border-radius:7px;
+  transition:background .18s var(--ease-soft),border-color .18s var(--ease-soft);
+}
+.pixel-checkbox:checked{background:linear-gradient(180deg,var(--orange-light),var(--orange));border-color:var(--orange-deep);}
+.pixel-checkbox:checked::after{
+  content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:14px;font-weight:800;text-shadow:1px 1px 0 rgba(59,42,30,.4);
+}
+
+/* ================= 页面 ================= */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;animation:pixelFadeIn .32s var(--ease-out) both;}
+@keyframes pixelFadeIn{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
+
+/* ================= 顶栏 ================= */
+.pixel-topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 13px;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,240,215,.05) 0px,rgba(255,240,215,.05) 3px,rgba(0,0,0,.045) 3px,rgba(0,0,0,.045) 9px),
+    linear-gradient(180deg,#9E7353 0%,var(--wood) 100%);
+  border:var(--bw-panel) solid var(--brown);
+  box-shadow:
+    0 5px 0 rgba(42,29,20,.9),
+    0 9px 18px rgba(59,42,30,.22),
+    inset 0 2px 0 rgba(255,240,215,.22),
+    inset 0 -2px 0 rgba(0,0,0,.18);
+  border-radius:14px;
+  margin-bottom:var(--gap-v-sm);
+  flex-wrap:wrap;gap:var(--gap-h-xs);
+  position:sticky;top:0;z-index:850;
+}
+.pixel-topbar .brand{
+  font-size:var(--fs-small);letter-spacing:1px;color:#FFF0CE;
+  display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;
+  text-shadow:1px 1px 0 rgba(35,22,14,.75);font-weight:700;white-space:nowrap;
+}
+.pixel-topbar .brand span.tag{
+  background-image:linear-gradient(180deg,var(--orange-light),var(--orange));
+  color:#FFFBF3;padding:3px 11px;
+  border:var(--bw) solid var(--orange-deep);
+  box-shadow:0 2px 0 rgba(107,74,52,.9),inset 0 1px 0 rgba(255,255,255,.32);
+  border-radius:var(--r-pill);
+  text-shadow:1px 1px 0 rgba(59,42,30,.45);
+}
+
+/* ================= 标题页 ================= */
+.title-hero{text-align:center;padding:28px 0 18px;}
+.title-hero h1{
+  font-size:var(--fs-page-title);line-height:1.32;color:var(--brown);
+  letter-spacing:2px;
+  text-shadow:3px 3px 0 rgba(240,138,60,.30),1px 1px 0 #FFFBF3;
+  font-weight:800;
+}
+.title-hero .sub{font-size:var(--fs-small);color:var(--wood);margin-top:11px;letter-spacing:1px;font-weight:700;}
+.doll-row{display:flex;justify-content:center;gap:26px;margin:20px 0 6px;}
+.doll{
+  width:96px;height:96px;border-radius:16px;
+  border:var(--bw-panel) solid var(--wood);overflow:hidden;
+  box-shadow:
+    0 5px 0 var(--orange-deep),
+    0 9px 18px rgba(59,42,30,.18),
+    inset 0 0 0 2px #FFFCF6;
+  display:flex;align-items:center;justify-content:center;
+  background:#FFE3C2;position:relative;
+  animation:floaty 3s var(--ease-soft) infinite;
+}
+.doll img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;}
+.doll.ph{background:linear-gradient(180deg,#FFB067,var(--orange));}
+.doll.ph::after{
+  content:'砂糖橘';font-size:11px;color:#fff;font-weight:800;
+  text-shadow:1px 1px 0 rgba(59,42,30,.35);letter-spacing:1px;
+}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.title-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px;}
+.title-actions .pixel-btn{min-width:132px;}
+
+/* ================= 资源栏 ================= */
+.resource-bar{
+  display:flex;gap:var(--gap-h-xs);overflow-x:auto;
+  padding-bottom:2px;margin-bottom:var(--gap-v-sm);
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.resource-bar::-webkit-scrollbar{display:none;}
+.res-chip{
+  flex:0 0 auto;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,240,215,.06) 0px,rgba(255,240,215,.06) 3px,rgba(0,0,0,.055) 3px,rgba(0,0,0,.055) 9px),
+    linear-gradient(180deg,#9E7353 0%,var(--wood) 100%);
+  border:var(--bw) solid var(--brown);border-radius:11px;
+  padding:7px 11px;font-size:var(--fs-tiny);text-align:center;
+  font-weight:700;color:#FFEFC9;
+  box-shadow:
+    0 4px 0 rgba(42,29,20,.85),
+    0 6px 12px rgba(59,42,30,.14),
+    inset 0 2px 0 rgba(255,240,215,.22);
+  white-space:nowrap;
+  text-shadow:1px 1px 0 rgba(35,22,14,.7);
+}
+.res-chip span{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-weight:800;}
+
+/* ================= 统计卡 ================= */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;margin-bottom:8px;}
+.stat-card{
+  background-image:linear-gradient(180deg,#FFFDF9 0%,#F6EDDF 100%);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  padding:6px 10px;display:flex;align-items:center;gap:8px;
+  min-height:36px;min-width:0;
+  box-shadow:var(--shadow-card);
+}
+.stat-label{
+  font-size:var(--fs-tiny);color:var(--wood);
+  display:inline-flex;align-items:center;gap:3px;
+  flex:0 0 auto;font-weight:700;white-space:nowrap;
+}
+.stat-value{
+  font-family:var(--font-num);font-size:var(--fs-num);font-weight:800;
+  color:var(--orange-deep);flex:0 0 auto;min-width:38px;
+  text-align:right;line-height:1.3;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:none;
+}
+.stat-bar{
+  flex:1 1 auto;min-width:0;height:10px;background:#EFE3D4;
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-pill);overflow:hidden;
+  box-shadow:inset 0 1px 3px rgba(59,42,30,.12);
+}
+.stat-bar .fill{
+  height:100%;border-radius:var(--r-pill);
+  background-image:linear-gradient(180deg,var(--orange-light),var(--orange));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  transition:width .45s var(--ease-soft);
+}
+.stat-bar .fill.green{background-image:linear-gradient(180deg,#BEDDA9,var(--leaf));}
+.stat-bar .fill.blue{background-image:linear-gradient(180deg,#D7EEF8,var(--sky));}
+.stat-bar .fill.pink{background-image:linear-gradient(180deg,#FBD9D9,#F0AFAF);}
+.stat-bar .fill.gold{background-image:linear-gradient(180deg,#F7E3B0,var(--gold));}
+
+/* ================= 快捷网格 ================= */
+.panel-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.panel-actions .pixel-btn{min-width:0;width:100%;padding:9px 4px;font-size:var(--fs-small);}
+
+/* ================= 卡片网格 ================= */
+.card-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;
+  margin:8px 0;padding:6px 2px 8px;
+}
+.opt-card{
+  background-image:linear-gradient(180deg,#FFFDF9 0%,#F6EDDF 100%);
+  border:var(--bw) solid var(--wood);border-radius:var(--r-sm);
+  padding:14px 6px 9px;margin-top:-6px;cursor:pointer;
+  text-align:center;position:relative;min-height:44px;
+  box-shadow:var(--shadow-card);
+  transition:transform .18s var(--ease-soft),box-shadow .18s var(--ease-soft),border-color .18s var(--ease-soft);
+  -webkit-tap-highlight-color:transparent;
+}
+.opt-card::after{
+  content:'';position:absolute;top:-10%;left:0;width:55%;height:120%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);
+  transform:translateX(-180%) skewX(-18deg);
+  pointer-events:none;border-radius:inherit;
+  transition:transform .6s var(--ease-out);
+}
+.opt-card:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 7px 0 var(--wood),0 14px 20px rgba(59,42,30,.16);
+  border-color:var(--orange);
+}
+.opt-card:hover::after{transform:translateX(240%) skewX(-18deg);}
+.opt-card:active{transform:scale(.975) translateY(1px);box-shadow:inset 0 2px 4px rgba(59,42,30,.16),0 2px 0 var(--wood);}
+.opt-card.selected{
+  border-color:var(--orange-deep);
+  background-image:linear-gradient(180deg,#FFF7EA,#FFE2C6);
+  box-shadow:
+    0 4px 0 var(--orange-deep),
+    0 0 0 3px rgba(240,138,60,.35),
+    inset 0 2px 0 rgba(255,255,255,.75);
+}
+.opt-card.locked{opacity:.55;cursor:not-allowed;filter:grayscale(.4);}
+.opt-card .oc-emoji{font-size:26px;line-height:1;font-family:var(--font-emoji);}
+.opt-card .oc-name{font-size:var(--fs-body);font-weight:800;margin-top:4px;color:var(--brown);line-height:1.35;}
+.opt-card .oc-sub{font-size:var(--fs-tiny);color:var(--wood);font-weight:700;margin-top:3px;line-height:1.42;}
+.opt-card .oc-badge{
+  position:absolute;top:-6px;right:-6px;min-width:24px;height:20px;
+  line-height:16px;padding:0 5px;font-size:var(--fs-tiny);font-weight:800;
+  background-image:linear-gradient(180deg,#F7E3B0,var(--gold));
+  color:#5A3C10;border:var(--bw) solid var(--gold-deep);border-radius:var(--r-pill);
+  box-shadow:0 2px 0 var(--gold-deep);text-align:center;
+  font-variant-numeric:tabular-nums;z-index:10;
+}
+.opt-card .oc-badge.zero{
+  background-image:linear-gradient(180deg,#EDE2CE,#D9CBAE);
+  color:#8A7458;border-color:#B7A57F;box-shadow:0 2px 0 #B7A57F;
+}
+.opt-card .oc-check{
+  position:absolute;top:5px;right:6px;font-size:15px;color:var(--orange-deep);
+  display:none;font-weight:800;line-height:1;
+}
+.opt-card.selected .oc-check{display:block;animation:pop .28s var(--ease-spring);}
+@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+
+/* ================= 信息行 ================= */
+.info-line{font-size:var(--fs-tiny);font-weight:700;color:var(--wood);margin:4px 0;line-height:1.55;}
+.info-line b{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-weight:800;color:var(--orange-deep);}
+
+/* ================= 地块 ================= */
+.plot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0;}
+.plot{
+  aspect-ratio:1/1;border-radius:var(--r-sm);
+  border:var(--bw) solid var(--wood);position:relative;overflow:hidden;
+  background-image:linear-gradient(180deg,#EBD6B6,#C9A97E);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.45),
+    0 3px 0 rgba(59,42,30,.2),
+    0 6px 12px rgba(59,42,30,.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:transform .16s var(--ease-soft),box-shadow .16s var(--ease-soft);
+  -webkit-tap-highlight-color:transparent;
+}
+.plot:hover{transform:translateY(-2px);box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 5px 0 rgba(59,42,30,.2),0 9px 16px rgba(59,42,30,.12);}
+.plot:active{transform:scale(.965);}
+.plot.locked{
+  background-image:linear-gradient(180deg,#DCD4C8,#C0B6A8);
+  cursor:not-allowed;filter:grayscale(.35);
+}
+.plot.empty{background-image:linear-gradient(180deg,#EBD6B6,#C9A97E);}
+.plot.ready{
+  border-color:var(--gold);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.45),
+    0 3px 0 rgba(59,42,30,.2),
+    0 0 0 3px rgba(217,164,65,.38);
+  animation:readyPulse 1.5s var(--ease-soft) infinite;
+}
+@keyframes readyPulse{
+  0%,100%{box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 3px 0 rgba(59,42,30,.2),0 0 0 3px rgba(217,164,65,.32);}
+  50%{box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 3px 0 rgba(59,42,30,.2),0 0 0 6px rgba(217,164,65,.18);}
+}
+.plot .p-emoji{font-size:26px;line-height:1;font-family:var(--font-emoji);}
+.plot .p-name{font-size:var(--fs-tiny);font-weight:800;color:#4A342A;margin-top:2px;text-shadow:1px 1px 0 rgba(255,255,255,.45);}
+.plot .p-days{font-size:11px;font-weight:800;color:#6B4A30;font-family:var(--font-num);}
+.plot .p-bar{
+  width:70%;height:7px;background:rgba(255,255,255,.6);
+  border:1px solid rgba(59,42,30,.28);border-radius:var(--r-pill);
+  overflow:hidden;margin-top:3px;
+}
+.plot .p-bar i{display:block;height:100%;background:linear-gradient(180deg,#BEDDA9,var(--leaf));transition:width .35s var(--ease-soft);}
+.plot .p-water{
+  position:absolute;top:3px;right:4px;font-size:12px;line-height:1;
+  font-family:var(--font-emoji);
+  filter:drop-shadow(0 1px 0 rgba(59,42,30,.3));
+}
+/* 施肥标记 */
+.plot .p-fert{
+  position:absolute;top:3px;left:4px;
+  font-size:10px;line-height:1.2;font-weight:800;
+  font-family:var(--font-num);
+  background:linear-gradient(180deg,#EAF7DE,#CBE8B8);
+  color:#3F6B2C;
+  border:1px solid var(--leaf-deep);
+  border-radius:var(--r-pill);
+  padding:0 4px;
+  box-shadow:0 1px 0 rgba(59,42,30,.22);
+  z-index:2;
+}
+.plot .p-lock{font-size:18px;font-family:var(--font-emoji);}
+.plot .p-locktxt{font-size:11px;font-weight:800;color:#4A342A;margin-top:2px;}
+
+/* ================= 仓库 ================= */
+.tabs{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:0 0 auto;padding:9px 15px;font-size:var(--fs-small);font-weight:800;
+  border-radius:var(--r-pill);
+  background-image:linear-gradient(180deg,#FFFDF9,#F2E7D6);
+  border:var(--bw) solid var(--panel-edge);color:var(--wood);
+  cursor:pointer;
+  box-shadow:0 3px 0 var(--panel-edge),0 5px 10px rgba(59,42,30,.05);
+  transition:all .18s var(--ease-soft);white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab:hover{transform:translateY(-1px);border-color:#D8C6AC;}
+.tab.active{
+  background-image:linear-gradient(180deg,#FFF7EA,#FFE2C6);
+  color:var(--brown);border-color:var(--orange-deep);
+  box-shadow:0 3px 0 var(--orange-deep),0 5px 12px rgba(201,101,30,.18);
+}
+.item-row{
+  display:flex;align-items:center;gap:10px;
+  background-image:linear-gradient(180deg,#FFFDF9,#F6EDDF);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  padding:9px 11px;margin-bottom:8px;
+  box-shadow:var(--shadow-card);
+  transition:transform .16s var(--ease-soft),box-shadow .16s var(--ease-soft);
+}
+.item-row:hover{transform:translateY(-1px);box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 5px 0 rgba(107,74,52,.13),0 10px 16px rgba(59,42,30,.08);}
+.item-row .ir-emoji{font-size:24px;line-height:1;font-family:var(--font-emoji);flex:0 0 auto;}
+.item-row .ir-main{flex:1;min-width:0;}
+.item-row .ir-name{font-size:var(--fs-body);font-weight:800;color:var(--brown);}
+.item-row .ir-meta{font-size:var(--fs-tiny);color:var(--wood);font-weight:700;margin-top:3px;line-height:1.45;}
+
+/* 未解锁配方提示条 */
+.locked-tip{
+  margin-top:10px;padding:10px 12px;
+  background-image:linear-gradient(180deg,#FFF8EC,#FFE9D2);
+  border:var(--bw) dashed var(--orange-deep);border-radius:var(--r-sm);
+  font-size:var(--fs-tiny);font-weight:800;color:var(--orange-deep);line-height:1.7;
+  box-shadow:inset 0 2px 6px rgba(201,101,30,.06);
+}
+.locked-tip .lt-head{
+  display:flex;align-items:center;gap:6px;
+  font-size:var(--fs-small);margin-bottom:4px;
+}
+.locked-tip .lt-row{
+  padding-left:2px;color:#8C5A2A;font-weight:700;
+}
+
+/* ================= 订单/任务 ================= */
+.task-card{
+  background-image:linear-gradient(180deg,#FFFDF9,#F6EDDF);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  padding:10px 12px;margin-bottom:8px;
+  box-shadow:var(--shadow-card);
+}
+.task-card.done{opacity:.6;}
+.task-head{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  flex-wrap:wrap;font-size:var(--fs-body);font-weight:800;color:var(--orange-deep);
+}
+.task-body{font-size:var(--fs-tiny);font-weight:700;color:var(--brown);margin:5px 0;line-height:1.55;}
+.task-reward{font-size:var(--fs-tiny);font-weight:800;color:var(--gold-deep);font-variant-numeric:tabular-nums;}
+.progress-bar{
+  height:9px;background:#EFE3D4;border:var(--bw) solid var(--panel-edge);
+  border-radius:var(--r-pill);overflow:hidden;margin-top:7px;
+  box-shadow:inset 0 1px 3px rgba(59,42,30,.12);
+}
+.progress-bar i{
+  display:block;height:100%;
+  background-image:linear-gradient(180deg,#BEDDA9,var(--leaf));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  transition:width .35s var(--ease-soft);
+}
+
+/* ================= 直播准备 ================= */
+.live-pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0;}
+.est-box{
+  background-image:linear-gradient(180deg,#FFF8EC,#FFE9D2);
+  border:var(--bw) dashed var(--orange-deep);border-radius:var(--r-sm);
+  padding:11px 13px;margin-top:10px;
+  font-size:var(--fs-tiny);font-weight:800;color:var(--orange-deep);line-height:1.65;
+  box-shadow:inset 0 2px 6px rgba(201,101,30,.06);
+}
+
+/* ================= 直播页 ================= */
+#page-live.active{
+  position:fixed;inset:0;z-index:940;
+  background:linear-gradient(180deg,#FFF4E4,#FFE7CE);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  padding:0;
+  height:100vh;height:100dvh;
+}
+.live-top{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:9px 12px;
+  background-image:linear-gradient(180deg,#ED6E6E,#B94242);
+  border-bottom:var(--bw-panel) solid var(--brown);
+  box-shadow:0 4px 0 rgba(59,42,30,.28),inset 0 -2px 0 rgba(0,0,0,.16);
+  flex:0 0 auto;
+}
+.live-stat{
+  background:rgba(255,255,255,.94);
+  border:var(--bw) solid var(--brown);border-radius:var(--r-pill);
+  padding:5px 11px;font-size:var(--fs-tiny);font-weight:800;
+  color:var(--brown);white-space:nowrap;
+  box-shadow:0 2px 0 rgba(59,42,30,.32),inset 0 1px 0 rgba(255,255,255,.9);
+  font-variant-numeric:tabular-nums;
+}
+.live-stat b{font-family:var(--font-num);color:var(--orange-deep);}
+.live-stat.warn{background:#FFD9D9;color:#A02020;animation:warnPulse .7s infinite;}
+@keyframes warnPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+
+.cust-area{
+  flex:1 1 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);
+  gap:8px;padding:10px;overflow:hidden;min-height:0;
+}
+.cust-card{
+  position:relative;
+  background-image:linear-gradient(180deg,#FFFDF9,#FFF3E4);
+  border:var(--bw) solid var(--wood);border-radius:var(--r-sm);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px 2px;min-height:0;overflow:hidden;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.8),
+    0 3px 0 rgba(59,42,30,.2),
+    0 6px 12px rgba(59,42,30,.07);
+  transition:transform .18s var(--ease-soft),box-shadow .18s var(--ease-soft);
+  touch-action:none;
+}
+.cust-card.empty{opacity:.32;border-style:dashed;box-shadow:none;}
+.cust-card.hit{
+  animation:hitPop .32s var(--ease-spring);
+  border-color:var(--gold);
+  box-shadow:0 0 0 4px rgba(217,164,65,.45),0 3px 0 rgba(59,42,30,.2);
+}
+@keyframes hitPop{0%{transform:scale(1);}50%{transform:scale(1.12);}100%{transform:scale(1);}}
+.cust-card.miss{animation:shakeX .32s;}
+@keyframes shakeX{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+.cust-bubble{
+  font-size:var(--fs-tiny);font-weight:800;color:var(--brown);
+  background:linear-gradient(180deg,#FFF8DF,#FFEFC6);
+  border:var(--bw) solid var(--gold);border-radius:var(--r-pill);
+  padding:2px 9px;white-space:nowrap;margin-bottom:3px;
+  box-shadow:0 2px 0 rgba(185,138,46,.55);
+  font-family:var(--font-emoji);
+  line-height:1.4;
+}
+.cust-face{font-size:30px;line-height:1;font-family:var(--font-emoji);}
+.cust-heart{font-size:11px;line-height:1;margin-top:2px;letter-spacing:1px;}
+
+/* ---- 篮子区：改为 grid，全部水果一屏可见（不再横向滚动） ---- */
+.basket-area{
+  flex:0 0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);   /* JS 会按水果数量动态覆盖 */
+  gap:6px;
+  padding:9px 10px;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,240,215,.05) 0px,rgba(255,240,215,.05) 3px,rgba(0,0,0,.045) 3px,rgba(0,0,0,.045) 9px),
+    linear-gradient(180deg,#9E7353,#8A6247);
+  border-top:var(--bw-panel) solid var(--brown);
+  box-shadow:inset 0 3px 0 rgba(255,240,215,.16);
+  overflow:hidden;
+  touch-action:none;
+}
+.basket{
+  width:100%;min-width:0;max-width:110px;justify-self:center;
+  background-image:linear-gradient(180deg,#FFFDF9,#FFEEDC);
+  border:var(--bw) solid var(--brown);border-radius:var(--r-sm);
+  padding:6px 3px;text-align:center;cursor:grab;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85),0 3px 0 rgba(42,29,20,.6),0 6px 12px rgba(0,0,0,.14);
+  user-select:none;-webkit-user-select:none;touch-action:none;
+  transition:transform .16s var(--ease-soft),box-shadow .16s var(--ease-soft);
+}
+.basket:hover{transform:translateY(-2px);}
+.basket:active{transform:scale(.945);cursor:grabbing;}
+.basket.depleted{opacity:.4;filter:grayscale(.7);}
+.basket .b-emoji{font-size:22px;line-height:1;font-family:var(--font-emoji);}
+.basket .b-name{
+  font-size:10px;font-weight:800;color:var(--brown);margin-top:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.basket .b-left{font-size:11px;font-weight:800;color:var(--orange-deep);font-family:var(--font-num);}
+
+.drag-ghost{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;
+  transform:translate(-50%,-50%) scale(1.15);
+  filter:drop-shadow(0 4px 0 rgba(59,42,30,.35)) drop-shadow(0 0 10px rgba(240,138,60,.45));
+}
+.drag-ghost .ui-icon{
+  width:100%;height:100%;
+  min-width:0;min-height:0;
+  object-fit:contain;
+  image-rendering:pixelated;
+}
+.float-text{
+  position:fixed;pointer-events:none;z-index:9998;
+  font-size:16px;font-weight:800;color:var(--gold);
+  text-shadow:1px 1px 0 rgba(59,42,30,.5),0 0 8px rgba(217,164,65,.5);
+  animation:floatUp .95s var(--ease-out) forwards;
+  font-family:var(--font-num);
+}
+@keyframes floatUp{0%{opacity:1;transform:translate(-50%,0) scale(.8);}100%{opacity:0;transform:translate(-50%,-56px) scale(1.22);}}
+
+.omg-corner{
+  position:absolute;left:8px;bottom:86px;z-index:20;
+  display:flex;align-items:flex-end;gap:6px;pointer-events:none;
+}
+.omg-corner .oc-doll{
+  width:54px;height:54px;border-radius:12px;
+  border:var(--bw) solid var(--wood);overflow:hidden;background:#FFE3C2;
+  box-shadow:0 3px 0 rgba(59,42,30,.28),0 6px 12px rgba(59,42,30,.12);
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.omg-corner .oc-doll img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;}
+.omg-corner .oc-doll.ph{background:linear-gradient(180deg,#FFB067,var(--orange));}
+.omg-corner .oc-doll.ph::after{content:'橘';font-size:13px;color:#fff;font-weight:800;}
+.omg-corner.cheer .oc-doll{animation:cheerJump .55s var(--ease-spring);}
+@keyframes cheerJump{0%{transform:translateY(0);}40%{transform:translateY(-13px) scale(1.09);}100%{transform:translateY(0);}}
+.omg-say{
+  background:linear-gradient(180deg,#FFFDF9,#FFF5E6);
+  border:var(--bw) solid var(--wood);border-radius:var(--r-sm);
+  padding:5px 10px;font-size:11px;font-weight:800;color:var(--brown);
+  max-width:180px;
+  box-shadow:0 3px 0 rgba(59,42,30,.28),inset 0 1px 0 rgba(255,255,255,.9);
+  line-height:1.45;
+}
+
+/* ================= 结算 ================= */
+.result-big{text-align:center;padding:16px 0;}
+.result-big .rb-num{
+  font-family:var(--font-num);font-size:40px;font-weight:800;
+  color:var(--gold);text-shadow:2px 2px 0 rgba(59,42,30,.22),0 0 16px rgba(217,164,65,.35);
+  font-variant-numeric:tabular-nums;
+}
+.result-rows{margin:10px 0;}
+.result-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 10px;border-bottom:1px dashed var(--panel-edge);
+  font-size:var(--fs-small);font-weight:800;color:var(--brown);
+}
+.result-row b{font-family:var(--font-num);color:var(--orange-deep);font-variant-numeric:tabular-nums;}
+
+/* ================= 底部导航 ================= */
+.bottom-nav{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;
+  width:100%;max-width:460px;display:none;
+  grid-template-columns:repeat(5,1fr);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,240,215,.055) 0px,rgba(255,240,215,.055) 3px,rgba(0,0,0,.045) 3px,rgba(0,0,0,.045) 9px),
+    linear-gradient(180deg,#9E7353 0%,var(--wood) 100%);
+  border-top:var(--bw-panel) solid var(--brown);
+  box-shadow:0 -4px 0 rgba(42,29,20,.9),0 -10px 22px rgba(59,42,30,.28);
+  z-index:900;padding-bottom:env(safe-area-inset-bottom,0);
+}
+.bottom-nav.show{display:grid;}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:6px 2px 8px;cursor:pointer;
+  color:#EBD8B0;font-weight:700;font-size:var(--fs-tiny);
+  min-height:54px;position:relative;user-select:none;white-space:nowrap;
+  border-right:1px solid rgba(59,42,30,.32);
+  transition:background .2s var(--ease-soft),color .2s var(--ease-soft);
+  -webkit-tap-highlight-color:transparent;
+}
+.bn-item:last-child{border-right:none;}
+.bn-item .bn-ico{font-size:20px;line-height:1;font-family:var(--font-emoji);}
+.bn-item:active{transform:scale(.94);}
+.bn-item.active{
+  background-image:linear-gradient(180deg,var(--orange-light),var(--orange));
+  color:#FFFBF3;
+  box-shadow:inset 0 3px 0 rgba(107,74,52,.7),inset 0 -3px 0 rgba(0,0,0,.12);
+}
+.bn-item.active::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:28px;height:3px;background:#FFD9A0;border-radius:0 0 4px 4px;
+  box-shadow:0 0 8px rgba(255,217,160,.7);
+}
+
+/* ================= 更多面板 ================= */
+.more-sheet{
+  position:fixed;left:50%;transform:translateX(-50%) translateY(16px);
+  bottom:64px;width:92%;max-width:430px;
+  background-image:var(--panel);
+  border:var(--bw-panel) solid var(--wood);border-radius:var(--r-lg);
+  box-shadow:
+    inset 0 0 0 2px #FFFCF6,
+    0 8px 0 rgba(59,42,30,.85),
+    0 20px 40px rgba(35,22,14,.42);
+  padding:14px;z-index:950;display:none;opacity:0;
+  transition:opacity .22s var(--ease-out),transform .22s var(--ease-out);
+}
+.more-sheet.show{display:block;opacity:1;transform:translateX(-50%) translateY(0);}
+.ms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.ms-item{
+  min-height:66px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;
+  background-image:linear-gradient(180deg,#FFFDF9,#F6EDDF);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  cursor:pointer;font-weight:800;font-size:var(--fs-tiny);color:var(--brown);
+  box-shadow:0 4px 0 var(--panel-edge),0 6px 12px rgba(59,42,30,.05);
+  white-space:nowrap;
+  transition:transform .16s var(--ease-soft),box-shadow .16s var(--ease-soft),border-color .16s var(--ease-soft);
+  -webkit-tap-highlight-color:transparent;
+}
+.ms-item:hover{transform:translateY(-2px);border-color:#D8C6AC;}
+.ms-item:active{transform:translateY(3px);box-shadow:0 1px 0 var(--panel-edge);}
+.ms-item .ms-ico{font-size:23px;line-height:1;font-family:var(--font-emoji);}
+
+/* ================= 弹窗 ================= */
+.modal-mask{
+  position:fixed;inset:0;background:rgba(59,42,30,.56);z-index:10000;
+  display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:16px;
+}
+.modal-mask.open{display:flex;animation:pixelFadeIn .25s var(--ease-out);}
+.modal-box{
+  background-image:var(--panel);
+  border:var(--bw-panel) solid var(--wood);
+  box-shadow:
+    inset 0 0 0 2px #FFFCF6,
+    0 8px 0 rgba(59,42,30,.85),
+    0 20px 42px rgba(35,22,14,.42);
+  border-radius:var(--r-lg);
+  padding:16px 15px;max-width:440px;width:100%;max-height:86vh;overflow-y:auto;
+  animation:storyPop .32s var(--ease-spring);
+}
+@keyframes storyPop{0%{transform:scale(.9) translateY(12px);opacity:0;}100%{transform:scale(1) translateY(0);opacity:1;}}
+.modal-head{
+  font-size:var(--fs-panel-title);color:var(--orange-deep);
+  display:flex;align-items:center;gap:8px;line-height:1.35;
+  border-bottom:3px dashed var(--panel-edge);
+  padding-bottom:7px;margin-bottom:11px;font-weight:800;
+}
+.modal-body{
+  font-size:var(--fs-body);line-height:1.75;color:var(--brown);
+  white-space:pre-line;font-weight:700;
+}
+.modal-tag{
+  display:inline-block;margin-top:10px;font-size:var(--fs-tiny);
+  color:var(--wood);font-weight:700;opacity:.92;
+}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:13px;flex-wrap:wrap;}
+.modal-foot .pixel-btn{font-size:var(--fs-small);}
+
+/* ================= Toast ================= */
+#toast{
+  position:fixed;left:50%;bottom:88px;
+  transform:translateX(-50%) translateY(20px);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,240,215,.055) 0px,rgba(255,240,215,.055) 3px,rgba(0,0,0,.045) 3px,rgba(0,0,0,.045) 9px),
+    linear-gradient(180deg,#9E7353,var(--wood));
+  color:#FFF0CE;font-weight:800;font-size:var(--fs-small);
+  padding:11px 19px;border:var(--bw) solid var(--brown);border-radius:13px;
+  max-width:86%;text-align:center;line-height:1.5;
+  box-shadow:0 5px 0 rgba(42,29,20,.9),0 10px 24px rgba(35,22,14,.38),inset 0 1px 0 rgba(255,240,215,.25);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease-out),transform .3s var(--ease-out);
+  z-index:10050;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ================= 加载遮罩 ================= */
+#loading-overlay{
+  position:fixed;inset:0;background:rgba(59,42,30,.55);z-index:9999;
+  display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
+#loading-overlay.open{display:flex;}
+.loader-box{
+  background-image:var(--panel);
+  border:var(--bw-panel) solid var(--wood);border-radius:18px;
+  box-shadow:
+    inset 0 0 0 2px #FFFCF6,
+    0 8px 0 rgba(59,42,30,.85),
+    0 18px 36px rgba(35,22,14,.44);
+  padding:26px 34px;text-align:center;max-width:360px;width:90%;
+  animation:softPulse 1.7s var(--ease-out) infinite;
+}
+@keyframes softPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
+.loader-icon{
+  font-size:36px;margin-bottom:12px;line-height:1;
+  font-family:var(--font-emoji);
+  animation:pulse 1.15s var(--ease-soft) infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+.loader-text{font-size:var(--fs-body);margin-bottom:13px;color:var(--brown);font-weight:700;}
+.loader-bar{
+  width:100%;height:14px;background:#EFE3D4;
+  border:var(--bw) solid var(--wood);border-radius:var(--r-pill);overflow:hidden;
+  box-shadow:inset 0 2px 4px rgba(59,42,30,.14);
+}
+.loader-bar .fill{
+  height:100%;width:0%;
+  background-image:linear-gradient(180deg,var(--orange-light),var(--orange));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+  transition:width .4s var(--ease-soft);border-radius:var(--r-pill);
+}
+
+/* ================= 互动按钮网格 ================= */
+.interact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* ================= 图鉴 ================= */
+.ach-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;border-bottom:1px dashed var(--panel-edge);
+  font-size:var(--fs-small);font-weight:700;color:var(--wood);
+  line-height:1.5;
+}
+.ach-item.got{
+  color:#2E4A24;
+  background:linear-gradient(180deg,#EFF7E9,#E5F2DC);
+  border-radius:var(--r-sm);
+  border-bottom-color:transparent;
+}
+.ach-item.locked-recipe{
+  background:linear-gradient(180deg,#FFF8EC,#FFEEDA);
+  border-radius:var(--r-sm);
+  border-bottom-color:transparent;
+  color:#8C5A2A;
+}
+.ach-item .ach-ico{font-size:17px;line-height:1;font-family:var(--font-emoji);}
+
+/* ================= 升级卡 ================= */
+.upgrade-card{
+  background-image:linear-gradient(180deg,#FFFDF9,#F6EDDF);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  padding:10px 12px;margin-bottom:8px;
+  box-shadow:var(--shadow-card);
+}
+.up-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;flex-wrap:wrap;font-size:var(--fs-small);font-weight:800;
+  color:var(--orange-deep);line-height:1.35;
+}
+.up-desc{font-size:var(--fs-tiny);font-weight:700;color:var(--wood);margin:5px 0 0;line-height:1.55;}
+.up-unlock{
+  font-size:var(--fs-tiny);font-weight:800;color:var(--gold-deep);
+  margin-top:4px;
+}
+
+/* ================= 设置 ================= */
+.setting-group{
+  margin:12px 0;padding:11px;
+  background-image:linear-gradient(180deg,#FFFDF9,#F6EDDF);
+  border:var(--bw) solid var(--panel-edge);border-radius:var(--r-sm);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85),0 3px 8px rgba(59,42,30,.05);
+}
+.sg-title{
+  font-size:var(--fs-small);margin-bottom:10px;color:var(--orange-deep);
+  display:inline-flex;align-items:center;gap:5px;font-weight:800;
+}
+.sg-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:9px;}
+.sg-row label{font-size:var(--fs-tiny);min-width:66px;color:var(--wood);font-weight:700;}
+.sg-row .pixel-input,.sg-row .pixel-select{flex:1;min-width:110px;font-size:var(--fs-tiny);padding:8px 10px;}
+.sg-row input[type=range]{flex:1;min-width:110px;height:24px;accent-color:var(--orange);cursor:pointer;}
+
+.hidden{display:none!important;}
+.text-center{text-align:center;}
+.w-full{width:100%;}
+
+@media(max-width:600px){
+  .pixel-panel{padding:11px 13px;}
+  .card-grid{grid-template-columns:repeat(2,1fr);}
+  .live-pick-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:420px){
+  :root{
+    --fs-page-title:22px;
+    --fs-panel-title:12px;
+    --fs-body:12px;
+    --fs-small:11.5px;
+    --fs-tiny:11px;
+    --fs-num:17px;
+    --gap-h-sm:12px;
+  }
+  .plot-grid{grid-template-columns:repeat(3,1fr);}
+  .doll{width:84px;height:84px;}
+  .doll-row{gap:18px;}
+  .basket .b-name{font-size:9px;}
+  .basket .b-emoji{font-size:20px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important;}
+}
+
+/* ============================================================
+   【统一样式】Emoji → PNG 图标（v1.2 尺寸修正）
+   ============================================================ */
+.ui-icon{
+  display:inline-block;
+  width:1.3em;
+  height:1.3em;
+  min-width:15px;
+  min-height:15px;
+  object-fit:contain;
+  vertical-align:-0.3em;
+  image-rendering:pixelated;
+  flex:0 0 auto;
+  pointer-events:none;
+  -webkit-user-drag:none;
+  user-select:none;
+}
+
+/* ---- 中等尺寸：标题 / 按钮 / 顶栏 / 资源栏 / 页签 / 信息行 / 统计卡 ---- */
+.pixel-panel-title .ui-icon,
+.pixel-topbar .ui-icon,
+.brand .ui-icon,
+.pixel-btn .ui-icon,
+.res-chip .ui-icon,
+.stat-label .ui-icon,
+.stat-card .ui-icon,
+.tab .ui-icon,
+.info-line .ui-icon,
+.ir-meta .ui-icon,
+.task-head .ui-icon,
+.task-body .ui-icon,
+.task-reward .ui-icon,
+.up-desc .ui-icon,
+.modal-head .ui-icon,
+.modal-tag .ui-icon,
+.sg-title .ui-icon,
+.setting-group .ui-icon,
+.est-box .ui-icon,
+.result-row .ui-icon,
+.live-stat .ui-icon,
+.upgrade-card .ui-icon,
+.locked-tip .ui-icon{
+  width:1.25em;
+  height:1.25em;
+  min-width:16px;
+  min-height:16px;
+}
+
+/* ---- 大号图标容器：候选卡 / 仓库行 / 果篮 / 顾客 / 地块 / 图鉴 ---- */
+.oc-emoji .ui-icon,
+.ir-emoji .ui-icon,
+.b-emoji .ui-icon,
+.cust-face .ui-icon,
+.p-emoji .ui-icon,
+.ach-ico .ui-icon{
+  width:1.1em;
+  height:1.1em;
+  min-width:20px;
+  min-height:20px;
+  vertical-align:middle;
+}
+
+/* ---- 底部导航 / 更多面板图标 ---- */
+.bn-item .bn-ico .ui-icon,
+.ms-item .ms-ico .ui-icon{
+  width:1em;
+  height:1em;
+  min-width:18px;
+  min-height:18px;
+  vertical-align:middle;
+}
+
+/* ---- 顾客需求气泡：图标略小，避免撑破气泡 ---- */
+.cust-bubble .ui-icon{
+  width:1em;
+  height:1em;
+  min-width:13px;
+  min-height:13px;
+  vertical-align:-0.16em;
+}
+
+/* ---- 页面主标题 / 加载图标：保持原有比例 ---- */
+.title-hero h1 .ui-icon,
+.loader-icon .ui-icon,
+.drag-ghost .ui-icon{
+  width:1em;
+  height:1em;
+  min-width:0;
+  min-height:0;
+}
+
+/* ---- 砂糖橘形象不参与 emoji 替换，避免被缩放 ---- */
+.doll .ui-icon,
+.omg-corner .oc-doll .ui-icon{
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  vertical-align:middle;
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 加载遮罩 ============ -->
+<div id="loading-overlay">
+  <div class="loader-box">
+    <div class="loader-icon" id="loader-icon"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)></div>
+    <div class="loader-text" id="loader-text">正在连接直播间...</div>
+    <div class="loader-bar"><div class="fill" id="loader-fill"></div></div>
+  </div>
+</div>
+
+<!-- ============ 通用弹窗 ============ -->
+<div class="modal-mask" id="modal-mask">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<!-- ============ 底部导航 ============ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item" data-nav="page-main"><span class="bn-ico">🏠</span><span>主页</span></div>
+  <div class="bn-item" data-nav="page-orchard"><span class="bn-ico"><img class=ui-icon src=./tree.png alt=🌳 onerror=uiIconErr(this)></span><span>果园</span></div>
+  <div class="bn-item" data-nav="page-live-prep"><span class="bn-ico"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)></span><span>直播</span></div>
+  <div class="bn-item" data-nav="page-orders"><span class="bn-ico"><img class=ui-icon src=./todolist.png alt=📋 onerror=uiIconErr(this)></span><span>任务</span></div>
+  <div class="bn-item" data-nav="more"><span class="bn-ico">⋯</span><span>更多</span></div>
+</nav>
+
+<!-- ============ 更多面板 ============ -->
+<div class="more-sheet" id="more-sheet">
+  <div class="ms-grid">
+    <div class="ms-item" onclick="navTo('page-warehouse')"><span class="ms-ico">🧺</span>仓库果篮</div>
+    <div class="ms-item" onclick="closeMoreSheet();goToCraft()"><span class="ms-ico"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)></span>甜品工坊</div>
+    <div class="ms-item" onclick="navTo('page-shop')"><span class="ms-ico">🛒</span>商店采购</div>
+    <div class="ms-item" onclick="navTo('page-upgrade')"><span class="ms-ico"><img class=ui-icon src=./cup.png alt=🌟 onerror=uiIconErr(this)></span>升级技能</div>
+    <div class="ms-item" onclick="navTo('page-collection')"><span class="ms-ico"><img class=ui-icon src=./book.png alt=📖 onerror=uiIconErr(this)></span>图鉴成就</div>
+    <div class="ms-item" onclick="closeMoreSheet();openInteract()"><span class="ms-ico"><img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)></span>砂糖橘互动</div>
+    <div class="ms-item" onclick="navTo('page-settings')"><span class="ms-ico">⚙️</span>设置</div>
+  </div>
+</div>
+
+<!-- ============ 主容器 ============ -->
+<div class="pixel-container">
+
+  <!-- ===== P1 标题页 ===== -->
+  <div class="page active" id="page-title">
+    <div class="pixel-panel title-hero">
+      <h1><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 砂糖橘的果园直播间</h1>
+      <div class="sub">— 和砂糖橘一起复兴果园 —</div>
+      <div class="doll-row">
+        <div class="doll" id="title-doll">
+          <img src="./omg.png" alt="砂糖橘" onerror="this.style.display='none';this.parentNode.classList.add('ph')">
+        </div>
+      </div>
+      <div class="title-actions">
+        <button class="pixel-btn primary" onclick="goToPage('page-prologue')">🌱 开始新游戏</button>
+        <button class="pixel-btn" id="continue-btn" style="display:none" onclick="continueGame()">📂 继续游戏</button>
+        <button class="pixel-btn" onclick="goToPage('page-settings')">⚙️ 设置</button>
+        <button class="pixel-btn" onclick="goToPage('page-collection')"><img class=ui-icon src=./book.png alt=📖 onerror=uiIconErr(this)> 图鉴</button>
+      </div>
+      <div style="margin-top:18px;font-size:var(--fs-tiny);opacity:.6;">v1.3.2 · 果园复兴版</div>
+    </div>
+  </div>
+
+  <!-- ===== P2 序章 ===== -->
+  <div class="page" id="page-prologue">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./book.png alt=📖 onerror=uiIconErr(this)> 序章</span>
+      <button class="pixel-btn small" onclick="goToPage('page-title')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">🌇 黄昏的橘子树</div>
+      <div class="doll-row">
+        <div class="doll" style="width:78px;height:78px;">
+          <img src="./omg.png" alt="砂糖橘" onerror="this.style.display='none';this.parentNode.classList.add('ph')">
+        </div>
+      </div>
+      <div id="prologue-text" style="font-size:var(--fs-body);line-height:1.95;font-weight:700;color:var(--brown);min-height:150px;white-space:pre-line;"></div>
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+        <button class="pixel-btn primary" style="flex:1;" onclick="goToPage('page-create')"><img class=ui-icon src=./weater.png alt=☀️ onerror=uiIconErr(this)> 唤醒砂糖橘</button>
+        <button class="pixel-btn" style="flex:1;" onclick="goToPage('page-create')">⏭ 跳过</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== P3 创建档案 ===== -->
+  <div class="page" id="page-create">
+    <div class="pixel-topbar">
+      <span class="brand">✦ 创建档案</span>
+      <button class="pixel-btn small" onclick="goToPage('page-title')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./todolist.png alt=📝 onerror=uiIconErr(this)> 果园主档案</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label style="display:block;font-size:var(--fs-small);margin-bottom:4px;color:var(--wood);font-weight:700;">你的昵称</label>
+          <input class="pixel-input" id="c-name" value="小橘">
+        </div>
+        <div>
+          <label style="display:block;font-size:var(--fs-small);margin-bottom:4px;color:var(--wood);font-weight:700;">果园名字</label>
+          <input class="pixel-input" id="c-orchard" value="阳光橘园">
+        </div>
+        <div>
+          <label style="display:block;font-size:var(--fs-small);margin-bottom:4px;color:var(--wood);font-weight:700;">砂糖橘怎么称呼你</label>
+          <input class="pixel-input" id="c-call" value="搭档">
+        </div>
+        <div>
+          <label style="display:block;font-size:var(--fs-small);margin-bottom:4px;color:var(--wood);font-weight:700;">你的年龄 (18-40)</label>
+          <input class="pixel-input" id="c-age" type="number" value="24" min="18" max="40">
+        </div>
+        <div>
+          <label style="display:block;font-size:var(--fs-small);margin-bottom:6px;color:var(--wood);font-weight:700;">初始专精</label>
+          <div class="card-grid" id="spec-grid" style="grid-template-columns:repeat(3,1fr);margin:0;">
+            <div class="opt-card selected" data-spec="grow">
+              <div class="oc-emoji">🌱</div>
+              <div class="oc-name">种植派</div>
+              <div class="oc-sub">产量+8%<br>开局+3橘子种</div>
+            </div>
+            <div class="opt-card" data-spec="live">
+              <div class="oc-emoji"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)></div>
+              <div class="oc-name">直播派</div>
+              <div class="oc-sub">成交价+8%<br>开局+1直播设备</div>
+            </div>
+            <div class="opt-card" data-spec="bake">
+              <div class="oc-emoji"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)></div>
+              <div class="oc-name">烘焙派</div>
+              <div class="oc-sub">甜点售价+8%<br>开局+3面粉+2巧克力</div>
+            </div>
+          </div>
+        </div>
+        <button class="pixel-btn primary w-full" onclick="startGame()">✅ 开始经营</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== P4 主界面 ===== -->
+  <div class="page" id="page-main">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> <span class="tag" id="main-orchard-name">阳光橘园</span></span>
+      <div style="display:flex;gap:8px;">
+        <button class="pixel-btn small" onclick="goToPage('page-settings')">⚙️</button>
+      </div>
+    </div>
+
+    <div class="resource-bar">
+      <div class="res-chip"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> <span id="res-money">3000</span></div>
+      <div class="res-chip">🧺 水果 <span id="res-fruit">0</span></div>
+      <div class="res-chip">⚡ 行动 <span id="res-ap">12</span></div>
+      <div class="res-chip">👥 粉丝 <span id="res-fans">0</span></div>
+      <div class="res-chip"><img class=ui-icon src=./cup.png alt=⭐ onerror=uiIconErr(this)> 声望 <span id="res-fame">0</span></div>
+      <div class="res-chip"><img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 第 <span id="res-day">1</span> 天</div>
+    </div>
+
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 砂糖橘</div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <div class="doll" id="main-doll" style="width:82px;height:82px;animation:none;">
+          <img src="./omg.png" alt="砂糖橘" onerror="this.style.display='none';this.parentNode.classList.add('ph')">
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <div style="font-size:var(--fs-small);font-weight:800;line-height:1.65;" id="omg-speech">"喂！你就是我的新搭档吗？果园交给本橘就好啦！不过巧克力也要归我哦！(๑•̀ㅂ•́)و✧"</div>
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:800;color:var(--wood);width:38px;">好感</span>
+              <div class="stat-bar"><div class="fill pink" id="bar-bond" style="width:10%"></div></div>
+              <span class="num" style="font-size:13px;font-weight:800;color:var(--orange-deep);min-width:26px;text-align:right;" id="val-bond">10</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:800;color:var(--wood);width:38px;">体力</span>
+              <div class="stat-bar"><div class="fill green" id="bar-energy" style="width:100%"></div></div>
+              <span class="num" style="font-size:13px;font-weight:800;color:var(--orange-deep);min-width:26px;text-align:right;" id="val-energy">100</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:800;color:var(--wood);width:38px;">心情</span>
+              <div class="stat-bar"><div class="fill blue" id="bar-mood" style="width:70%"></div></div>
+              <span class="num" style="font-size:13px;font-weight:800;color:var(--orange-deep);min-width:26px;text-align:right;" id="val-mood">70</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="pixel-btn w-full" style="margin-top:10px;" onclick="openInteract()"><img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)> 和砂糖橘互动</button>
+    </div>
+
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">📈 经营状况</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 金币</div>
+          <div class="stat-value" id="stat-money">3000</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🏦 债务</div>
+          <div class="stat-value" id="stat-debt">8000</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 季节</div>
+          <div class="stat-value" id="stat-season" style="font-size:15px;">秋</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><img class=ui-icon src=./weater.png alt=🌤️ onerror=uiIconErr(this)> 天气</div>
+          <div class="stat-value" id="stat-weather" style="font-size:15px;">晴</div>
+        </div>
+      </div>
+      <div class="info-line" style="text-align:center;margin-top:8px;" id="main-progress-line"><img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 第 1 天 · 距离还清债务还有很长的路</div>
+    </div>
+
+    <!-- ===== 快捷操作栏（v1.3 精简版） ===== -->
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">⚡ 快捷操作</div>
+      <div class="panel-actions">
+        <button class="pixel-btn choco" onclick="goToCraft()"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 甜品工坊</button>
+        <button class="pixel-btn" onclick="goToPage('page-shop')">🛒 商店采购</button>
+        <button class="pixel-btn" onclick="goToPage('page-upgrade')"><img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> 升级技能</button>
+        <button class="pixel-btn" onclick="payDebt()">🏦 还债</button>
+        <button class="pixel-btn gold" onclick="restAP()">😴 休息</button>
+        <button class="pixel-btn primary" onclick="nextDay()">⏭ 结束这一天</button>
+      </div>
+    </div>
+
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./letter.png alt=📜 onerror=uiIconErr(this)> 主线进度</div>
+      <div id="main-story-line" class="info-line">加载中...</div>
+    </div>
+  </div>
+
+  <!-- ===== P5 果园管理 ===== -->
+  <div class="page" id="page-orchard">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./tree.png alt=🌳 onerror=uiIconErr(this)> 果园管理 · 第 <span class="tag" id="orchard-day">1</span> 天</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">🌱 我的地块（<span id="plot-count">4</span>/12）</div>
+      <div class="plot-grid" id="plot-grid"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+        <button class="pixel-btn green small" onclick="oneKeyPlant()">🌱 一键种植</button>
+        <button class="pixel-btn small" onclick="oneKeyWater()"><img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 一键浇水</button>
+        <button class="pixel-btn small" onclick="oneKeyHarvest()">🧺 一键收获</button>
+        <button class="pixel-btn gold small" onclick="expandPlot()">🔨 扩建地块</button>
+      </div>
+      <div class="info-line" style="margin-top:10px;">⚡ 剩余行动点：<b id="orchard-ap">12</b> · 种植 / 浇水 / 收获各消耗 0.5</div>
+      <div class="info-line">🧪 肥料库存：<b id="orchard-fert">0</b> 个 · 点击生长中的地块可浇水或施肥（每块地最多施肥 3 次）</div>
+    </div>
+  </div>
+
+  <!-- ===== P6 仓库 ===== -->
+  <div class="page" id="page-warehouse">
+    <div class="pixel-topbar">
+      <span class="brand">🧺 仓库果篮</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="tabs" id="wh-tabs">
+        <div class="tab active" data-wh="fruit" onclick="switchWhTab('fruit')"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 水果</div>
+        <div class="tab" data-wh="dessert" onclick="switchWhTab('dessert')"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 甜品工坊</div>
+        <div class="tab" data-wh="seed" onclick="switchWhTab('seed')">🌱 种子</div>
+      </div>
+      <div id="wh-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== P7 商店 ===== -->
+  <div class="page" id="page-shop">
+    <div class="pixel-topbar">
+      <span class="brand">🛒 商店采购</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="tabs" id="shop-tabs">
+        <div class="tab active" data-shop="seed" onclick="switchShopTab('seed')">🌱 种子铺</div>
+        <div class="tab" data-shop="tool" onclick="switchShopTab('tool')">🧰 农具店</div>
+        <div class="tab" data-shop="bake" onclick="switchShopTab('bake')"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 甜品材料行</div>
+        <div class="tab" data-shop="live" onclick="switchShopTab('live')"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 直播设备店</div>
+      </div>
+      <div id="shop-body"></div>
+      <div class="info-line" style="margin-top:10px;"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 当前金币：<b id="shop-money">3000</b></div>
+    </div>
+  </div>
+
+  <!-- ===== P8 任务订单 ===== -->
+  <div class="page" id="page-orders">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./todolist.png alt=📋 onerror=uiIconErr(this)> 任务与订单</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./letter.png alt=📜 onerror=uiIconErr(this)> 主线任务</div>
+      <div id="main-quest-box"></div>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./weater.png alt=☀️ onerror=uiIconErr(this)> 每日任务</div>
+      <div id="daily-quest-box"></div>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 周任务</div>
+      <div id="weekly-quest-box"></div>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">👥 顾客订单</div>
+      <div id="order-list"></div>
+      <button class="pixel-btn small" style="margin-top:10px;" onclick="refreshOrders()">🔄 刷新订单（100 金）</button>
+    </div>
+  </div>
+
+  <!-- ===== P9 直播准备 ===== -->
+  <div class="page" id="page-live-prep">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 直播准备</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">🛒 选择本场要卖的水果（2~6 种）</div>
+      <div class="live-pick-grid" id="live-pick-grid"></div>
+      <div class="info-line" style="margin-top:8px;">已选 <b id="live-pick-count">0</b> / 6 种</div>
+      <div class="est-box" id="live-est"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 预计收益：--</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="pixel-btn red w-full" onclick="startLive()"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 开始直播</button>
+      </div>
+      <div class="info-line" style="margin-top:10px;opacity:.88;">💡 直播规则：60 秒内把水果拖到顾客的需求气泡上。匹配成功即成交，连击越高单价越高！</div>
+    </div>
+  </div>
+
+  <!-- ===== P10 直播中 ===== -->
+  <div class="page" id="page-live">
+    <div class="live-top">
+      <div class="live-stat" id="live-timer">⏱ <b>60</b>s</div>
+      <div class="live-stat"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> <b id="live-sales">0</b></div>
+      <div class="live-stat">👥 <b id="live-viewers">0</b></div>
+      <div class="live-stat">🔥 <b id="live-combo">0</b></div>
+      <button class="pixel-btn small" style="margin-left:auto;" onclick="pauseLive()">⏸ 暂停</button>
+    </div>
+
+    <div class="cust-area" id="cust-area"></div>
+
+    <div class="omg-corner" id="omg-corner">
+      <div class="oc-doll">
+        <img src="./omg.png" alt="砂糖橘" onerror="this.style.display='none';this.parentNode.classList.add('ph')">
+      </div>
+      <div class="omg-say" id="omg-say">直播间冲鸭！(≧▽≦)</div>
+    </div>
+
+    <div class="basket-area" id="basket-area"></div>
+  </div>
+
+  <!-- ===== P11 直播结算 ===== -->
+  <div class="page" id="page-live-result">
+    <div class="pixel-topbar">
+      <span class="brand">📊 直播结算</span>
+    </div>
+    <div class="pixel-panel">
+      <div class="result-big">
+        <div style="font-size:var(--fs-small);font-weight:800;color:var(--wood);">本场销售额</div>
+        <div class="rb-num" id="lr-sales">0</div>
+        <div style="font-size:var(--fs-small);font-weight:800;color:var(--wood);">金</div>
+      </div>
+      <div class="result-rows" id="lr-rows"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <button class="pixel-btn red" style="flex:1;" onclick="goToPage('page-live-prep')">🔁 再来一场</button>
+        <button class="pixel-btn" style="flex:1;" onclick="goToPage('page-orders')"><img class=ui-icon src=./todolist.png alt=📋 onerror=uiIconErr(this)> 查看任务</button>
+        <button class="pixel-btn primary w-full" onclick="goToPage('page-main')">🏠 返回主页</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== P12 图鉴 ===== -->
+  <div class="page" id="page-collection">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./book.png alt=📖 onerror=uiIconErr(this)> 图鉴与成就</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="tabs" id="col-tabs">
+        <div class="tab active" data-col="fruit" onclick="switchColTab('fruit')"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 水果</div>
+        <div class="tab" data-col="dessert" onclick="switchColTab('dessert')"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 甜点</div>
+        <div class="tab" data-col="guest" onclick="switchColTab('guest')">👥 顾客</div>
+        <div class="tab" data-col="ach" onclick="switchColTab('ach')">🏆 成就</div>
+      </div>
+      <div id="col-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== P13 升级 ===== -->
+  <div class="page" id="page-upgrade">
+    <div class="pixel-topbar">
+      <span class="brand"><img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> 升级与技能</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title"><img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> 技能点：<span id="up-skill-points">0</span></div>
+      <div id="skill-list"></div>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">🧰 设备升级</div>
+      <div id="equip-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== P14 设置 ===== -->
+  <div class="page" id="page-settings">
+    <div class="pixel-topbar">
+      <span class="brand">⚙️ 设置</span>
+      <button class="pixel-btn small" onclick="goToPage('page-main')">← 返回</button>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">🎵 音频设置</div>
+      <div class="setting-group">
+        <div class="sg-row">
+          <label>当前曲目</label>
+          <select class="pixel-select" id="bgm-select" onchange="onBgmSelectChange()"></select>
+        </div>
+        <div class="sg-row" style="justify-content:center;">
+          <button class="pixel-btn small" onclick="audioPrevBgm()">⏮ 上一首</button>
+          <button class="pixel-btn small" id="bgm-toggle-btn" onclick="audioToggleBgm()">▶ 播放</button>
+          <button class="pixel-btn small" onclick="audioNextBgm()">⏭ 下一首</button>
+        </div>
+        <div class="sg-row">
+          <label>BGM 音量</label>
+          <input type="range" id="bgm-vol" min="0" max="100" value="50" oninput="onBgmVolChange(this.value)">
+          <span id="bgm-vol-val" class="num" style="font-size:var(--fs-tiny);">50%</span>
+        </div>
+        <div class="sg-row">
+          <label>音效音量</label>
+          <input type="range" id="sfx-vol" min="0" max="100" value="70" oninput="onSfxVolChange(this.value)">
+          <span id="sfx-vol-val" class="num" style="font-size:var(--fs-tiny);">70%</span>
+        </div>
+        <div class="sg-row">
+          <label>静音</label>
+          <input type="checkbox" class="pixel-checkbox" id="mute-toggle" onchange="onMuteChange(this.checked)">
+          <span style="font-size:var(--fs-tiny);">勾选后关闭所有声音</span>
+        </div>
+        <div class="info-line" id="audio-status-line">🔊 音频状态：检测中...</div>
+      </div>
+    </div>
+    <div class="pixel-panel">
+      <div class="pixel-panel-title">💾 游戏数据</div>
+      <div class="setting-group">
+        <div class="sg-row" style="flex-wrap:wrap;">
+          <button class="pixel-btn danger small" onclick="resetGame()">🗑 重置游戏</button>
+          <button class="pixel-btn small" onclick="exportSave()">📤 导出存档</button>
+          <button class="pixel-btn small" onclick="document.getElementById('import-file').click()">📥 导入存档</button>
+          <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importSave(event)">
+        </div>
+        <div class="info-line" id="save-info">存档键名：sugar_orange_orchard_save</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /pixel-container -->
+
+<div id="toast"></div>
+<script>
+/* ============================================================
+   音频系统
+   ============================================================ */
+const AUDIO_CONFIG = {
+  BGM_LIST: [
+    { id:'title', name:'标题音乐', src:'./bgm_title.mp3' },
+    { id:'main',  name:'果园日常', src:'./bgm_main.mp3' },
+    { id:'live',  name:'直播间',   src:'./bgm_live.mp3' }
+  ],
+  SFX: {
+    click:'./sfx/click.mp3',
+    success:'./sfx/success.mp3',
+    fail:'./sfx/fail.mp3',
+    coin:'./sfx/coin.mp3',
+    harvest:'./sfx/harvest.mp3',
+    live_deal:'./sfx/live_deal.mp3',
+    countdown:'./sfx/countdown.mp3'
+  }
+};
+
+const AudioSys = {
+  bgmEl:null, currentId:null, bgmVol:.5, sfxVol:.7, muted:false, unlocked:false, ctx:null,
+  _bgmFailed:{}, _sfxFailed:{}, _sfxCache:{},
+  _FADE_MS:250, _FADE_OUT_MS:200,
+  init(){
+    try{
+      this.bgmEl = new Audio();
+      this.bgmEl.loop = true;
+      this.bgmEl.preload = 'none';
+      this.bgmEl.volume = this.bgmVol;
+      this.bgmEl.addEventListener('error',()=>{
+        if(this.currentId){ this._bgmFailed[this.currentId]=true; this.renderStatus(); }
+      });
+    }catch(e){}
+    this.load();
+    this.renderSettings();
+    this.renderStatus();
+  },
+  load(){
+    try{
+      const raw = localStorage.getItem('sugar_orange_audio');
+      if(raw){
+        const d = JSON.parse(raw);
+        if(typeof d.bgmVol==='number') this.bgmVol=d.bgmVol;
+        if(typeof d.sfxVol==='number') this.sfxVol=d.sfxVol;
+        if(typeof d.muted==='boolean') this.muted=d.muted;
+        if(d.currentId){
+          const valid = AUDIO_CONFIG.BGM_LIST.some(t=>t.id===d.currentId);
+          this.currentId = valid ? d.currentId : 'title';
+        }
+      }
+    }catch(e){}
+    this.applyVolume();
+  },
+  save(){
+    try{
+      localStorage.setItem('sugar_orange_audio', JSON.stringify({
+        bgmVol:this.bgmVol, sfxVol:this.sfxVol, muted:this.muted, currentId:this.currentId
+      }));
+    }catch(e){}
+  },
+  applyVolume(){
+    if(this.bgmEl && !this.bgmEl._fadeTimer){
+      this.bgmEl.volume = this.muted ? 0 : this.bgmVol;
+    }
+  },
+  _fadeTo(targetVol, duration, done){
+    if(!this.bgmEl){ if(done) done(); return; }
+    const el = this.bgmEl;
+    if(el._fadeTimer){ clearInterval(el._fadeTimer); el._fadeTimer = null; }
+    const start = (typeof el.volume === 'number' && isFinite(el.volume)) ? el.volume : 0;
+    const end = clamp(targetVol, 0, 1);
+    const dur = Math.max(0, duration|0);
+    if(dur <= 0 || Math.abs(end - start) < 0.001){
+      try{ el.volume = end; }catch(e){}
+      if(done) done();
+      return;
+    }
+    const stepMs = 25;
+    const steps = Math.max(1, Math.round(dur / stepMs));
+    let i = 0;
+    el._fadeTimer = setInterval(()=>{
+      i++;
+      const t = i / steps;
+      try{ el.volume = clamp(start + (end - start) * t, 0, 1); }catch(e){}
+      if(i >= steps){
+        clearInterval(el._fadeTimer);
+        el._fadeTimer = null;
+        try{ el.volume = end; }catch(e){}
+        if(done) done();
+      }
+    }, stepMs);
+  },
+  unlock(){
+    if(this.unlocked) return;
+    this.unlocked = true;
+    try{
+      if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)();
+      if(this.ctx.state==='suspended') this.ctx.resume();
+    }catch(e){}
+    if(this.currentId) this.playBgm(this.currentId,true);
+    this.renderStatus();
+  },
+  playBgm(id,force){
+    if(!id || !this.bgmEl) return;
+    const track = AUDIO_CONFIG.BGM_LIST.find(t=>t.id===id);
+    if(!track) return;
+    if(!this.unlocked && !force){ this.currentId = id; return; }
+    if(this.currentId===id && !this.bgmEl.paused){
+      this.renderSettings(); this.renderStatus(); return;
+    }
+    const prevSrc = this.bgmEl.src;
+    const prevPlaying = !this.bgmEl.paused && !this.bgmEl.ended;
+    this.currentId = id;
+
+    if(this.muted){ try{ this.bgmEl.pause(); }catch(e){} this.renderSettings(); this.renderStatus(); return; }
+    if(this._bgmFailed[id]){ this.renderSettings(); this.renderStatus(); return; }
+
+    let targetHref = '';
+    try{ targetHref = new URL(track.src, location.href).href; }catch(e){ targetHref = track.src; }
+    const sameSrc = (prevSrc === targetHref);
+    const targetVol = this.bgmVol;
+
+    const startNew = ()=>{
+      try{
+        if(!sameSrc) this.bgmEl.src = track.src;
+        this.bgmEl.volume = 0;
+        const p = this.bgmEl.play();
+        if(p && p.catch) p.catch(err=>{ if(err && err.name==='AbortError') return; });
+        this._fadeTo(targetVol, this._FADE_MS);
+      }catch(e){}
+      this.renderSettings(); this.renderStatus();
+    };
+
+    if(prevPlaying && !sameSrc){
+      this._fadeTo(0, this._FADE_OUT_MS, ()=>{
+        try{ this.bgmEl.pause(); }catch(e){}
+        startNew();
+      });
+    } else {
+      startNew();
+    }
+  },
+  playBgmForPage(pageId){
+    const map = {
+      'page-title':'title',
+      'page-prologue':'title',
+      'page-create':'title',
+      'page-main':'main',
+      'page-orchard':'main',
+      'page-warehouse':'main',
+      'page-shop':'main',
+      'page-orders':'main',
+      'page-collection':'main',
+      'page-upgrade':'main',
+      'page-settings':'main',
+      'page-live-prep':'live',
+      'page-live':'live',
+      'page-live-result':'live'
+    };
+    const id = map[pageId];
+    if(!id) return;
+    if(this.currentId === id) return;
+    this.playBgm(id);
+  },
+  pauseBgm(){ try{ if(this.bgmEl) this.bgmEl.pause(); }catch(e){} this.renderSettings(); },
+  resumeBgm(){ if(this.muted) return; if(this.currentId) this.playBgm(this.currentId,true); else this.playBgm('main',true); },
+  toggleBgm(){
+    if(!this.bgmEl) return;
+    if(this.bgmEl.paused){
+      if(!this.currentId) this.currentId='title';
+      if(this.muted) this.setMuted(false);
+      else this.playBgm(this.currentId,true);
+    } else this.pauseBgm();
+    this.save(); this.renderSettings();
+  },
+  nextBgm(){
+    const list = AUDIO_CONFIG.BGM_LIST;
+    let idx = list.findIndex(t=>t.id===this.currentId);
+    idx = (idx+1+list.length)%list.length;
+    this.currentId = list[idx].id;
+    this._bgmFailed[this.currentId]=false;
+    this.playBgm(this.currentId,true);
+    this.save(); this.renderSettings();
+  },
+  prevBgm(){
+    const list = AUDIO_CONFIG.BGM_LIST;
+    let idx = list.findIndex(t=>t.id===this.currentId);
+    idx = (idx-1+list.length)%list.length;
+    this.currentId = list[idx].id;
+    this._bgmFailed[this.currentId]=false;
+    this.playBgm(this.currentId,true);
+    this.save(); this.renderSettings();
+  },
+  setBgmVol(v){ this.bgmVol = clamp(v,0,1); this.applyVolume(); this.save(); },
+  setSfxVol(v){ this.sfxVol = clamp(v,0,1); this.save(); },
+  setMuted(m){
+    this.muted = !!m;
+    if(this.muted) this.pauseBgm(); else this.resumeBgm();
+    this.applyVolume(); this.save(); this.renderSettings(); this.renderStatus();
+  },
+  playSfx(name){
+    if(this.muted || this.sfxVol<=0) return;
+    if(this._sfxFailed[name]){ this.beep(name); return; }
+    const src = AUDIO_CONFIG.SFX[name];
+    if(!src){ this.beep(name); return; }
+    let a = this._sfxCache[name];
+    if(!a){
+      try{
+        a = new Audio(src); a.preload='auto';
+        a.addEventListener('error',()=>{ this._sfxFailed[name]=true; });
+        this._sfxCache[name]=a;
+      }catch(e){ this._sfxFailed[name]=true; this.beep(name); return; }
+    }
+    try{
+      a.volume = this.sfxVol; a.currentTime = 0;
+      const p = a.play();
+      if(p && p.catch) p.catch(err=>{
+        if(err && err.name==='AbortError') return;
+        this._sfxFailed[name]=true; this.beep(name);
+      });
+    }catch(e){ this._sfxFailed[name]=true; this.beep(name); }
+  },
+  beep(name){
+    try{
+      if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)();
+      const ctx = this.ctx;
+      if(ctx.state==='suspended') ctx.resume();
+      const freqs = { click:660, success:880, fail:220, coin:1046, harvest:784, live_deal:988, countdown:523 };
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type='sine';
+      o.frequency.value = freqs[name]||600;
+      const vol = .06*this.sfxVol;
+      g.gain.setValueAtTime(vol, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime+.13);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(); o.stop(ctx.currentTime+.14);
+    }catch(e){}
+  },
+  renderSettings(){
+    const sel = document.getElementById('bgm-select');
+    if(sel){
+      if(sel.options.length !== AUDIO_CONFIG.BGM_LIST.length){
+        sel.innerHTML = AUDIO_CONFIG.BGM_LIST.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+      }
+      if(this.currentId && sel.value!==this.currentId) sel.value = this.currentId;
+    }
+    const t = document.getElementById('bgm-toggle-btn');
+    if(t && this.bgmEl) t.textContent = this.bgmEl.paused ? '▶ 播放' : '⏸ 暂停';
+    const bv = document.getElementById('bgm-vol');
+    if(bv) bv.value = Math.round(this.bgmVol*100);
+    const bvv = document.getElementById('bgm-vol-val');
+    if(bvv) bvv.textContent = Math.round(this.bgmVol*100)+'%';
+    const sv = document.getElementById('sfx-vol');
+    if(sv) sv.value = Math.round(this.sfxVol*100);
+    const svv = document.getElementById('sfx-vol-val');
+    if(svv) svv.textContent = Math.round(this.sfxVol*100)+'%';
+    const mt = document.getElementById('mute-toggle');
+    if(mt) mt.checked = this.muted;
+  },
+  renderStatus(){
+    const el = document.getElementById('audio-status-line');
+    if(!el) return;
+    const fb = Object.keys(this._bgmFailed).filter(k=>this._bgmFailed[k]);
+    const fs = Object.keys(this._sfxFailed).filter(k=>this._sfxFailed[k]);
+    if(!this.unlocked){
+      el.textContent = '🔇 音频状态：等待首次交互（点击屏幕后自动启用）';
+      el.style.color = 'var(--wood)';
+      return;
+    }
+    if(fb.length === AUDIO_CONFIG.BGM_LIST.length){
+      el.textContent = '🔇 音频状态：未检测到 BGM 文件（请把音乐放到同目录）';
+      el.style.color = '#8C4A2A';
+      return;
+    }
+    const parts = [];
+    parts.push(this.bgmEl && !this.bgmEl.paused ? '🎵 BGM 播放中' : '⏸ BGM 已暂停');
+    if(fb.length) parts.push('⚠️ '+fb.length+' 首 BGM 缺失');
+    if(fs.length) parts.push('⚠️ '+fs.length+' 个音效缺失（已用提示音替代）');
+    el.textContent = '🔊 音频状态：'+parts.join(' · ');
+    el.style.color = (fb.length||fs.length) ? '#8C4A2A' : 'var(--success)';
+  }
+};
+
+function onBgmSelectChange(){ AudioSys.playBgm(document.getElementById('bgm-select').value, true); AudioSys.save(); }
+function onBgmVolChange(v){ AudioSys.setBgmVol(v/100); AudioSys.renderSettings(); }
+function onSfxVolChange(v){ AudioSys.setSfxVol(v/100); AudioSys.renderSettings(); }
+function onMuteChange(c){ AudioSys.setMuted(c); }
+function audioToggleBgm(){ AudioSys.toggleBgm(); }
+function audioNextBgm(){ AudioSys.nextBgm(); }
+function audioPrevBgm(){ AudioSys.prevBgm(); }
+
+/* ============================================================
+   数据定义
+   ============================================================ */
+const FRUITS = {
+  orange:    { id:'orange',    name:'砂糖橘', icon:'<img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)>', seedCost:20, growDays:2, yield:6, price:12, season:'秋' },
+  watermelon:{ id:'watermelon',name:'西瓜',   icon:'<img class=ui-icon src=./watermelon_slice.png alt=🍉 onerror=uiIconErr(this)>', seedCost:35, growDays:3, yield:4, price:22, season:'夏' },
+  strawberry:{ id:'strawberry',name:'草莓',   icon:'<img class=ui-icon src=./strawberry.png alt=🍓 onerror=uiIconErr(this)>', seedCost:30, growDays:2, yield:5, price:26, season:'春' },
+  blueberry: { id:'blueberry', name:'蓝莓',   icon:'<img class=ui-icon src=./blueberries.png alt=🫐 onerror=uiIconErr(this)>', seedCost:45, growDays:3, yield:4, price:35, season:'夏' },
+  lemon:     { id:'lemon',     name:'柠檬',   icon:'<img class=ui-icon src=./lemon.png alt=🍋 onerror=uiIconErr(this)>', seedCost:25, growDays:2, yield:5, price:15, season:'全年' },
+  peach:     { id:'peach',     name:'水蜜桃', icon:'<img class=ui-icon src=./peach.png alt=🍑 onerror=uiIconErr(this)>', seedCost:38, growDays:3, yield:5, price:28, season:'夏' },
+  grape:     { id:'grape',     name:'葡萄',   icon:'<img class=ui-icon src=./grapes_purple.png alt=🍇 onerror=uiIconErr(this)>', seedCost:40, growDays:3, yield:4, price:30, season:'秋' },
+  melon:     { id:'melon',     name:'蜜瓜',   icon:'<img class=ui-icon src=./cantaloupe_whole.png alt=🍈 onerror=uiIconErr(this)>', seedCost:55, growDays:4, yield:4, price:42, season:'夏' },
+  mango:     { id:'mango',     name:'芒果',   icon:'<img class=ui-icon src=./mango.png alt=🥭 onerror=uiIconErr(this)>', seedCost:50, growDays:4, yield:4, price:38, season:'夏' },
+  banana:    { id:'banana',    name:'香蕉',   icon:'<img class=ui-icon src=./banana.png alt=🍌 onerror=uiIconErr(this)>', seedCost:25, growDays:2, yield:6, price:16, season:'全年' },
+  avocado:   { id:'avocado',   name:'牛油果', icon:'<img class=ui-icon src=./avocado_half.png alt=🥑 onerror=uiIconErr(this)>', seedCost:65, growDays:5, yield:3, price:55, season:'全年' },
+  pomegranate:{ id:'pomegranate',name:'石榴', icon:'<img class=ui-icon src=./pomegranate.png alt=🍎 onerror=uiIconErr(this)>', seedCost:60, growDays:4, yield:3, price:48, season:'秋' },
+  pineapple: { id:'pineapple', name:'菠萝',   icon:'<img class=ui-icon src=./pineapple.png alt=🍍 onerror=uiIconErr(this)>', seedCost:70, growDays:5, yield:3, price:60, season:'夏' },
+  persimmon: { id:'persimmon', name:'柿子',   icon:'<img class=ui-icon src=./persimmon.png alt=🍅 onerror=uiIconErr(this)>', seedCost:40, growDays:3, yield:5, price:32, season:'秋' },
+  pear:      { id:'pear',      name:'梨',     icon:'<img class=ui-icon src=./pear.png alt=🍐 onerror=uiIconErr(this)>', seedCost:30, growDays:3, yield:5, price:22, season:'秋' }
+};
+
+const RECIPES = [
+  { id:'juice',   name:'鲜榨橘子汁',   icon:'<img class=ui-icon src=./juice.png alt=🧃 onerror=uiIconErr(this)>', need:{orange:3},                    price:36,  unlock:'start' },
+  { id:'choco',   name:'橘子巧克力',   icon:'<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)>', need:{orange:2},                    price:45,  unlock:'start' },
+  { id:'jam',     name:'草莓果酱',     icon:'<img class=ui-icon src=./canned_food_4.png alt=🍯 onerror=uiIconErr(this)>', need:{strawberry:3},                price:78,  unlock:'start' },
+  { id:'pie',     name:'蜜桃派',       icon:'<img class=ui-icon src=./pie_cherry_slice.png alt=🥧 onerror=uiIconErr(this)>', need:{peach:3},                     price:60,  unlock:'start' },
+  { id:'smoothie',name:'蓝莓冰沙',     icon:'<img class=ui-icon src=./cup.png alt=🥤 onerror=uiIconErr(this)>', need:{blueberry:2,lemon:1},         price:110, unlock:'start' },
+  { id:'dubai',   name:'迪拜巧克力软曲奇', icon:'<img class=ui-icon src=./cookie.png alt=🍪 onerror=uiIconErr(this)>', need:{orange:2,strawberry:1},   price:180, unlock:'story' },
+  { id:'cake',    name:'蜜瓜奶油蛋糕', icon:'<img class=ui-icon src=./cake_slice_chocolate.png alt=🍰 onerror=uiIconErr(this)>', need:{melon:2,blueberry:1},         price:160, unlock:'bake' },
+  { id:'wine',    name:'葡萄气泡饮',   icon:'<img class=ui-icon src=./cup.png alt=🥂 onerror=uiIconErr(this)>', need:{grape:2,lemon:1},             price:95,  unlock:'bake' },
+  { id:'fruitcake',name:'缤纷水果塔',  icon:'<img class=ui-icon src=./cake_slice_chocolate.png alt=🍮 onerror=uiIconErr(this)>', need:{strawberry:2,blueberry:2,melon:1}, price:280, unlock:'bake' },
+  { id:'peach_juice', name:'蜜桃果汁', icon:'<img class=ui-icon src=./juice.png alt=🧃 onerror=uiIconErr(this)>', need:{peach:3}, price:90, unlock:'start' },
+  { id:'mango_smoothie', name:'芒果冰沙', icon:'<img class=ui-icon src=./cup.png alt=🥤 onerror=uiIconErr(this)>', need:{mango:2,lemon:1}, price:140, unlock:'bake' },
+  { id:'banana_cake', name:'香蕉蛋糕', icon:'<img class=ui-icon src=./cake_slice_chocolate.png alt=🍰 onerror=uiIconErr(this)>', need:{banana:3,strawberry:1}, price:130, unlock:'start' },
+  { id:'avocado_salad', name:'牛油果沙拉', icon:'<img class=ui-icon src=./canned_food_4.png alt=🥗 onerror=uiIconErr(this)>', need:{avocado:2,lemon:1}, price:180, unlock:'bake' },
+  { id:'pomegranate_tea', name:'石榴果茶', icon:'<img class=ui-icon src=./juice.png alt=🧃 onerror=uiIconErr(this)>', need:{pomegranate:2,lemon:1}, price:160, unlock:'bake' },
+  { id:'pineapple_cake', name:'菠萝翻转蛋糕', icon:'<img class=ui-icon src=./cake_slice_chocolate.png alt=🍰 onerror=uiIconErr(this)>', need:{pineapple:2,blueberry:1}, price:240, unlock:'bake' },
+  { id:'persimmon_pudding', name:'柿子布丁', icon:'<img class=ui-icon src=./cup.png alt=🍮 onerror=uiIconErr(this)>', need:{persimmon:2,pear:1}, price:170, unlock:'bake' },
+  { id:'pear_juice', name:'鲜榨梨汁', icon:'<img class=ui-icon src=./juice.png alt=🧃 onerror=uiIconErr(this)>', need:{pear:3}, price:80, unlock:'start' }
+];
+
+const RECIPE_BAKE_REQ = { 
+  cake:2, wine:3, fruitcake:4,
+  mango_smoothie:2, avocado_salad:3, pomegranate_tea:3, pineapple_cake:4, persimmon_pudding:4
+};
+
+function recipeUnlockText(r){
+  if(!r) return '';
+  if(r.unlock === 'story') return '主线第 14 天剧情解锁';
+  if(r.unlock === 'bake'){
+    const lv = RECIPE_BAKE_REQ[r.id] || 3;
+    return '烘焙技能 Lv.' + lv + ' 解锁';
+  }
+  return '尚未解锁';
+}
+
+function checkRecipeUnlocks(showMsg){
+  const newly = [];
+  Object.keys(RECIPE_BAKE_REQ).forEach(id=>{
+    if(!G.recipes.includes(id) && (G.skills.bake||0) >= RECIPE_BAKE_REQ[id]){
+      G.recipes.push(id);
+      newly.push(id);
+    }
+  });
+  if(newly.length && showMsg !== false){
+    const names = newly.map(id=>getRecipe(id).name).join('、');
+    setTimeout(()=>{
+      showToast('<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 解锁新配方：'+names+'！(≧▽≦)');
+      AudioSys.playSfx('success');
+    }, 480);
+  }
+  return newly;
+}
+
+const QUALITY = {
+  common: { name:'普通', mul:1.00, icon:'⚪' },
+  good:   { name:'优良', mul:1.25, icon:'🟢' },
+  perfect:{ name:'完美', mul:1.60, icon:'<img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>' }
+};
+
+const SEASON_MUL = { '春':1.1, '夏':1.0, '秋':1.15, '冬':0.85 };
+
+const CUSTOMERS = [
+  { id:'c1', name:'老橙',  icon:'👴', desc:'邻居果农，教你种植' },
+  { id:'c2', name:'小柚',  icon:'👧', desc:'直播助手，负责上链接' },
+  { id:'c3', name:'甜豆',  icon:'👩', desc:'美食博主，超爱迪拜软曲奇' },
+  { id:'c4', name:'团子',  icon:'🧑', desc:'外卖骑手，帮忙送货' },
+  { id:'c5', name:'小满',  icon:'👩‍🎨', desc:'插画师，设计包装' },
+  { id:'c6', name:'路人甲',icon:'🧓', desc:'路过的游客' },
+  { id:'c7', name:'小美',  icon:'👩‍🦰', desc:'上班族，爱喝橘子汁' },
+  { id:'c8', name:'阿栗',  icon:'👦', desc:'附近的学生' }
+];
+
+const EQUIPS = [
+  { key:'irrigation', name:'<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 灌溉系统', desc:'浇水时额外 +1 生长进度', max:5, cost:lv=>600*lv },
+  { key:'greenhouse', name:'🏡 温室大棚', desc:'每级生长时间 -3%（最多 -15%）', max:5, cost:lv=>800*lv },
+  { key:'coldstore',  name:'🧊 冷藏库',   desc:'每级水果售价 +4%', max:5, cost:lv=>700*lv },
+  { key:'light',      name:'💡 直播灯',   desc:'每级直播成交价 +5%', max:5, cost:lv=>750*lv },
+  { key:'soundcard',  name:'🎙️ 声卡',     desc:'每级直播连击加成 +0.02', max:5, cost:lv=>900*lv },
+  { key:'packing',    name:'📦 包装台',   desc:'每级订单奖励 +6%', max:5, cost:lv=>650*lv }
+];
+
+const SKILLS = [
+  { key:'grow',  name:'🌱 种植', desc:'每级水果产量 +4%', max:10, cost:1 },
+  { key:'live',  name:'<img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 直播', desc:'每级直播成交价 +3%', max:10, cost:1 },
+  { key:'bake',  name:'<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 烘焙', desc:'每级甜点售价 +5%；Lv.2/3/4 解锁对应甜点配方', max:10, cost:1 },
+  { key:'social',name:'<img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)> 社交', desc:'每级直播人气 +6%', max:10, cost:1 },
+  { key:'biz',   name:'💼 经营', desc:'每级所有售价 +2%', max:10, cost:1 }
+];
+
+const DAILY_TASKS = [
+  { id:'harvest5', name:'收获 5 次',        goal:5,  reward:{ money:200, exp:5 } },
+  { id:'live10',   name:'<img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 直播成交 10 单',   goal:10, reward:{ money:300, exp:8 } },
+  { id:'order2',   name:'交付 2 个订单',    goal:2,  reward:{ money:250, exp:6 } },
+  { id:'interact3',name:'与砂糖橘互动 3 次',goal:3,  reward:{ money:150, exp:4 } }
+];
+
+const WEEKLY_TASKS = [
+  { id:'sales2000', name:'本周销售额 2000',  goal:2000, reward:{ money:600, exp:20, sp:1 } },
+  { id:'fans50',    name:'本周粉丝 +50',     goal:50,   reward:{ money:500, exp:15, sp:1 } },
+  { id:'perfect3',  name:'收获完美水果 3 个',goal:3,    reward:{ money:400, exp:12, sp:1 } }
+];
+
+const MAIN_STORY = [
+  { day:1,  id:'m1', title:'第 1 天 · 橘子汁复活了他', tag:'主线 · 序章',
+    body:'黄昏的橘子树下，一滴橘子汁落在棉花娃娃脸上。他眨了眨眼，凶萌凶萌地坐起来：\n\n「喂！你就是我的新搭档吗？果园交给本橘就好啦！不过巧克力也要归我哦！(๑•̀ㅂ•́)و✧」\n\n【目标】30 天内还清 8000 金债务，复兴果园。' },
+  { day:2,  id:'m2', title:'第 2 天 · 第一杯橘子汁', tag:'主线 · 第一章',
+    body:'你榨出了第一杯橘子汁，客人喝完后眼睛亮了起来。\n\n砂糖橘抱着空杯子仰头：「我们家橙子的品质，榨出这样的果汁是应该的！(๑•̀ㅂ•́)و✧」——呆毛却翘得老高。\n\n【解锁】直播准备功能已开放！去直播间把水果卖光光吧～' },
+  { day:3,  id:'m3', title:'第 3 天 · 第一次直播', tag:'主线 · 第二章',
+    body:'小柚帮你架好手机：「三、二、一——上链接！」\n\n砂糖橘凑到镜头前：「直播间的大家——！今天也要把水果卖光光哦！(≧▽≦)」\n\n【目标】本场直播成交 10 单。' },
+  { day:7,  id:'m4', title:'第 7 天 · 还债第一期', tag:'主线 · 第三章',
+    body:'债主上门了。砂糖橘挡在门口，双手叉腰：「再、再给我们一点点时间嘛！」\n\n【目标】今天之内还上第一笔 2000 金。' },
+  { day:14, id:'m5', title:'第 14 天 · 迪拜巧克力软曲奇', tag:'主线 · 第四章',
+    body:'甜豆发来一条私信：「听说你们家的甜品技术也不错？我想吃迪拜巧克力软曲奇！」\n\n砂糖橘耳朵一动：「迪拜巧克力……听起来是非常美味的东西！(≧▽≦)」\n\n【解锁】迪拜巧克力软曲奇配方！可在「甜品工坊」制作～' },
+  { day:21, id:'m6', title:'第 21 天 · 五百个粉丝', tag:'主线 · 第五章',
+    body:'后台数字跳动着。砂糖橘紧张地捂着眼睛，从指缝里偷看：「多、多少了呀？(๑•́ ₃ •̀๑)」\n\n【目标】粉丝数达到 500。' },
+  { day:30, id:'m7', title:'第 30 天 · 果园复兴', tag:'主线 · 终章',
+    body:'三十天期满。砂糖橘踮着脚看账本：「让我看看，上面的红字归零没有……」\n\n【目标】还清全部 8000 金债务。' }
+];
+/* ============================================================
+   状态
+   ============================================================ */
+function defaultFruits(){
+  const o = {};
+  Object.keys(FRUITS).forEach(k=>{ o[k] = { common:0, good:0, perfect:0 }; });
+  return o;
+}
+function defaultSeeds(){
+  const o = {};
+  Object.keys(FRUITS).forEach(k=>{ o[k] = 0; });
+  return o;
+}
+/* 【修复】肥料作为农具材料，纳入默认材料表，保证存档兼容 */
+function defaultMats(){ return { flour:0, choco:0, butter:0, sugar:0, fertilizer:0 }; }
+function defaultEquip(){ return { irrigation:1, greenhouse:1, coldstore:1, light:1, soundcard:1, packing:1 }; }
+function defaultSkills(){ return { grow:0, live:0, bake:0, social:0, biz:0 }; }
+function defaultDaily(){ const o={}; DAILY_TASKS.forEach(t=>{ o[t.id]={cur:0,claimed:false}; }); return o; }
+function defaultWeekly(){ const o={}; WEEKLY_TASKS.forEach(t=>{ o[t.id]={cur:0,claimed:false}; }); return o; }
+function defaultDesserts(){ const o={}; RECIPES.forEach(r=>{ o[r.id]=0; }); return o; }
+
+const AP = {
+  BASE_MAX: 12,
+  GROW_EVERY: 5,
+  CAP: 20,
+  PLANT: 0.5,
+  WATER: 0.5,
+  HARVEST: 0.5,
+  LIVE: 1,
+  CRAFT: 1,
+  REST_COST: 150,
+  REST_GAIN: 3,
+  REST_LIMIT: 2
+};
+const FERT_MAX = 3;          /* 每块地最多施肥次数 */
+const FERT_PERFECT = 0.10;   /* 每次施肥：完美率 +10% */
+const FERT_GOOD = 0.05;      /* 每次施肥：优良率 +5% */
+
+function calcMaxAp(day){ return Math.min(AP.CAP, AP.BASE_MAX + Math.floor((Math.max(1,day) - 1) / AP.GROW_EVERY)); }
+function fmtAp(v){ const n = Math.round(v*10)/10; return Number.isInteger(n) ? String(n) : n.toFixed(1); }
+
+const G = {
+  version: 1,
+  player: { name:'小橘', orchardName:'阳光橘园', call:'搭档', age:24, spec:'grow' },
+  money: 3000,
+  debt: 8000,
+  initialDebt: 8000,
+  day: 1,
+  season: '秋',
+  weather: '晴',
+  ap: 12,
+  maxAp: 12,
+  restCount: 0,
+  fans: 0,
+  fame: 0,
+  bond: 10,
+  energy: 100,
+  mood: 70,
+  charm: 1,
+  skillPoints: 0,
+  fruits: defaultFruits(),
+  seeds: defaultSeeds(),
+  desserts: defaultDesserts(),
+  mats: defaultMats(),
+  plots: [],
+  equip: defaultEquip(),
+  skills: defaultSkills(),
+  recipes: ['juice','choco','jam','pie','smoothie','peach_juice','banana_cake','pear_juice'],
+  orders: [],
+  orderSeq: 0,
+  mainStory: {},
+  mainStorySeen: {},
+  daily: defaultDaily(),
+  weekly: defaultWeekly(),
+  dailyInteract: 0,
+  weeklySales: 0,
+  weeklyFansStart: 0,
+  weeklyPerfect: 0,
+  achievements: {},
+  collection: { fruits:{}, recipes:{}, customers:{} },
+  liveHistory: [],
+  lastLiveResult: null,
+  liveSelected: [],
+  stats: { totalEarned:0, totalHarvest:0, totalPerfect:0, totalOrders:0, totalLive:0, liveDeals:0, maxCombo:0 },
+  initialized: false,
+  storyStep: 0
+};
+
+/* ============================================================
+   工具
+   ============================================================ */
+function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function safeNum(v,def){ const n = Number(v); return Number.isFinite(n) ? n : (typeof def==='number' ? def : 0); }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function fmt(n){ return Math.round(n).toLocaleString(); }
+function $(id){ return document.getElementById(id); }
+
+/* ============================================================
+   水果 / 配方辅助
+   ============================================================ */
+function getFruitTotal(id){
+  const e = G.fruits[id];
+  if(!e) return 0;
+  if(typeof e === 'number'){ G.fruits[id] = { common:e, good:0, perfect:0 }; return e; }
+  return (e.common||0) + (e.good||0) + (e.perfect||0);
+}
+function getAllFruitTotal(){
+  let t = 0;
+  Object.keys(FRUITS).forEach(k=>{ t += getFruitTotal(k); });
+  return t;
+}
+function addFruit(id, quality, n){
+  if(!G.fruits[id]) G.fruits[id] = { common:0, good:0, perfect:0 };
+  const e = G.fruits[id];
+  if(typeof e === 'number'){ G.fruits[id] = { common:e, good:0, perfect:0 }; }
+  const q = ['common','good','perfect'].includes(quality) ? quality : 'common';
+  G.fruits[id][q] = (G.fruits[id][q]||0) + n;
+  if(!G.collection.fruits[id]) G.collection.fruits[id] = { got:0, perfect:0 };
+  G.collection.fruits[id].got += n;
+  if(q==='perfect') G.collection.fruits[id].perfect += n;
+}
+function consumeFruit(id, n){
+  const e = G.fruits[id];
+  if(!e) return 0;
+  let left = n;
+  for(const k of ['common','good','perfect']){
+    const take = Math.min(left, e[k]||0);
+    e[k] -= take; left -= take;
+    if(left<=0) break;
+  }
+  return n - left;
+}
+function fruitQualityMul(id){
+  const e = G.fruits[id];
+  if(!e) return 1;
+  const total = (e.common||0)+(e.good||0)+(e.perfect||0);
+  if(!total) return 1;
+  return ((e.common||0)*1.0 + (e.good||0)*1.25 + (e.perfect||0)*1.6) / total;
+}
+function bestFruitQuality(id){
+  const e = G.fruits[id];
+  if(!e) return 'common';
+  if((e.perfect||0) > 0) return 'perfect';
+  if((e.good||0) > 0) return 'good';
+  return 'common';
+}
+function getRecipe(id){ return RECIPES.find(r=>r.id===id); }
+function isRecipeUnlocked(id){ return G.recipes.includes(id); }
+
+/* ============================================================
+   导航
+   ============================================================ */
+function goToPage(pageId){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el = document.getElementById(pageId);
+  if(el) el.classList.add('active');
+
+  const upd = {
+    'page-main': updateMain,
+    'page-orchard': updateOrchard,
+    'page-warehouse': updateWarehouse,
+    'page-shop': updateShop,
+    'page-orders': updateOrders,
+    'page-live-prep': updateLivePrep,
+    'page-collection': updateCollection,
+    'page-upgrade': updateUpgrade,
+    'page-settings': loadSettings
+  }[pageId];
+  if(upd) upd();
+
+  setBottomNav(pageId);
+  AudioSys.playBgmForPage(pageId);
+  window.scrollTo(0,0);
+}
+/* 直达甜品工坊（仓库 → 甜点页签） */
+function goToCraft(){
+  closeMoreSheet();
+  goToPage('page-warehouse');
+  switchWhTab('dessert');
+}
+function setBottomNav(pageId){
+  const nav = document.getElementById('bottom-nav');
+  if(!nav) return;
+  const showOn = ['page-main','page-orchard','page-live-prep','page-orders','page-warehouse',
+                  'page-shop','page-collection','page-upgrade','page-settings','page-live-result'];
+  nav.classList.toggle('show', showOn.includes(pageId));
+  nav.querySelectorAll('.bn-item').forEach(el=>{
+    const t = el.dataset.nav;
+    let active = false;
+    if(t==='page-main') active = (pageId==='page-main');
+    else if(t==='page-orchard') active = (pageId==='page-orchard');
+    else if(t==='page-live-prep') active = (pageId==='page-live-prep' || pageId==='page-live-result');
+    else if(t==='page-orders') active = (pageId==='page-orders');
+    else if(t==='more') active = ['page-warehouse','page-shop','page-collection','page-upgrade','page-settings'].includes(pageId);
+    el.classList.toggle('active', active);
+  });
+}
+function toggleMoreSheet(){ document.getElementById('more-sheet').classList.toggle('show'); }
+function closeMoreSheet(){ document.getElementById('more-sheet').classList.remove('show'); }
+function navTo(p){ closeMoreSheet(); goToPage(p); }
+
+/* ============================================================
+   Toast / 加载 / 弹窗
+   ============================================================ */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+function showLoading(text, icon){
+  const o = document.getElementById('loading-overlay');
+  const txt = document.getElementById('loader-text');
+  const f = document.getElementById('loader-fill');
+  const ic = document.getElementById('loader-icon');
+  if(text) txt.innerHTML = text;
+  if(icon) ic.innerHTML = icon;
+  f.style.width = '0%';
+  o.classList.add('open');
+}
+function updateLoading(p, text){
+  const txt = document.getElementById('loader-text');
+  const f = document.getElementById('loader-fill');
+  if(text) txt.innerHTML = text;
+  f.style.width = Math.min(100,p)+'%';
+}
+function hideLoading(){ document.getElementById('loading-overlay').classList.remove('open'); }
+
+function showModal(html, opts){
+  const box = document.getElementById('modal-box');
+  const mask = document.getElementById('modal-mask');
+  box.innerHTML = html;
+  mask.classList.add('open');
+  mask.dataset.static = (opts && opts.static) ? '1' : '';
+}
+function closeModal(){
+  document.getElementById('modal-mask').classList.remove('open');
+  document.getElementById('modal-mask').dataset.static = '';
+}
+function showStoryModal(title, body, tag, btnText, cb){
+  showModal(
+    `<div class="modal-head">✨ ${title}</div>
+     <div class="modal-body">${body}</div>
+     ${tag ? `<div class="modal-tag">${tag}</div>` : ''}
+     <div class="modal-foot">
+       <button class="pixel-btn primary" id="story-ok">${btnText||'✅ 好的'}</button>
+     </div>`,
+    { static:true }
+  );
+  document.getElementById('story-ok').onclick = ()=>{
+    closeModal();
+    if(cb) cb();
+  };
+}
+
+/* ============================================================
+   存档
+   ============================================================ */
+const SAVE_KEY = 'sugar_orange_orchard_save';
+
+function snapshot(){
+  return {
+    version: 1,
+    player: G.player,
+    money: G.money,
+    debt: G.debt,
+    initialDebt: G.initialDebt,
+    day: G.day,
+    season: G.season,
+    weather: G.weather,
+    ap: G.ap,
+    maxAp: G.maxAp,
+    restCount: G.restCount,
+    fans: G.fans,
+    fame: G.fame,
+    bond: G.bond,
+    energy: G.energy,
+    mood: G.mood,
+    charm: G.charm,
+    skillPoints: G.skillPoints,
+    fruits: G.fruits,
+    seeds: G.seeds,
+    desserts: G.desserts,
+    mats: G.mats,
+    plots: G.plots,
+    equip: G.equip,
+    skills: G.skills,
+    recipes: G.recipes,
+    orders: G.orders,
+    orderSeq: G.orderSeq,
+    mainStory: G.mainStory,
+    mainStorySeen: G.mainStorySeen,
+    daily: G.daily,
+    weekly: G.weekly,
+    dailyInteract: G.dailyInteract,
+    weeklySales: G.weeklySales,
+    weeklyFansStart: G.weeklyFansStart,
+    weeklyPerfect: G.weeklyPerfect,
+    achievements: G.achievements,
+    collection: G.collection,
+    liveHistory: G.liveHistory,
+    liveSelected: G.liveSelected,
+    stats: G.stats,
+    initialized: true,
+    storyStep: G.storyStep
+  };
+}
+function saveGame(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot()));
+  }catch(e){
+    try{
+      localStorage.removeItem('sugar_orange_audio');
+      localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot()));
+    }catch(err){
+      showToast('⚠️ 存档空间不足，本次进度可能未保存');
+    }
+  }
+}
+function applySave(d){
+  if(!d || typeof d !== 'object') return;
+  G.player = Object.assign({ name:'小橘', orchardName:'阳光橘园', call:'搭档', age:24, spec:'grow' }, d.player||{});
+  G.money = safeNum(d.money, 3000);
+  G.debt = safeNum(d.debt, 8000);
+  G.initialDebt = safeNum(d.initialDebt, 8000) || 8000;
+  G.day = safeNum(d.day, 1) || 1;
+  G.season = d.season || '秋';
+  G.weather = d.weather || '晴';
+  G.maxAp = safeNum(d.maxAp, calcMaxAp(G.day));
+  G.ap = safeNum(d.ap, G.maxAp);
+  G.restCount = safeNum(d.restCount, 0);
+  G.fans = safeNum(d.fans, 0);
+  G.fame = safeNum(d.fame, 0);
+  G.bond = safeNum(d.bond, 10);
+  G.energy = safeNum(d.energy, 100);
+  G.mood = safeNum(d.mood, 70);
+  G.charm = safeNum(d.charm, 1);
+  G.skillPoints = safeNum(d.skillPoints, 0);
+
+  G.fruits = Object.assign(defaultFruits(), d.fruits||{});
+  Object.keys(FRUITS).forEach(k=>{
+    const v = G.fruits[k];
+    if(typeof v === 'number') G.fruits[k] = { common:v, good:0, perfect:0 };
+    else G.fruits[k] = Object.assign({ common:0, good:0, perfect:0 }, v||{});
+  });
+
+  G.seeds = Object.assign(defaultSeeds(), d.seeds||{});
+  G.desserts = Object.assign(defaultDesserts(), d.desserts||{});
+  /* 【修复】肥料等农具材料一并兼容旧存档 */
+  G.mats = Object.assign(defaultMats(), d.mats||{});
+  G.plots = Array.isArray(d.plots) && d.plots.length ? d.plots : defaultPlots();
+  /* 兼容旧地块数据，补全 fert 字段 */
+  G.plots.forEach(p=>{ if(p && typeof p.fert !== 'number') p.fert = 0; });
+  G.equip = Object.assign(defaultEquip(), d.equip||{});
+  G.skills = Object.assign(defaultSkills(), d.skills||{});
+  G.recipes = Array.isArray(d.recipes) && d.recipes.length ? d.recipes.slice() : ['juice','choco','jam','pie','smoothie','peach_juice','banana_cake','pear_juice'];
+  checkRecipeUnlocks(false);
+  G.orders = Array.isArray(d.orders) ? d.orders : [];
+  G.orderSeq = safeNum(d.orderSeq, 0);
+  G.mainStory = (d.mainStory && typeof d.mainStory==='object') ? d.mainStory : {};
+  G.mainStorySeen = (d.mainStorySeen && typeof d.mainStorySeen==='object') ? d.mainStorySeen : {};
+  G.daily = Object.assign(defaultDaily(), d.daily||{});
+  G.weekly = Object.assign(defaultWeekly(), d.weekly||{});
+  G.dailyInteract = safeNum(d.dailyInteract, 0);
+  G.weeklySales = safeNum(d.weeklySales, 0);
+  G.weeklyFansStart = safeNum(d.weeklyFansStart, 0);
+  G.weeklyPerfect = safeNum(d.weeklyPerfect, 0);
+  G.achievements = (d.achievements && typeof d.achievements==='object') ? d.achievements : {};
+  G.collection = Object.assign({ fruits:{}, recipes:{}, customers:{} }, d.collection||{});
+  G.liveHistory = Array.isArray(d.liveHistory) ? d.liveHistory : [];
+  G.liveSelected = Array.isArray(d.liveSelected) ? d.liveSelected : [];
+  G.stats = Object.assign({ totalEarned:0, totalHarvest:0, totalPerfect:0, totalOrders:0, totalLive:0, liveDeals:0, maxCombo:0 }, d.stats||{});
+  G.storyStep = safeNum(d.storyStep, 0);
+  G.initialized = true;
+}
+function loadGame(){
+  let raw = null;
+  try{ raw = localStorage.getItem(SAVE_KEY); }catch(e){ return false; }
+  if(!raw) return false;
+  try{
+    applySave(JSON.parse(raw));
+    return true;
+  }catch(e){ return false; }
+}
+function resetGame(){
+  showModal(
+    `<div class="modal-head">🗑 重置游戏</div>
+     <div class="modal-body">确定要重置所有游戏数据吗？此操作不可撤销！</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">取消</button>
+       <button class="pixel-btn danger" onclick="doResetGame()">确定重置</button>
+     </div>`,
+    { static:true }
+  );
+}
+function doResetGame(){
+  try{
+    localStorage.removeItem(SAVE_KEY);
+    localStorage.removeItem('sugar_orange_audio');
+  }catch(e){}
+  location.reload();
+}
+function exportSave(){
+  const blob = new Blob([JSON.stringify(snapshot(),null,2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `砂糖橘果园_存档_第${G.day}天.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📤 存档已导出');
+}
+function importSave(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    try{
+      const d = JSON.parse(ev.target.result);
+      if(!d.player && d.money === undefined){ alert('无效的存档文件！'); return; }
+      applySave(d);
+      saveGame();
+      showToast('✅ 存档导入成功！');
+      goToPage('page-main');
+    }catch(err){
+      alert('❌ 存档解析失败: '+err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+/* ============================================================
+   地块
+   ============================================================ */
+function defaultPlots(){
+  const arr = [];
+  for(let i=0;i<12;i++){
+    arr.push({ unlocked: i<4, seed:null, growth:0, need:0, watered:false, fert:0 });
+  }
+  return arr;
+}
+function unlockedPlots(){ return G.plots.filter(p=>p.unlocked).length; }
+function plotUnlockCost(){
+  const n = unlockedPlots();
+  return 500 + (n-4)*400;
+}
+function expandPlot(){
+  const idx = G.plots.findIndex(p=>!p.unlocked);
+  if(idx < 0){ showToast('<img class=ui-icon src=./tree.png alt=🌳 onerror=uiIconErr(this)> 已经没有更多地块可以扩建了'); return; }
+  const cost = plotUnlockCost();
+  if(G.money < cost){ showToast('💸 金币不足，需要 '+cost+' 金'); AudioSys.playSfx('fail'); return; }
+  showModal(
+    `<div class="modal-head">🔨 扩建地块</div>
+     <div class="modal-body">花费 ${cost} 金，开垦一块新地块？
+
+当前已开垦：${unlockedPlots()} / 12</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">取消</button>
+       <button class="pixel-btn primary" onclick="doExpandPlot()">确定扩建</button>
+     </div>`,
+    { static:true }
+  );
+}
+function doExpandPlot(){
+  const idx = G.plots.findIndex(p=>!p.unlocked);
+  if(idx < 0) return;
+  const cost = plotUnlockCost();
+  if(G.money < cost){ closeModal(); showToast('💸 金币不足'); return; }
+  G.money -= cost;
+  G.plots[idx].unlocked = true;
+  closeModal();
+  showToast('🔨 新地块已开垦！');
+  AudioSys.playSfx('success');
+  updateOrchard();
+  updateMain();
+  saveGame();
+}
+
+function updateOrchard(){
+  const grid = document.getElementById('plot-grid');
+  if(!grid) return;
+  const cnt = document.getElementById('plot-count');
+  if(cnt) cnt.textContent = unlockedPlots();
+  const apEl = document.getElementById('orchard-ap');
+  if(apEl) apEl.textContent = fmtAp(G.ap);
+  const fertEl = document.getElementById('orchard-fert');
+  if(fertEl) fertEl.textContent = (G.mats.fertilizer||0);
+  const dayEl = document.getElementById('orchard-day');
+  if(dayEl) dayEl.textContent = G.day;
+
+  grid.innerHTML = G.plots.map((p,i)=>{
+    if(!p.unlocked){
+      return `<div class="plot locked" onclick="showToast('🔒 点击下方「扩建地块」开垦新土地')">
+        <div class="p-lock">🔒</div>
+        <div class="p-locktxt">待开垦</div>
+      </div>`;
+    }
+    if(!p.seed){
+      return `<div class="plot empty" onclick="openSeedPicker(${i})">
+        <div class="p-emoji">➕</div>
+        <div class="p-name">空地</div>
+        <div class="p-days">点击种植</div>
+      </div>`;
+    }
+    const f = FRUITS[p.seed];
+    const pct = Math.min(100, Math.round(p.growth / p.need * 100));
+    const ready = p.growth >= p.need;
+    const fertN = p.fert||0;
+    return `<div class="plot ${ready?'ready':''}" onclick="plotTap(${i})">
+      <div class="p-emoji">${ready ? f.icon : (p.growth===0 ? '🌱' : '🌿')}</div>
+      <div class="p-name">${f.name}</div>
+      <div class="p-days">${ready ? '可收获' : p.growth+'/'+p.need+' 天'}</div>
+      <div class="p-bar"><i style="width:${pct}%"></i></div>
+      ${p.watered ? '<div class="p-water"><img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)></div>' : ''}
+      ${fertN>0 ? `<div class="p-fert">🧪${fertN}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+/* 【修复】地块点击入口：
+   空地 → 选种子；成熟 → 收获；生长中 → 打开「地块操作面板」（浇水 / 施肥） */
+function plotTap(i){
+  const p = G.plots[i];
+  if(!p || !p.unlocked) return;
+  if(!p.seed){ openSeedPicker(i); return; }
+  if(p.growth >= p.need){ harvestPlot(i); return; }
+  openPlotMenu(i);
+}
+
+/* 【修复】新增：地块操作面板（含施肥入口） */
+function openPlotMenu(i){
+  const p = G.plots[i];
+  if(!p || !p.unlocked || !p.seed) return;
+  const f = FRUITS[p.seed];
+  const ready = p.growth >= p.need;
+  const pct = Math.min(100, Math.round(p.growth / p.need * 100));
+  const fertCnt = G.mats.fertilizer || 0;
+  const fertUsed = p.fert || 0;
+  const canWater = !p.watered && !ready && G.ap >= AP.WATER;
+  const canFert = !ready && fertUsed < FERT_MAX && fertCnt > 0;
+
+  let waterLabel;
+  if(ready) waterLabel = '🌾 已成熟';
+  else if(p.watered) waterLabel = '<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 今日已浇水';
+  else if(G.ap < AP.WATER) waterLabel = '⚡ 行动点不足';
+  else waterLabel = '<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 浇水 ⚡' + fmtAp(AP.WATER);
+
+  let fertLabel;
+  if(ready) fertLabel = '🧪 已成熟';
+  else if(fertUsed >= FERT_MAX) fertLabel = '🧪 已施满 '+FERT_MAX+'/'+FERT_MAX;
+  else if(fertCnt <= 0) fertLabel = '🧪 没有肥料';
+  else fertLabel = '🧪 施肥（剩 '+fertCnt+'）';
+
+  const fertDesc = fertUsed > 0
+    ? `<div class="info-line">🧪 已施肥 <b>${fertUsed}</b>/${FERT_MAX} · 完美率 <b>+${Math.round(fertUsed*FERT_PERFECT*100)}%</b> · 优良率 <b>+${Math.round(fertUsed*FERT_GOOD*100)}%</b></div>`
+    : `<div class="info-line">🧪 未施肥 · 施肥可提升作物品质概率（每块地最多 ${FERT_MAX} 次）</div>`;
+
+  showModal(`
+    <div class="modal-head">🌱 ${f.name} · 第 ${i+1} 号地块</div>
+    <div class="info-line">生长进度：<b>${p.growth}</b>/<b>${p.need}</b> 天（${pct}%）</div>
+    <div class="stat-bar" style="margin:6px 0 10px;"><div class="fill green" style="width:${pct}%"></div></div>
+    <div class="info-line"><img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 浇水状态：<b>${p.watered ? '今日已浇水' : '今日未浇水'}</b></div>
+    ${fertDesc}
+    <div class="info-line">🧺 仓库肥料：<b>${fertCnt}</b> 个（可在「商店采购 → 农具店」购买）</div>
+    <div class="interact-grid" style="margin-top:12px;">
+      <button class="pixel-btn ${canWater?'primary':''}" onclick="waterPlot(${i})" ${canWater?'':'disabled'}>${waterLabel}</button>
+      <button class="pixel-btn ${canFert?'green':''}" onclick="useFertilizer(${i})" ${canFert?'':'disabled'}>${fertLabel}</button>
+    </div>
+    <div class="modal-foot">
+      <button class="pixel-btn" onclick="closeModal()">关闭</button>
+    </div>
+  `);
+}
+
+/* 【修复】浇水逻辑从 plotTap 中抽出，供操作面板调用 */
+function waterPlot(i){
+  const p = G.plots[i];
+  if(!p || !p.unlocked || !p.seed) return;
+  if(p.growth >= p.need){
+    closeModal();
+    harvestPlot(i);
+    return;
+  }
+  if(p.watered){ showToast('<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 这块地今天已经浇过水了'); return; }
+  if(G.ap < AP.WATER){ showToast('⚡ 行动点不足'); AudioSys.playSfx('fail'); return; }
+
+  G.ap = Math.round((G.ap - AP.WATER)*10)/10;
+  const extra = (G.equip.irrigation >= 3) ? 1 : 0;
+  p.watered = true;
+  p.growth = Math.min(p.need, p.growth + 1 + extra);
+
+  AudioSys.playSfx('click');
+  updateOrchard();
+  updateMain();
+  saveGame();
+
+  if(p.growth >= p.need){
+    closeModal();
+    showToast('🌾 ' + FRUITS[p.seed].name + ' 成熟啦！点击地块即可收获～');
+    return;
+  }
+  showToast('<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 浇水成功，生长 +'+(1+extra)+' (-'+fmtAp(AP.WATER)+'⚡)');
+  openPlotMenu(i);
+}
+
+/* 【修复】新增：施肥逻辑 —— 真正消耗仓库里的肥料并作用于地块 */
+function useFertilizer(i){
+  const p = G.plots[i];
+  if(!p || !p.unlocked || !p.seed) return;
+  if(p.growth >= p.need){ showToast('🌾 作物已经成熟，不需要施肥啦'); return; }
+
+  const have = G.mats.fertilizer || 0;
+  if(have <= 0){
+    showToast('🧪 没有肥料了，去「商店采购 → 农具店」买点吧～');
+    AudioSys.playSfx('fail');
+    return;
+  }
+  const cur = p.fert || 0;
+  if(cur >= FERT_MAX){
+    showToast('🧪 这块地已经施满肥料了（'+FERT_MAX+'/'+FERT_MAX+'）');
+    AudioSys.playSfx('fail');
+    return;
+  }
+
+  G.mats.fertilizer = have - 1;
+  p.fert = cur + 1;
+
+  AudioSys.playSfx('success');
+  showToast('🧪 施肥成功！完美率 +'+Math.round(FERT_PERFECT*100)+'% · 优良率 +'+Math.round(FERT_GOOD*100)+'%');
+
+  updateOrchard();
+  updateMain();
+  saveGame();
+  openPlotMenu(i);
+}
+
+function openSeedPicker(i){
+  const p = G.plots[i];
+  if(!p || !p.unlocked) return;
+  if(p.seed){ showToast('🌱 这块地已经种了东西'); return; }
+  const season = G.season;
+  const items = Object.keys(FRUITS).map(k=>{
+    const f = FRUITS[k];
+    const have = G.seeds[k]||0;
+    const inSeason = (f.season === '全年' || f.season === season);
+    const disable = have <= 0;
+    return `<div class="opt-card ${disable?'locked':''}" onclick="${disable ? `showToast('🌱 没有${f.name}种子了')` : `plantSeed(${i},'${k}')`}">
+      <div class="oc-badge ${have>0?'':'zero'}">×${have}</div>
+      <div class="oc-emoji">${f.icon}</div>
+      <div class="oc-name">${f.name}</div>
+      <div class="oc-sub">${f.growDays}天 · 产${f.yield}${inSeason?' · <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>当季':' · ❄️非当季'}</div>
+    </div>`;
+  }).join('');
+  showModal(
+    `<div class="modal-head">🌱 选择种子</div>
+     <div class="info-line">当前季节：<b>${season}</b>（当季作物售价 ×${SEASON_MUL[season]}）· 种植消耗 <b>0.5</b> ⚡</div>
+     <div class="card-grid" style="grid-template-columns:repeat(2,1fr);">${items}</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">关闭</button>
+     </div>`
+  );
+}
+
+function plantSeed(i, fid){
+  const p = G.plots[i];
+  if(!p || !p.unlocked || p.seed) return;
+  if((G.seeds[fid]||0) <= 0){ showToast('🌱 种子不足'); return; }
+  if(G.ap < AP.PLANT){ showToast('⚡ 行动点不足'); AudioSys.playSfx('fail'); return; }
+  const f = FRUITS[fid];
+  G.seeds[fid] -= 1;
+  G.ap = Math.round((G.ap - AP.PLANT)*10)/10;
+  const growMul = 1 - (G.equip.greenhouse-1)*0.03;
+  p.seed = fid;
+  p.growth = 0;
+  p.need = Math.max(1, Math.round(f.growDays * growMul));
+  p.watered = false;
+  p.fert = 0;
+  closeModal();
+  showToast('🌱 已种下 '+f.name+' (-0.5⚡)');
+  AudioSys.playSfx('click');
+  updateOrchard();
+  updateMain();
+  saveGame();
+}
+
+function oneKeyPlant(){
+  const empty = [];
+  G.plots.forEach((p,i)=>{ if(p.unlocked && !p.seed) empty.push(i); });
+  if(!empty.length){ showToast('🌱 没有空地了'); return; }
+  const season = G.season;
+  const pool = Object.keys(FRUITS).filter(k=>(G.seeds[k]||0) > 0)
+    .sort((a,b)=>{
+      const fa = FRUITS[a], fb = FRUITS[b];
+      const sa = (fa.season==='全年'||fa.season===season) ? 1 : 0;
+      const sb = (fb.season==='全年'||fb.season===season) ? 1 : 0;
+      return sb - sa;
+    });
+  if(!pool.length){ showToast('🌱 没有种子了，去商店买点吧'); return; }
+  let planted = 0;
+  for(const i of empty){
+    if(G.ap < AP.PLANT) break;
+    const fid = pool.find(k=>(G.seeds[k]||0) > 0);
+    if(!fid) break;
+    const f = FRUITS[fid];
+    G.seeds[fid] -= 1;
+    G.ap = Math.round((G.ap - AP.PLANT)*10)/10;
+    const growMul = 1 - (G.equip.greenhouse-1)*0.03;
+    G.plots[i].seed = fid;
+    G.plots[i].growth = 0;
+    G.plots[i].need = Math.max(1, Math.round(f.growDays * growMul));
+    G.plots[i].watered = false;
+    G.plots[i].fert = 0;
+    planted++;
+  }
+  if(planted === 0){ showToast('⚡ 行动点不足'); return; }
+  showToast('🌱 一键种植了 '+planted+' 块地 (-'+(planted*0.5)+'⚡)');
+  AudioSys.playSfx('click');
+  updateOrchard(); updateMain(); saveGame();
+}
+
+function oneKeyWater(){
+  const need = [];
+  G.plots.forEach((p,i)=>{ if(p.unlocked && p.seed && p.growth < p.need && !p.watered) need.push(i); });
+  if(!need.length){ showToast('<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 所有作物都浇过水了'); return; }
+  let done = 0;
+  const extra = (G.equip.irrigation >= 3) ? 1 : 0;
+  for(const i of need){
+    if(G.ap < AP.WATER) break;
+    G.ap = Math.round((G.ap - AP.WATER)*10)/10;
+    G.plots[i].watered = true;
+    G.plots[i].growth = Math.min(G.plots[i].need, G.plots[i].growth + 1 + extra);
+    done++;
+  }
+  if(done === 0){ showToast('⚡ 行动点不足'); return; }
+  showToast('<img class=ui-icon src=./water.png alt=💧 onerror=uiIconErr(this)> 浇灌了 '+done+' 块地 (-'+(done*0.5)+'⚡)');
+  AudioSys.playSfx('click');
+  updateOrchard(); updateMain(); saveGame();
+}
+
+function oneKeyHarvest(){
+  const ready = [];
+  G.plots.forEach((p,i)=>{ if(p.unlocked && p.seed && p.growth >= p.need) ready.push(i); });
+  if(!ready.length){ showToast('🧺 还没有成熟的作物'); return; }
+  let totalGain = 0;
+  let perfectCount = 0;
+  const summary = [];
+  for(const i of ready){
+    if(G.ap < AP.HARVEST) break;
+    const r = harvestPlot(i, true);
+    if(r){ totalGain += r.count; perfectCount += (r.quality==='perfect' ? r.count : 0); summary.push(r); }
+  }
+  if(!summary.length){ showToast('⚡ 行动点不足'); return; }
+  updateOrchard(); updateMain(); saveGame();
+  showHarvestModal(summary, totalGain, perfectCount);
+}
+
+function harvestPlot(i, silent){
+  const p = G.plots[i];
+  if(!p || !p.seed || p.growth < p.need) return null;
+  if(G.ap < AP.HARVEST){ if(!silent) showToast('⚡ 行动点不足'); return null; }
+  G.ap = Math.round((G.ap - AP.HARVEST)*10)/10;
+  const f = FRUITS[p.seed];
+  const growMul = 1 + G.skills.grow*0.04;
+  const specMul = (G.player.spec === 'grow') ? 1.08 : 1;
+  let count = Math.max(1, Math.round(f.yield * growMul * specMul));
+  if(Math.random() < 0.15) count += 1;
+
+  let quality = 'common';
+  const r = Math.random();
+  const perfectChance = 0.10 + (p.fert||0)*FERT_PERFECT;
+  const goodChance = 0.30 + (p.fert||0)*FERT_GOOD;
+  if(r < perfectChance) quality = 'perfect';
+  else if(r < perfectChance + goodChance) quality = 'good';
+
+  addFruit(p.seed, quality, count);
+  G.stats.totalHarvest += 1;
+  if(quality === 'perfect'){
+    G.stats.totalPerfect += count;
+    G.weeklyPerfect += count;
+  }
+  G.collection.fruits[p.seed] = G.collection.fruits[p.seed] || { got:0, perfect:0 };
+
+  const fid = p.seed;
+  p.seed = null;
+  p.growth = 0;
+  p.need = 0;
+  p.watered = false;
+  p.fert = 0;
+
+  bumpDaily('harvest5', 1);
+  if(!silent){
+    showToast(`🧺 收获 ${f.icon}${f.name} ×${count}（${QUALITY[quality].name}）(-0.5⚡)`);
+    AudioSys.playSfx('harvest');
+    updateOrchard(); updateMain(); saveGame();
+  }
+  return { fruitId:fid, name:f.name, icon:f.icon, count, quality, qualityName:QUALITY[quality].name };
+}
+
+function showHarvestModal(list, total, perfect){
+  const rows = list.map(r=>
+    `<div class="result-row"><span>${r.icon} ${r.name} ${QUALITY[r.quality].icon}${r.qualityName}</span><b>×${r.count}</b></div>`
+  ).join('');
+  showModal(
+    `<div class="modal-head">🧺 收获结算</div>
+     <div class="result-rows">${rows}</div>
+     <div class="result-row" style="border-bottom:none;"><span>共收获</span><b>${total} 个水果</b></div>
+     ${perfect>0?`<div class="result-row" style="border-bottom:none;"><span>其中完美品质</span><b>${perfect} 个 <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)></b></div>`:''}
+     <div class="modal-foot">
+       <button class="pixel-btn primary" onclick="closeModal()">收下！(≧▽≦)</button>
+     </div>`,
+    { static:true }
+  );
+  AudioSys.playSfx('harvest');
+}
+/* ============================================================
+   天数推进
+   ============================================================ */
+function nextDay(){
+  if(G.ap >= 1){
+    showModal(
+      `<div class="modal-head">⏭ 结束这一天</div>
+       <div class="modal-body">还有 ${fmtAp(G.ap)} 点行动点没有使用，确定要结束这一天吗？
+
+（也可以点「😴 休息」花金币补行动点哦～）</div>
+       <div class="modal-foot">
+         <button class="pixel-btn" onclick="closeModal()">再等等</button>
+         <button class="pixel-btn primary" onclick="closeModal();doNextDay()">确定结束</button>
+       </div>`,
+      { static:true }
+    );
+    return;
+  }
+  doNextDay();
+}
+function doNextDay(){
+  G.day += 1;
+  G.maxAp = calcMaxAp(G.day);
+  G.ap = G.maxAp;
+  G.restCount = 0;
+
+  G.plots.forEach(p=>{
+    if(p.unlocked && p.seed && p.growth < p.need){
+      p.growth = Math.min(p.need, p.growth + 1);
+    }
+    p.watered = false;
+  });
+
+  const sIdx = Math.floor((G.day - 1) / 7) % 4;
+  G.season = ['秋','冬','春','夏'][sIdx];
+  G.weather = ['晴','多云','小雨','大风'][rand(0,3)];
+
+  G.energy = clamp(G.energy + 30, 0, 100);
+  G.mood = clamp(G.mood + 5, 0, 100);
+
+  G.daily = defaultDaily();
+  G.dailyInteract = 0;
+  if((G.day - 1) % 7 === 0){
+    G.weekly = defaultWeekly();
+    G.weeklySales = 0;
+    G.weeklyFansStart = G.fans;
+    G.weeklyPerfect = 0;
+  }
+
+  if(!G.orders.length) generateOrders();
+
+  checkMainStory();
+  checkAchievements();
+  saveGame();
+  updateMain();
+  showToast('<img class=ui-icon src=./weater.png alt=☀️ onerror=uiIconErr(this)> 第 '+G.day+' 天开始了 · 行动点 '+fmtAp(G.maxAp));
+
+  setTimeout(()=>{
+    if(!document.getElementById('modal-mask').classList.contains('open')){
+      checkMainStory();
+    }
+  }, 400);
+}
+
+/* ---- 休息：花金币补行动点 ---- */
+function restAP(){
+  if((G.restCount||0) >= AP.REST_LIMIT){
+    showToast('😴 今天已经休息够啦，明天再来吧～(｡･ω･｡)');
+    return;
+  }
+  if(G.ap >= G.maxAp){
+    showToast('⚡ 行动点已经满啦，不用休息～(๑•̀ㅂ•́)و✧');
+    return;
+  }
+  const cost = AP.REST_COST;
+  if(G.money < cost){ showToast('💸 金币不足，需要 '+cost+' 金'); AudioSys.playSfx('fail'); return; }
+  showModal(
+    `<div class="modal-head">😴 休息一下</div>
+     <div class="modal-body">花费 ${cost} 金，和砂糖橘一起喝杯橘子汁休息片刻？
+
+行动点 +${AP.REST_GAIN} · 体力 +5
+今日剩余休息次数：${AP.REST_LIMIT - (G.restCount||0)}</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">算了</button>
+       <button class="pixel-btn primary" onclick="doRestAP()">好呀！</button>
+     </div>`,
+    { static:true }
+  );
+}
+function doRestAP(){
+  const cost = AP.REST_COST;
+  if(G.money < cost){ closeModal(); showToast('💸 金币不足'); return; }
+  if((G.restCount||0) >= AP.REST_LIMIT){ closeModal(); showToast('😴 今天已经休息够啦'); return; }
+  G.money -= cost;
+  G.restCount = (G.restCount||0) + 1;
+  G.ap = Math.min(G.maxAp, Math.round((G.ap + AP.REST_GAIN)*10)/10);
+  G.energy = clamp(G.energy + 5, 0, 100);
+  G.mood = clamp(G.mood + 3, 0, 100);
+  closeModal();
+  showToast('😴 休息好啦！行动点 +'+AP.REST_GAIN+' (｡･ω･｡)');
+  AudioSys.playSfx('success');
+  updateMain();
+  saveGame();
+}
+
+function payDebt(){
+  if(G.debt <= 0){ showToast('🎉 债务已经全部还清啦！'); return; }
+  const amount = Math.min(G.debt, G.money);
+  if(amount <= 0){ showToast('💸 没有可用来还债的金币'); return; }
+  showModal(
+    `<div class="modal-head">🏦 还债</div>
+     <div class="modal-body">当前债务：${fmt(G.debt)} 金
+当前金币：${fmt(G.money)} 金
+
+本次可偿还：${fmt(amount)} 金</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">取消</button>
+       <button class="pixel-btn gold" onclick="closeModal();doPayDebt(${amount})">偿还 ${fmt(amount)} 金</button>
+     </div>`,
+    { static:true }
+  );
+}
+function doPayDebt(amount){
+  const real = Math.min(amount, G.money, G.debt);
+  if(real <= 0) return;
+  G.money -= real;
+  G.debt -= real;
+  showToast('🏦 已偿还 '+fmt(real)+' 金');
+  AudioSys.playSfx('coin');
+  checkMainStory();
+  checkAchievements();
+  updateMain();
+  saveGame();
+}
+
+/* ============================================================
+   主界面
+   ============================================================ */
+function updateMain(){
+  const set = (id, v)=>{ const e = $(id); if(e) e.textContent = v; };
+  set('main-orchard-name', G.player.orchardName);
+  set('res-money', fmt(G.money));
+  set('res-fruit', getAllFruitTotal());
+  set('res-ap', fmtAp(G.ap));
+  set('res-fans', fmt(G.fans));
+  set('res-fame', fmt(G.fame));
+  set('res-day', G.day);
+  set('stat-money', fmt(G.money));
+  set('stat-debt', fmt(G.debt));
+  set('stat-season', G.season);
+  set('stat-weather', G.weather);
+
+  const barBond = $('bar-bond');
+  if(barBond) barBond.style.width = clamp(G.bond,0,100)+'%';
+  set('val-bond', Math.round(G.bond));
+  const barE = $('bar-energy');
+  if(barE) barE.style.width = clamp(G.energy,0,100)+'%';
+  set('val-energy', Math.round(G.energy));
+  const barM = $('bar-mood');
+  if(barM) barM.style.width = clamp(G.mood,0,100)+'%';
+  set('val-mood', Math.round(G.mood));
+
+  const speechEl = $('omg-speech');
+  if(speechEl) speechEl.textContent = getOmgSpeech();
+
+  const prog = $('main-progress-line');
+  if(prog){
+    const left = 30 - G.day;
+    if(G.debt <= 0) prog.textContent = '🎉 债务已还清！果园复兴啦！(≧▽≦)';
+    else if(left > 0) prog.innerHTML = `<img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 第 ${G.day} 天 · 距离第 30 天还有 ${left} 天 · 债务还剩 ${fmt(G.debt)} 金`;
+    else prog.innerHTML = `<img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)> 第 ${G.day} 天 · 债务还剩 ${fmt(G.debt)} 金`;
+  }
+
+  const storyLine = $('main-story-line');
+  if(storyLine){
+    const next = MAIN_STORY.find(n=>!G.mainStorySeen[n.id]);
+    if(next) storyLine.textContent = '📌 下一节点：第 '+next.day+' 天 — '+next.title.split(' · ')[1];
+    else storyLine.textContent = '✅ 所有主线节点已触发，果园的故事仍在继续。';
+  }
+  saveGame();
+}
+
+function getOmgSpeech(){
+  const lines = [];
+  if(G.bond >= 80) lines.push('"搭档搭档！今天也超努力的呢～(*/ω＼*)"');
+  else if(G.bond >= 50) lines.push('"喂——休息一下啦！本橘给你留了一杯橘子汁哦～(｡･ω･｡)"');
+  else if(G.bond >= 20) lines.push('"撸起袖子加油干吧！我们的目标是一个亿！(๑•̀ㅂ•́)و✧"');
+  else lines.push('"喂！你就是我的新搭档吗？果园交给本橘就好啦！不过巧克力也要归我哦！(๑•̀ㅂ•́)و✧"');
+
+  if(G.energy < 30) lines.push('"呜……好累……让本橘歇一会儿嘛……(๑•́ ₃ •̀๑)"');
+  else if(G.mood < 40) lines.push('"哼！今天心情不太好哦……给块巧克力就原谅你啦。(๑•́ ₃ •̀๑)"');
+  else if(G.mood > 85) lines.push('"今天阳光真好呀！直播间的大家——冲鸭！(≧▽≦)"');
+
+  if(G.money < 500) lines.push('"金币不够了诶……要不，先把西瓜卖掉嘛？(｡･ω･｡)"');
+  if(G.ap < 1) lines.push('"行动点用完啦！我们休息一下下好不好嘛～(๑•́ ₃ •̀๑)"');
+
+  return lines[rand(0,lines.length-1)];
+}
+/* ============================================================
+   互动
+   ============================================================ */
+function openInteract(){
+  const acts = [
+    { id:'chat',   name:'<img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)> 聊天',      ap:0.5, energy:0,  bond:2, mood:3 },
+    { id:'head',   name:'✋ 摸头',      ap:0.5, energy:0,  bond:3, mood:4 },
+    { id:'feed',   name:'<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 投喂巧克力',ap:0.5, energy:5,  bond:4, mood:8 },
+    { id:'hug',    name:'🤗 拥抱',      ap:1,   energy:3,  bond:6, mood:6 },
+    { id:'dress',  name:'👗 送衣服',    ap:1,   energy:2,  bond:5, mood:7 }
+  ];
+  const html = acts.map(a=>{
+    const dis = (G.ap < a.ap || G.energy < a.energy);
+    return `<button class="pixel-btn small" onclick="doInteract('${a.id}')" ${dis?'disabled':''}>
+      ${a.name}<br><span style="font-size:10px;">⚡${fmtAp(a.ap)}${a.energy?' · 🔋'+a.energy:''}</span>
+    </button>`;
+  }).join('');
+  showModal(
+    `<div class="modal-head"><img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)> 和砂糖橘互动</div>
+     <div style="text-align:center;margin-bottom:12px;">
+       <div class="doll" style="width:84px;height:84px;margin:0 auto;animation:none;">
+         <img src="./omg.png" alt="砂糖橘" onerror="this.style.display='none';this.parentNode.classList.add('ph')">
+       </div>
+       <div class="info-line" style="margin-top:8px;">好感 <b>${Math.round(G.bond)}</b> · 体力 <b>${Math.round(G.energy)}</b> · 心情 <b>${Math.round(G.mood)}</b> · 行动点 <b>${fmtAp(G.ap)}</b></div>
+     </div>
+     <div class="interact-grid">${html}</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">关闭</button>
+     </div>`
+  );
+}
+function doInteract(id){
+  const acts = {
+    chat:  { ap:0.5, energy:0, bond:2, mood:3,
+             txt:'你和砂糖橘聊了好多好多！他晃着小脚说，最喜欢清晨的第一缕阳光，还有……你手心的温度啦。(*/ω＼*)' },
+    head:  { ap:0.5, energy:0, bond:3, mood:4,
+             txt:'你轻轻摸了摸他的头。砂糖橘的呆毛翘了起来：「哼、哼，只准摸三下哦！(๑•̀ㅂ•́)و✧」' },
+    feed:  { ap:0.5, energy:5, bond:4, mood:8,
+             txt:'你递上一小块巧克力。砂糖橘眼睛瞬间亮了：「迪拜巧克力软曲奇……是内里有流动性外皮是棉花糖那种吗？(≧▽≦)」' },
+    hug:   { ap:1, energy:3, bond:6, mood:6,
+             txt:'你张开双臂，砂糖橘「咻」地一下飘进你怀里，软软的，暖暖的，还带着一点橘子的清甜。他小声嘟囔：「就、就抱一下下哦……(｡･ω･｡)」' },
+    dress: { ap:1, energy:2, bond:5, mood:7,
+             txt:'你给他换上一件小围裙。砂糖橘转了个圈：「怎么样？……才不是特意打扮给你看的！(๑•́ ₃ •̀๑)」' }
+  };
+  const a = acts[id];
+  if(!a) return;
+  if(G.ap < a.ap){ showToast('⚡ 行动点不足'); AudioSys.playSfx('fail'); return; }
+  if(G.energy < a.energy){ showToast('🔋 砂糖橘体力不足，让他休息一下吧'); AudioSys.playSfx('fail'); return; }
+
+  G.ap = Math.round((G.ap - a.ap)*10)/10;
+  G.energy = clamp(G.energy - a.energy + (id==='feed' ? 5 : 0), 0, 100);
+  G.bond = clamp(G.bond + a.bond, 0, 100);
+  G.mood = clamp(G.mood + a.mood, 0, 100);
+  G.dailyInteract += 1;
+  bumpDaily('interact3', 1);
+
+  closeModal();
+  showModal(
+    `<div class="modal-head"><img class=ui-icon src=./talk.png alt=💬 onerror=uiIconErr(this)> 砂糖橘</div>
+     <div class="modal-body">${a.txt}</div>
+     <div class="modal-tag">❤️ 好感 +${a.bond} · 😊 心情 +${a.mood} · ⚡ -${fmtAp(a.ap)}</div>
+     <div class="modal-foot">
+       <button class="pixel-btn primary" onclick="closeModal()">好的～(๑•̀ㅂ•́)و✧</button>
+     </div>`,
+    { static:true }
+  );
+  AudioSys.playSfx('success');
+  checkAchievements();
+  updateMain();
+  saveGame();
+}
+
+/* ============================================================
+   仓库 / 甜品工坊
+   ============================================================ */
+let whTab = 'fruit';
+function switchWhTab(t){
+  whTab = t;
+  document.querySelectorAll('#wh-tabs .tab').forEach(el=>el.classList.toggle('active', el.dataset.wh===t));
+  updateWarehouse();
+}
+function updateWarehouse(){
+  const body = document.getElementById('wh-body');
+  if(!body) return;
+  if(whTab === 'fruit'){
+    const rows = Object.keys(FRUITS).map(k=>{
+      const f = FRUITS[k];
+      const e = G.fruits[k] || { common:0, good:0, perfect:0 };
+      const total = getFruitTotal(k);
+      const sellPrice = Math.round(f.price * SEASON_MUL[G.season] * (1 + (G.equip.coldstore-1)*0.04) * (1 + G.skills.biz*0.02));
+      return `<div class="item-row">
+        <div class="ir-emoji">${f.icon}</div>
+        <div class="ir-main">
+          <div class="ir-name">${f.name} <span style="font-size:11px;color:var(--wood);">×${total}</span></div>
+          <div class="ir-meta">⚪${e.common||0} · 🟢${e.good||0} · <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>${e.perfect||0} · 单价约 ${sellPrice} 金</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="pixel-btn small gold" onclick="sellFruit('${k}')" ${total>0?'':'disabled'}><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 出售</button>
+        </div>
+      </div>`;
+    }).join('');
+    body.innerHTML = rows + `
+      <div class="info-line" style="margin-top:10px;">💡 水果可以在直播中卖出更高价格，也可以加工成甜点。</div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        <button class="pixel-btn primary" style="flex:1;min-width:150px;" onclick="goToPage('page-live-prep')"><img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)> 选入直播</button>
+        <button class="pixel-btn choco" style="flex:1;min-width:150px;" onclick="switchWhTab('dessert')"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 去甜品工坊</button>
+      </div>`;
+  } else if(whTab === 'dessert'){
+    const unlocked = RECIPES.filter(r=>isRecipeUnlocked(r.id));
+    const rows = unlocked.map(r=>{
+      const n = G.desserts[r.id]||0;
+      const price = Math.round(r.price * (1 + G.skills.bake*0.05) * (1 + (G.player.spec==='bake'?0.08:0)) * (1 + G.skills.biz*0.02));
+      const needTxt = Object.keys(r.need).map(k=>{
+        const have = getFruitTotal(k);
+        const need = r.need[k];
+        const col = have >= need ? 'var(--leaf-deep)' : 'var(--danger)';
+        return `<span style="color:${col};">${FRUITS[k].icon}${FRUITS[k].name} ${have}/${need}</span>`;
+      }).join(' + ');
+      const canMake = Object.keys(r.need).every(k=>getFruitTotal(k) >= r.need[k]);
+      return `<div class="item-row">
+        <div class="ir-emoji">${r.icon}</div>
+        <div class="ir-main">
+          <div class="ir-name">${r.name} <span style="font-size:11px;color:var(--wood);">×${n}</span></div>
+          <div class="ir-meta">需要：${needTxt}<br>售价约 ${price} 金 · 加工 ⚡1</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="pixel-btn small primary" onclick="craftRecipe('${r.id}')" ${canMake?'':'disabled'}><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 加工</button>
+          <button class="pixel-btn small gold" onclick="sellDessert('${r.id}')" ${n>0?'':'disabled'}><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 出售</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    const locked = RECIPES.filter(r=>!isRecipeUnlocked(r.id));
+    let tip = '';
+    if(locked.length){
+      tip = `<div class="locked-tip">
+        <div class="lt-head">🔒 还有 ${locked.length} 个隐藏配方等待解锁</div>
+        ${locked.map(r=>`<div class="lt-row">· ${r.name} —— ${recipeUnlockText(r)}</div>`).join('')}
+        <div class="lt-row" style="margin-top:4px;color:#A9714B;">💡 技能点来自「周任务」奖励；主线剧情也会送来神秘配方～</div>
+      </div>`;
+    } else {
+      tip = `<div class="locked-tip" style="border-style:solid;border-color:var(--leaf-deep);color:#2E4A24;background-image:linear-gradient(180deg,#F2FAEC,#E7F4DD);">
+        <div class="lt-head">🎉 所有甜点配方已全部解锁！</div>
+      </div>`;
+    }
+
+    body.innerHTML = (rows || '<div class="info-line">还没有解锁任何甜点配方。</div>') + tip + `
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        <button class="pixel-btn" style="flex:1;min-width:140px;" onclick="switchWhTab('fruit')"><img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 去挑水果</button>
+        <button class="pixel-btn gold" style="flex:1;min-width:140px;" onclick="goToPage('page-upgrade')"><img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> 提升烘焙技能</button>
+      </div>`;
+  } else {
+    const rows = Object.keys(FRUITS).map(k=>{
+      const f = FRUITS[k];
+      const n = G.seeds[k]||0;
+      return `<div class="item-row">
+        <div class="ir-emoji">${f.icon}</div>
+        <div class="ir-main">
+          <div class="ir-name">${f.name}种子 <span style="font-size:11px;color:var(--wood);">×${n}</span></div>
+          <div class="ir-meta">${f.growDays} 天成熟 · 产量 ${f.yield} · 当季：${f.season}</div>
+        </div>
+        <button class="pixel-btn small" onclick="goToPage('page-shop')">🛒 购买</button>
+      </div>`;
+    }).join('');
+    body.innerHTML = rows;
+  }
+}
+function sellFruit(id){
+  const f = FRUITS[id];
+  const total = getFruitTotal(id);
+  if(total <= 0){ showToast('没有可出售的水果'); return; }
+  showModal(
+    `<div class="modal-head"><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 出售 ${f.name}</div>
+     <div class="modal-body">当前库存：${total} 个（⚪${G.fruits[id].common||0} 🟢${G.fruits[id].good||0} <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>${G.fruits[id].perfect||0}）
+
+选择要出售的数量：</div>
+     <div class="modal-foot" style="justify-content:center;">
+       <button class="pixel-btn small" onclick="doSellFruit('${id}', 1)">1 个</button>
+       <button class="pixel-btn small" onclick="doSellFruit('${id}', 5)">5 个</button>
+       <button class="pixel-btn small primary" onclick="doSellFruit('${id}', 999)">全部</button>
+     </div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">取消</button>
+     </div>`
+  );
+}
+function doSellFruit(id, n){
+  const f = FRUITS[id];
+  const total = getFruitTotal(id);
+  const sell = Math.min(n, total);
+  if(sell <= 0){ closeModal(); return; }
+  const qMul = fruitQualityMul(id);
+  let unit = f.price * qMul * SEASON_MUL[G.season] * (1 + (G.equip.coldstore-1)*0.04) * (1 + G.skills.biz*0.02);
+  unit = Math.round(unit * 100) / 100;
+  const gain = Math.round(unit * sell);
+  consumeFruit(id, sell);
+  G.money += gain;
+  G.stats.totalEarned += gain;
+  G.weeklySales += gain;
+  closeModal();
+  showToast(`<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 出售 ${f.icon}${f.name} ×${sell}，获得 ${fmt(gain)} 金`);
+  AudioSys.playSfx('coin');
+  bumpWeekly('sales2000', gain);
+  checkAchievements();
+  updateWarehouse(); updateMain(); saveGame();
+}
+function craftRecipe(id){
+  const r = getRecipe(id);
+  if(!r) return;
+  const needTxt = Object.keys(r.need).map(k=>{
+    const have = getFruitTotal(k);
+    const need = r.need[k];
+    return `${FRUITS[k].icon}${FRUITS[k].name} ${have}/${need}`;
+  }).join('  ');
+  const canMake = Object.keys(r.need).every(k=>getFruitTotal(k) >= r.need[k]);
+  showModal(
+    `<div class="modal-head"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> ${r.name}</div>
+     <div class="modal-body">所需材料：
+${needTxt}
+
+售价约 ${r.price} 金 · 消耗 ⚡1</div>
+     <div class="modal-foot">
+       <button class="pixel-btn" onclick="closeModal()">取消</button>
+       <button class="pixel-btn primary" onclick="doCraft('${id}')" ${canMake?'':'disabled'}>${canMake?'开始制作':'材料不足'}</button>
+     </div>`
+  );
+}
+function doCraft(id){
+  const r = getRecipe(id);
+  if(!r) return;
+  if(!Object.keys(r.need).every(k=>getFruitTotal(k) >= r.need[k])){
+    showToast('🧺 水果不足');
+    AudioSys.playSfx('fail');
+    return;
+  }
+  if(G.ap < AP.CRAFT){ showToast('⚡ 行动点不足'); return; }
+  G.ap = Math.round((G.ap - AP.CRAFT)*10)/10;
+  Object.keys(r.need).forEach(k=>{ consumeFruit(k, r.need[k]); });
+  G.desserts[id] = (G.desserts[id]||0) + 1;
+  G.collection.recipes[id] = (G.collection.recipes[id]||0) + 1;
+  closeModal();
+  showToast('<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 制作完成：'+r.name+' (-1⚡)');
+  AudioSys.playSfx('success');
+  updateWarehouse(); updateMain(); saveGame();
+}
+function sellDessert(id){
+  const r = getRecipe(id);
+  const n = G.desserts[id]||0;
+  if(n <= 0) return;
+  const price = Math.round(r.price * (1 + G.skills.bake*0.05) * (1 + (G.player.spec==='bake'?0.08:0)) * (1 + G.skills.biz*0.02));
+  const gain = price * n;
+  G.money += gain;
+  G.stats.totalEarned += gain;
+  G.weeklySales += gain;
+  G.desserts[id] = 0;
+  showToast(`<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 出售 ${r.icon}${r.name} ×${n}，获得 ${fmt(gain)} 金`);
+  AudioSys.playSfx('coin');
+  bumpWeekly('sales2000', gain);
+  checkAchievements();
+  updateWarehouse(); updateMain(); saveGame();
+}
+/* ============================================================
+   商店
+   ============================================================ */
+let shopTab = 'seed';
+function switchShopTab(t){
+  shopTab = t;
+  document.querySelectorAll('#shop-tabs .tab').forEach(el=>el.classList.toggle('active', el.dataset.shop===t));
+  updateShop();
+}
+function updateShop(){
+  const body = document.getElementById('shop-body');
+  const moneyEl = document.getElementById('shop-money');
+  if(moneyEl) moneyEl.textContent = fmt(G.money);
+  if(!body) return;
+
+  if(shopTab === 'seed'){
+    body.innerHTML = Object.keys(FRUITS).map(k=>{
+      const f = FRUITS[k];
+      const inSeason = (f.season === '全年' || f.season === G.season);
+      const price = Math.round(f.seedCost * (inSeason ? 1 : 1.15));
+      return `<div class="item-row">
+        <div class="ir-emoji">${f.icon}</div>
+        <div class="ir-main">
+          <div class="ir-name">${f.name}种子 <span style="font-size:11px;color:var(--wood);">×${G.seeds[k]||0}</span></div>
+          <div class="ir-meta">${f.growDays}天 · 产${f.yield} · 售价${f.price} · ${inSeason?'<img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>当季':'❄️非当季'} · 单价 ${price} 金</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="pixel-btn small" onclick="buySeed('${k}',1)">+1</button>
+          <button class="pixel-btn small primary" onclick="buySeed('${k}',5)">+5</button>
+        </div>
+      </div>`;
+    }).join('');
+  } else if(shopTab === 'tool'){
+    body.innerHTML = `
+      <div class="item-row">
+        <div class="ir-emoji"><img class=ui-icon src=./medical.png alt=🧪 onerror=uiIconErr(this)></div>
+        <div class="ir-main">
+          <div class="ir-name">肥料 ×${G.mats.fertilizer||0}</div>
+          <div class="ir-meta">使用后提升该地块作物品质概率 · 单价 60 金</div>
+        </div>
+        <button class="pixel-btn small primary" onclick="buyTool('fertilizer')">+1 (60金)</button>
+      </div>
+      <div class="locked-tip" style="margin-top:10px;border-style:solid;border-color:var(--leaf-deep);color:#2E4A24;background-image:linear-gradient(180deg,#F2FAEC,#E7F4DD);">
+        <div class="lt-head">🧪 肥料怎么用？</div>
+        <div class="lt-row">1. 先买肥料（这里）</div>
+        <div class="lt-row">2. 进入「果园」→ 点击一块<span style="font-weight:800;">生长中</span>的地块</div>
+        <div class="lt-row">3. 在弹出的地块面板里点「🧪 施肥」即可</div>
+        <div class="lt-row">每块地最多施肥 3 次，每次完美率 +10%、优良率 +5%（不消耗行动点）</div>
+      </div>
+      <button class="pixel-btn green w-full" style="margin-top:10px;" onclick="goToPage('page-orchard')"><img class=ui-icon src=./tree.png alt=🌳 onerror=uiIconErr(this)> 去果园施肥</button>`;
+  } else if(shopTab === 'bake'){
+    const mats = [
+      { id:'flour', name:'面粉', icon:'<img class=ui-icon src=./mian.png alt=🌾 onerror=uiIconErr(this)>', price:20 },
+      { id:'choco', name:'巧克力', icon:'<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)>', price:45 },
+      { id:'butter', name:'黄油', icon:'<img class=ui-icon src=./butter.png alt=🧈 onerror=uiIconErr(this)>', price:35 },
+      { id:'sugar', name:'砂糖', icon:'<img class=ui-icon src=./candy_cane.png alt=🍬 onerror=uiIconErr(this)>', price:15 }
+    ];
+    body.innerHTML = mats.map(m=>`
+      <div class="item-row">
+        <div class="ir-emoji">${m.icon}</div>
+        <div class="ir-main">
+          <div class="ir-name">${m.name} ×${G.mats[m.id]||0}</div>
+          <div class="ir-meta">单价 ${m.price} 金 · 用于烘焙特殊甜点</div>
+        </div>
+        <button class="pixel-btn small primary" onclick="buyMat('${m.id}')">+1</button>
+      </div>`).join('') + `
+      <div class="locked-tip" style="margin-top:10px;">
+        <div class="lt-head">🍫 甜品工坊入口</div>
+        <div class="lt-row">主页 →「甜品工坊」，或 仓库 →「甜品工坊」页签</div>
+        <div class="lt-row">烘焙技能 Lv.2 / 3 / 4 分别解锁对应甜点</div>
+        <div class="lt-row">主线第 14 天解锁「迪拜巧克力软曲奇」</div>
+      </div>
+      <button class="pixel-btn choco w-full" style="margin-top:10px;" onclick="goToCraft()"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 打开甜品工坊</button>`;
+  } else {
+    const lv = G.equip.light;
+    body.innerHTML = `
+      <div class="item-row">
+        <div class="ir-emoji">💡</div>
+        <div class="ir-main">
+          <div class="ir-name">直播灯 Lv.${lv}</div>
+          <div class="ir-meta">每级直播成交价 +5%</div>
+        </div>
+        <button class="pixel-btn small primary" onclick="goToPage('page-upgrade')">前往升级</button>
+      </div>
+      <div class="item-row">
+        <div class="ir-emoji">🎙️</div>
+        <div class="ir-main">
+          <div class="ir-name">声卡 Lv.${G.equip.soundcard}</div>
+          <div class="ir-meta">每级直播连击加成 +0.02</div>
+        </div>
+        <button class="pixel-btn small primary" onclick="goToPage('page-upgrade')">前往升级</button>
+      </div>
+      <div class="info-line" style="margin-top:8px;">💡 直播设备越强，直播间的成交价越高。</div>`;
+  }
+}
+function buySeed(id, n){
+  const f = FRUITS[id];
+  const inSeason = (f.season === '全年' || f.season === G.season);
+  const unit = Math.round(f.seedCost * (inSeason ? 1 : 1.15));
+  const cost = unit * n;
+  if(G.money < cost){ showToast('💸 金币不足'); AudioSys.playSfx('fail'); return; }
+  G.money -= cost;
+  G.seeds[id] = (G.seeds[id]||0) + n;
+  showToast(`🌱 购买 ${f.icon}${f.name}种子 ×${n}`);
+  AudioSys.playSfx('coin');
+  updateShop(); updateMain(); saveGame();
+}
+function buyTool(id){
+  const price = 60;
+  if(G.money < price){ showToast('💸 金币不足'); AudioSys.playSfx('fail'); return; }
+  G.money -= price;
+  G.mats[id] = (G.mats[id]||0) + 1;
+  showToast('<img class=ui-icon src=./medical.png alt=🧪 onerror=uiIconErr(this)> 购买肥料 ×1（去果园点击地块使用）');
+  AudioSys.playSfx('coin');
+  updateShop(); updateMain(); saveGame();
+}
+function buyMat(id){
+  const prices = { flour:20, choco:45, butter:35, sugar:15 };
+  const price = prices[id]||20;
+  if(G.money < price){ showToast('💸 金币不足'); AudioSys.playSfx('fail'); return; }
+  G.money -= price;
+  G.mats[id] = (G.mats[id]||0) + 1;
+  showToast('<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 购买材料 ×1');
+  AudioSys.playSfx('coin');
+  updateShop(); updateMain(); saveGame();
+}
+
+/* ============================================================
+   订单 & 任务
+   ============================================================ */
+function generateOrders(){
+  const pool = Object.keys(FRUITS);
+  const list = [];
+  for(let i=0;i<3;i++){
+    const count = rand(1,2);
+    const need = {};
+    const used = [];
+    for(let j=0;j<count;j++){
+      let k;
+      let guard = 0;
+      do{ k = pool[rand(0,pool.length-1)]; guard++; }while(used.includes(k) && guard<10);
+      used.push(k);
+      need[k] = rand(2,5);
+    }
+    let base = 0;
+    Object.keys(need).forEach(k=>{ base += FRUITS[k].price * need[k]; });
+    const money = Math.round(base * rand(150,200) / 100);
+    const reward = {
+      money,
+      fans: rand(3,10),
+      fame: rand(2,6),
+      exp: rand(2,6),
+      sp: Math.random() < 0.25 ? 1 : 0
+    };
+    const c = CUSTOMERS[rand(0,CUSTOMERS.length-1)];
+    list.push({
+      id: 'o' + (++G.orderSeq),
+      customer: c,
+      need,
+      reward,
+      done: false
+    });
+  }
+  G.orders = list;
+}
+function updateOrders(){
+  const mb = document.getElementById('main-quest-box');
+  if(mb){
+    const cur = MAIN_STORY.find(n=>G.day < n.day) || MAIN_STORY[MAIN_STORY.length-1];
+    const total = MAIN_STORY.length;
+    const doneCount = MAIN_STORY.filter(n=>G.mainStorySeen[n.id]).length;
+    mb.innerHTML = `
+      <div class="task-card">
+        <div class="task-head"><span><img class=ui-icon src=./letter.png alt=📜 onerror=uiIconErr(this)> ${cur.title}</span><span>${doneCount}/${total}</span></div>
+        <div class="task-body">${cur.body.replace(/\n/g,'<br>')}</div>
+        <div class="progress-bar"><i style="width:${Math.round(doneCount/total*100)}%"></i></div>
+      </div>`;
+  }
+  const db = document.getElementById('daily-quest-box');
+  if(db){
+    db.innerHTML = DAILY_TASKS.map(t=>{
+      const st = G.daily[t.id] || { cur:0, claimed:false };
+      const done = st.cur >= t.goal;
+      const pct = Math.min(100, Math.round(st.cur / t.goal * 100));
+      return `<div class="task-card ${st.claimed?'done':''}">
+        <div class="task-head"><span>${t.name}</span><span>${st.cur}/${t.goal}</span></div>
+        <div class="task-reward">奖励：<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>${t.reward.money} · ✨${t.reward.exp}</div>
+        <div class="progress-bar"><i style="width:${pct}%"></i></div>
+        <button class="pixel-btn small ${done && !st.claimed ? 'primary':''}" style="margin-top:8px;"
+          onclick="claimDaily('${t.id}')" ${done && !st.claimed ? '' : 'disabled'}>
+          ${st.claimed ? '已领取' : (done ? '领取奖励' : '未完成')}
+        </button>
+      </div>`;
+    }).join('');
+  }
+  const wb = document.getElementById('weekly-quest-box');
+  if(wb){
+    wb.innerHTML = WEEKLY_TASKS.map(t=>{
+      const st = G.weekly[t.id] || { cur:0, claimed:false };
+      let cur = st.cur;
+      if(t.id === 'fans50') cur = Math.max(0, G.fans - G.weeklyFansStart);
+      if(t.id === 'perfect3') cur = G.weeklyPerfect;
+      if(t.id === 'sales2000') cur = G.weeklySales;
+      const done = cur >= t.goal;
+      const pct = Math.min(100, Math.round(cur / t.goal * 100));
+      return `<div class="task-card ${st.claimed?'done':''}">
+        <div class="task-head"><span>${t.name}</span><span>${Math.round(cur)}/${t.goal}</span></div>
+        <div class="task-reward">奖励：<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>${t.reward.money} · ✨${t.reward.exp} · <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>${t.reward.sp}技能点</div>
+        <div class="progress-bar"><i style="width:${pct}%"></i></div>
+        <button class="pixel-btn small ${done && !st.claimed ? 'primary':''}" style="margin-top:8px;"
+          onclick="claimWeekly('${t.id}')" ${done && !st.claimed ? '' : 'disabled'}>
+          ${st.claimed ? '已领取' : (done ? '领取奖励' : '未完成')}
+        </button>
+      </div>`;
+    }).join('');
+  }
+  const ob = document.getElementById('order-list');
+  if(ob){
+    if(!G.orders.length){
+      ob.innerHTML = '<div class="info-line">暂无订单，点击下方刷新。</div>';
+    } else {
+      ob.innerHTML = G.orders.map((o,i)=>{
+        const needTxt = Object.keys(o.need).map(k=>{
+          const have = getFruitTotal(k);
+          const need = o.need[k];
+          return `<span style="color:${have>=need?'var(--leaf-deep)':'var(--danger)'};">${FRUITS[k].icon}${FRUITS[k].name} ${have}/${need}</span>`;
+        }).join(' · ');
+        const can = !o.done && Object.keys(o.need).every(k=>getFruitTotal(k) >= o.need[k]);
+        return `<div class="task-card ${o.done?'done':''}">
+          <div class="task-head"><span>${o.customer.icon} ${o.customer.name}</span><span>${o.done?'✅ 已完成':'进行中'}</span></div>
+          <div class="task-body">需要：${needTxt}</div>
+          <div class="task-reward">奖励：<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>${o.reward.money} · 👥${o.reward.fans} · <img class=ui-icon src=./star.png alt=⭐ onerror=uiIconErr(this)>${o.reward.fame}${o.reward.sp?' · <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>1技能点':''}</div>
+          <button class="pixel-btn small ${can?'primary':''}" style="margin-top:8px;"
+            onclick="deliverOrder(${i})" ${can?'':'disabled'}>
+            ${o.done ? '已完成' : (can ? '📦 交付订单' : '库存不足')}
+          </button>
+        </div>`;
+      }).join('');
+    }
+  }
+}
+function bumpDaily(id, n){
+  if(!G.daily[id]) G.daily[id] = { cur:0, claimed:false };
+  G.daily[id].cur += n;
+}
+function bumpWeekly(id, n){
+  if(!G.weekly[id]) G.weekly[id] = { cur:0, claimed:false };
+  G.weekly[id].cur += n;
+}
+function claimDaily(id){
+  const t = DAILY_TASKS.find(x=>x.id===id);
+  if(!t) return;
+  const st = G.daily[id];
+  if(!st || st.claimed) return;
+  if(st.cur < t.goal){ showToast('任务尚未完成'); return; }
+  st.claimed = true;
+  G.money += t.reward.money;
+  G.stats.totalEarned += t.reward.money;
+  if(t.reward.sp) G.skillPoints += t.reward.sp;
+  showToast(`✅ 领取奖励：<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>${t.reward.money}`);
+  AudioSys.playSfx('coin');
+  updateOrders(); updateMain(); saveGame();
+}
+function claimWeekly(id){
+  const t = WEEKLY_TASKS.find(x=>x.id===id);
+  if(!t) return;
+  const st = G.weekly[id];
+  if(!st || st.claimed) return;
+  let cur = st.cur;
+  if(id === 'fans50') cur = Math.max(0, G.fans - G.weeklyFansStart);
+  if(id === 'perfect3') cur = G.weeklyPerfect;
+  if(id === 'sales2000') cur = G.weeklySales;
+  if(cur < t.goal){ showToast('任务尚未完成'); return; }
+  st.claimed = true;
+  G.money += t.reward.money;
+  G.stats.totalEarned += t.reward.money;
+  if(t.reward.sp) G.skillPoints += t.reward.sp;
+  showToast(`✅ 领取奖励：<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>${t.reward.money} · <img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>${t.reward.sp}技能点`);
+  AudioSys.playSfx('coin');
+  updateOrders(); updateMain(); saveGame();
+}
+function deliverOrder(i){
+  const o = G.orders[i];
+  if(!o || o.done) return;
+  if(!Object.keys(o.need).every(k=>getFruitTotal(k) >= o.need[k])){
+    showToast('🧺 水果不足');
+    AudioSys.playSfx('fail');
+    return;
+  }
+  Object.keys(o.need).forEach(k=>{ consumeFruit(k, o.need[k]); });
+  o.done = true;
+  const packMul = 1 + (G.equip.packing-1)*0.06;
+  const money = Math.round(o.reward.money * packMul);
+  G.money += money;
+  G.fans += o.reward.fans;
+  G.fame += o.reward.fame;
+  if(o.reward.sp) G.skillPoints += o.reward.sp;
+  G.stats.totalEarned += money;
+  G.stats.totalOrders += 1;
+  G.weeklySales += money;
+  G.collection.customers[o.customer.id] = (G.collection.customers[o.customer.id]||0) + 1;
+  bumpDaily('order2', 1);
+  bumpWeekly('sales2000', money);
+  showToast(`📦 交付订单成功！获得 ${fmt(money)} 金`);
+  AudioSys.playSfx('success');
+  checkAchievements();
+  updateOrders(); updateMain(); saveGame();
+}
+function refreshOrders(){
+  if(G.money < 100){ showToast('💸 金币不足'); AudioSys.playSfx('fail'); return; }
+  G.money -= 100;
+  generateOrders();
+  showToast('🔄 订单已刷新');
+  AudioSys.playSfx('coin');
+  updateOrders(); updateMain(); saveGame();
+}
+/* ============================================================
+   直播准备
+   ============================================================ */
+function updateLivePrep(){
+  const grid = document.getElementById('live-pick-grid');
+  if(!grid) return;
+
+  /* 进入直播准备页时，自动清理已售罄/无库存的勾选项 */
+  const dropped = G.liveSelected.filter(k=>getFruitTotal(k) <= 0);
+  if(dropped.length){
+    G.liveSelected = G.liveSelected.filter(k=>getFruitTotal(k) > 0);
+    saveGame();
+    setTimeout(()=>{
+      showToast('🧺 已自动取消 ' + dropped.length + ' 种售罄水果的勾选');
+    }, 220);
+  }
+
+  const ids = Object.keys(FRUITS).filter(k=>getFruitTotal(k) > 0);
+  if(!ids.length){
+    grid.innerHTML = '<div class="info-line">🧺 仓库里还没有水果，先去果园收获吧！</div>';
+    const est = document.getElementById('live-est');
+    if(est) est.innerHTML = '<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 预计收益：--';
+    const cnt = document.getElementById('live-pick-count');
+    if(cnt) cnt.textContent = 0;
+    return;
+  }
+  grid.innerHTML = ids.map(k=>{
+    const f = FRUITS[k];
+    const total = getFruitTotal(k);
+    const sel = G.liveSelected.includes(k);
+    return `<div class="opt-card ${sel?'selected':''}" onclick="toggleLivePick('${k}')">
+      ${sel?'<div class="oc-check">✓</div>':''}
+      <div class="oc-emoji">${f.icon}</div>
+      <div class="oc-name">${f.name}</div>
+      <div class="oc-sub">库存 ${total} · 基础价 ${f.price}</div>
+    </div>`;
+  }).join('');
+  const cnt = document.getElementById('live-pick-count');
+  if(cnt) cnt.textContent = G.liveSelected.length;
+  updateLiveEst();
+}
+function toggleLivePick(k){
+  const i = G.liveSelected.indexOf(k);
+  if(i >= 0) G.liveSelected.splice(i,1);
+  else {
+    if(G.liveSelected.length >= 6){ showToast('最多选择 6 种水果'); return; }
+    G.liveSelected.push(k);
+  }
+  updateLivePrep();
+  saveGame();
+}
+function updateLiveEst(){
+  const est = document.getElementById('live-est');
+  if(!est) return;
+  if(G.liveSelected.length < 2){
+    est.innerHTML = '<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 预计收益：-- （至少选择 2 种水果）';
+    return;
+  }
+  let total = 0;
+  G.liveSelected.forEach(k=>{
+    const f = FRUITS[k];
+    const qMul = fruitQualityMul(k);
+    const unit = f.price * qMul * SEASON_MUL[G.season] * getCharmMul() * (1 + (G.equip.light-1)*0.05);
+    total += unit * getFruitTotal(k) * 0.6;
+  });
+  est.innerHTML = `<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 预计收益：约 <b>${fmt(total)}</b> 金<br>
+    <img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 上场水果：${G.liveSelected.length} 种<br>
+    💖 魅力系数：×${getCharmMul().toFixed(3)} · 📺 设备系数：×${(1+(G.equip.light-1)*0.05).toFixed(2)}<br>
+    ⚡ 消耗行动点 1 · 🔋 消耗体力 20`;
+}
+function getCharmMul(){
+  return 1 + G.bond/200 + G.skills.live*0.03 + (G.player.spec==='live' ? 0.08 : 0);
+}
+
+/* ============================================================
+   直播玩法
+   ============================================================ */
+const LIVE = {
+  running:false,
+  paused:false,
+  timeLeft:60,
+  sales:0,
+  deals:0,
+  combo:0,
+  maxCombo:0,
+  misses:0,
+  viewers:0,
+  slots:[],
+  timer:null,
+  omgTimer:null,
+  lastTick:0,
+  cheerBonus:0,
+  cheerTimeout:0
+};
+
+function startLive(){
+  G.liveSelected = G.liveSelected.filter(k=>getFruitTotal(k) > 0);
+  if(G.liveSelected.length < 2){ showToast('至少选择 2 种有库存的水果'); AudioSys.playSfx('fail'); return; }
+  if(!G.liveSelected.every(k=>getFruitTotal(k) > 0)){ showToast('有水果库存为 0，请重新选择'); return; }
+  if(G.ap < AP.LIVE){ showToast('⚡ 行动点不足'); AudioSys.playSfx('fail'); return; }
+  if(G.energy < 20){ showToast('🔋 砂糖橘体力不足，先休息一下吧'); AudioSys.playSfx('fail'); return; }
+
+  G.ap = Math.round((G.ap - AP.LIVE)*10)/10;
+  G.energy = clamp(G.energy - 20, 0, 100);
+
+  showLoading('📡 正在连接直播间...', '<img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)>');
+  let p = 0;
+  const iv = setInterval(()=>{
+    p += rand(15,30);
+    updateLoading(Math.min(100,p), '📡 正在连接直播间...');
+    if(p >= 100){
+      clearInterval(iv);
+      setTimeout(()=>{
+        hideLoading();
+        enterLive();
+      }, 220);
+    }
+  }, 160);
+}
+
+function enterLive(){
+  LIVE.running = true;
+  LIVE.paused = false;
+  LIVE.timeLeft = 60;
+  LIVE.sales = 0;
+  LIVE.deals = 0;
+  LIVE.combo = 0;
+  LIVE.maxCombo = 0;
+  LIVE.misses = 0;
+  LIVE.viewers = Math.round(G.fans * 0.6 + G.fame * 2 + rand(5,20));
+  LIVE.cheerBonus = 0;
+  LIVE.cheerTimeout = 0;
+  LIVE.slots = [];
+  for(let i=0;i<6;i++) LIVE.slots.push(makeCustomer());
+
+  goToPage('page-live');
+  renderLiveSlots();
+  renderBaskets();
+  updateLiveHUD();
+  setOmgSay('直播间的大家——！今天也要把水果卖光光哦！(≧▽≦)');
+  AudioSys.playSfx('success');
+
+  LIVE.lastTick = Date.now();
+  clearInterval(LIVE.timer);
+  LIVE.timer = setInterval(()=>{
+    if(LIVE.paused || !LIVE.running) return;
+    const now = Date.now();
+    const dt = (now - LIVE.lastTick) / 1000;
+    LIVE.lastTick = now;
+    LIVE.timeLeft -= dt;
+    if(LIVE.timeLeft <= 0){
+      LIVE.timeLeft = 0;
+      updateLiveHUD();
+      endLive();
+      return;
+    }
+    updateLiveHUD();
+    if(LIVE.timeLeft <= 10 && Math.floor(LIVE.timeLeft) !== Math.floor(LIVE.timeLeft + dt)){
+      AudioSys.playSfx('countdown');
+    }
+    LIVE.viewers += rand(0,2);
+  }, 200);
+
+  clearInterval(LIVE.omgTimer);
+  LIVE.omgTimer = setInterval(()=>{
+    if(!LIVE.running || LIVE.paused) return;
+    const lines = [
+      '这个橘子甜到心里啦～(≧▽≦)',
+      '链接在左下角哦～',
+      '三二一，上链接！(๑•̀ㅂ•́)و✧',
+      '大家冲鸭冲鸭！',
+      '这个价格真的亏本啦！(๑•́ ₃ •̀๑)',
+      '橘的爸爸可是大明星哦！',
+      '还剩最后十单！',
+      '本橘今天超级认真哒！'
+    ];
+    setOmgSay(lines[rand(0,lines.length-1)]);
+    const corner = document.getElementById('omg-corner');
+    if(corner){
+      corner.classList.remove('cheer');
+      void corner.offsetWidth;
+      corner.classList.add('cheer');
+    }
+  }, rand(5000,8000));
+}
+
+function makeCustomer(){
+  const pool = G.liveSelected.length ? G.liveSelected : Object.keys(FRUITS);
+  const kinds = (Math.random() < 0.4 && pool.length >= 2) ? 2 : 1;
+  const shuffled = pool.slice().sort(()=>Math.random()-0.5);
+  const need = {};
+  for(let i=0;i<kinds;i++){
+    need[shuffled[i]] = rand(1,2);
+  }
+  const c = CUSTOMERS[rand(0,CUSTOMERS.length-1)];
+  return {
+    customer: c,
+    need,
+    total: Object.keys(need).reduce((s,k)=>s+need[k],0),
+    patience: 3,
+    maxPatience: 3,
+    id: 'c' + Date.now() + rand(0,9999)
+  };
+}
+
+function renderLiveSlots(){
+  const area = document.getElementById('cust-area');
+  if(!area) return;
+  area.innerHTML = LIVE.slots.map((s,i)=>{
+    if(!s) return `<div class="cust-card empty" data-slot="${i}"></div>`;
+    const needTxt = Object.keys(s.need).map(k=>`${FRUITS[k].icon}×${s.need[k]}`).join('+');
+    const hearts = '❤️'.repeat(s.patience) + '🖤'.repeat(Math.max(0, s.maxPatience - s.patience));
+    return `<div class="cust-card" data-slot="${i}" data-cid="${s.id}">
+      <div class="cust-bubble">${needTxt}</div>
+      <div class="cust-face">${s.customer.icon}</div>
+      <div class="cust-heart">${hearts}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBaskets(){
+  const area = document.getElementById('basket-area');
+  if(!area) return;
+  const list = G.liveSelected.slice();
+  const n = Math.max(1, list.length);
+  area.style.gridTemplateColumns = `repeat(${n <= 3 ? n : n}, minmax(0,1fr))`;
+  area.innerHTML = list.map(k=>{
+    const f = FRUITS[k];
+    const left = getFruitTotal(k);
+    return `<div class="basket ${left<=0?'depleted':''}" data-fid="${k}">
+      <div class="b-emoji">${f.icon}</div>
+      <div class="b-name">${f.name}</div>
+      <div class="b-left">×${left}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateLiveHUD(){
+  const t = document.getElementById('live-timer');
+  if(t){
+    const s = Math.ceil(LIVE.timeLeft);
+    t.innerHTML = `⏱ <b>${s}</b>s`;
+    t.classList.toggle('warn', s <= 10);
+  }
+  const s = document.getElementById('live-sales');
+  if(s) s.textContent = fmt(LIVE.sales);
+  const v = document.getElementById('live-viewers');
+  if(v) v.textContent = fmt(LIVE.viewers);
+  const c = document.getElementById('live-combo');
+  if(c) c.textContent = LIVE.combo;
+}
+
+function setOmgSay(txt){
+  const el = document.getElementById('omg-say');
+  if(el) el.innerHTML = txt;
+}
+
+/* ===== 拖拽 ===== */
+let dragState = null;
+
+function onBasketDown(e, fid){
+  if(!LIVE.running || LIVE.paused) return;
+  if(getFruitTotal(fid) <= 0){ showToast('库存不足'); return; }
+  e.preventDefault();
+  const ghost = document.createElement('div');
+  ghost.className = 'drag-ghost';
+  ghost.innerHTML = FRUITS[fid].icon;
+  document.body.appendChild(ghost);
+  dragState = { fid, ghost };
+  moveGhost(e.clientX, e.clientY);
+  document.addEventListener('pointermove', onDragMove, { passive:false });
+  document.addEventListener('pointerup', onDragUp);
+  document.addEventListener('pointercancel', onDragUp);
+}
+function moveGhost(x, y){
+  if(!dragState) return;
+  dragState.ghost.style.left = x + 'px';
+  dragState.ghost.style.top = y + 'px';
+}
+function onDragMove(e){
+  if(!dragState) return;
+  e.preventDefault();
+  moveGhost(e.clientX, e.clientY);
+}
+function onDragUp(e){
+  if(!dragState) return;
+  document.removeEventListener('pointermove', onDragMove);
+  document.removeEventListener('pointerup', onDragUp);
+  document.removeEventListener('pointercancel', onDragUp);
+
+  const x = e.clientX, y = e.clientY;
+  const el = document.elementFromPoint(x, y);
+  const card = el ? el.closest('.cust-card') : null;
+  const ghost = dragState.ghost;
+  const fid = dragState.fid;
+  dragState = null;
+  if(ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+
+  if(!card || card.classList.contains('empty')) return;
+  const slotIdx = parseInt(card.dataset.slot, 10);
+  tryServe(slotIdx, fid, x, y);
+}
+
+function tryServe(slotIdx, fid, x, y){
+  if(!LIVE.running || LIVE.paused) return;
+  const s = LIVE.slots[slotIdx];
+  if(!s) return;
+
+  if(!s.need[fid] || s.need[fid] <= 0){
+    LIVE.combo = 0;
+    LIVE.misses++;
+    s.patience -= 1;
+    const card = document.querySelector(`.cust-card[data-slot="${slotIdx}"]`);
+    if(card){
+      card.classList.remove('miss');
+      void card.offsetWidth;
+      card.classList.add('miss');
+    }
+    AudioSys.playSfx('fail');
+    showFloatText(x, y, '❌', 'var(--danger)');
+    setOmgSay('不对不对啦！他要的是那个！(๑•́ ₃ •̀๑)');
+    if(s.patience <= 0){
+      LIVE.viewers = Math.max(0, LIVE.viewers - 1);
+      LIVE.slots[slotIdx] = null;
+      renderLiveSlots();
+      setTimeout(()=>{
+        if(!LIVE.running) return;
+        LIVE.slots[slotIdx] = makeCustomer();
+        renderLiveSlots();
+      }, 500);
+    } else {
+      renderLiveSlots();
+    }
+    updateLiveHUD();
+    return;
+  }
+
+  const available = getFruitTotal(fid);
+  if(available <= 0){
+    showToast('库存不足');
+    return;
+  }
+  consumeFruit(fid, 1);
+  s.need[fid] -= 1;
+
+  LIVE.combo += 1;
+  if(LIVE.combo > LIVE.maxCombo) LIVE.maxCombo = LIVE.combo;
+  LIVE.deals += 1;
+
+  const f = FRUITS[fid];
+  const price = calcLivePrice(fid);
+  LIVE.sales += price;
+  G.stats.liveDeals += 1;
+  bumpDaily('live10', 1);
+
+  if(LIVE.combo > 0 && LIVE.combo % 5 === 0){
+    triggerCheer();
+  }
+
+  const card = document.querySelector(`.cust-card[data-slot="${slotIdx}"]`);
+  if(card){
+    card.classList.remove('hit');
+    void card.offsetWidth;
+    card.classList.add('hit');
+  }
+  showFloatText(x, y, '+'+price, 'var(--gold)');
+  AudioSys.playSfx('live_deal');
+
+  const allDone = Object.keys(s.need).every(k=>s.need[k] <= 0);
+  if(allDone){
+    setOmgSay('成交！谢谢你呀～(≧▽≦)');
+    LIVE.slots[slotIdx] = null;
+    renderLiveSlots();
+    renderBaskets();
+    setTimeout(()=>{
+      if(!LIVE.running) return;
+      LIVE.slots[slotIdx] = makeCustomer();
+      renderLiveSlots();
+    }, 500);
+  } else {
+    renderLiveSlots();
+    renderBaskets();
+  }
+  updateLiveHUD();
+
+  if(getFruitTotal(fid) <= 0){
+    renderBaskets();
+  }
+}
+
+function triggerCheer(){
+  LIVE.cheerBonus = 0.05;
+  LIVE.cheerTimeout = 6000;
+  setOmgSay('✨ 阳光应援！全场 +5% 售价！冲鸭冲鸭！(≧▽≦)');
+  const corner = document.getElementById('omg-corner');
+  if(corner){
+    corner.classList.remove('cheer');
+    void corner.offsetWidth;
+    corner.classList.add('cheer');
+  }
+  AudioSys.playSfx('success');
+  setTimeout(()=>{ LIVE.cheerBonus = 0; }, 6000);
+}
+
+function calcLivePrice(fid){
+  const f = FRUITS[fid];
+  const qMul = fruitQualityMul(fid);
+  const sMul = SEASON_MUL[G.season] || 1;
+  const comboMul = Math.min(1.5, 1 + LIVE.combo * 0.02 + (G.equip.soundcard-1)*0.02);
+  const charmMul = getCharmMul();
+  const equipMul = 1 + (G.equip.light-1)*0.05;
+  let price = f.price * qMul * sMul * comboMul * charmMul * equipMul;
+  price *= (1 + LIVE.cheerBonus);
+  return Math.max(1, Math.round(price));
+}
+
+function showFloatText(x, y, txt, color){
+  const el = document.createElement('div');
+  el.className = 'float-text';
+  el.innerHTML = txt;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.color = color || 'var(--gold)';
+  document.body.appendChild(el);
+  setTimeout(()=>{ if(el.parentNode) el.parentNode.removeChild(el); }, 950);
+}
+
+function pauseLive(){
+  if(!LIVE.running) return;
+  LIVE.paused = true;
+  showModal(
+    `<div class="modal-head">⏸ 直播暂停</div>
+     <div class="modal-body">当前销售额：${fmt(LIVE.sales)} 金
+成交单数：${LIVE.deals}
+最高连击：${LIVE.maxCombo}</div>
+     <div class="modal-foot" style="justify-content:center;flex-wrap:wrap;">
+       <button class="pixel-btn primary" onclick="resumeLive()">继续直播</button>
+       <button class="pixel-btn danger" onclick="quitLive()">结束直播</button>
+     </div>`,
+    { static:true }
+  );
+}
+function resumeLive(){
+  closeModal();
+  LIVE.paused = false;
+  LIVE.lastTick = Date.now();
+}
+function quitLive(){
+  closeModal();
+  endLive();
+}
+
+function endLive(){
+  LIVE.running = false;
+  clearInterval(LIVE.timer);
+  clearInterval(LIVE.omgTimer);
+  LIVE.paused = false;
+
+  const sales = Math.round(LIVE.sales);
+  G.money += sales;
+  G.stats.totalEarned += sales;
+  G.weeklySales += sales;
+  G.stats.totalLive += 1;
+  G.stats.maxCombo = Math.max(G.stats.maxCombo, LIVE.maxCombo);
+  bumpWeekly('sales2000', sales);
+
+  const hype = Math.max(0, LIVE.deals * 2 + LIVE.maxCombo * 0.5 - LIVE.misses * 1);
+  const fansGain = Math.floor(hype * 0.8 * (1 + G.skills.social*0.06));
+  G.fans += fansGain;
+  G.fame += Math.floor(hype * 0.2);
+  G.bond = clamp(G.bond + Math.floor(LIVE.deals / 8), 0, 100);
+  G.mood = clamp(G.mood + Math.floor(LIVE.deals / 10), 0, 100);
+
+  const beforePick = G.liveSelected.length;
+  G.liveSelected = G.liveSelected.filter(k=>getFruitTotal(k) > 0);
+  const droppedPick = beforePick - G.liveSelected.length;
+
+  const result = {
+    sales,
+    deals: LIVE.deals,
+    maxCombo: LIVE.maxCombo,
+    misses: LIVE.misses,
+    hype: Math.round(hype),
+    fansGain,
+    viewers: LIVE.viewers,
+    droppedPick
+  };
+  G.lastLiveResult = result;
+  G.liveHistory.push({ day: G.day, ...result });
+  if(G.liveHistory.length > 30) G.liveHistory.shift();
+
+  checkAchievements();
+  saveGame();
+
+  showLoading('📊 正在统计销售额...', '📊');
+  let p = 0;
+  const iv = setInterval(()=>{
+    p += rand(20,35);
+    updateLoading(Math.min(100,p), '📊 正在统计销售额...');
+    if(p >= 100){
+      clearInterval(iv);
+      setTimeout(()=>{
+        hideLoading();
+        renderLiveResult(result);
+      }, 200);
+    }
+  }, 140);
+}
+
+function renderLiveResult(r){
+  const set = (id,v)=>{ const e = $(id); if(e) e.textContent = v; };
+  set('lr-sales', fmt(r.sales));
+  const rows = $('lr-rows');
+  if(rows){
+    rows.innerHTML = `
+      <div class="result-row"><span>🛒 成交单数</span><b>${r.deals}</b></div>
+      <div class="result-row"><span>🔥 最高连击</span><b>${r.maxCombo}</b></div>
+      <div class="result-row"><span>❌ 失误次数</span><b>${r.misses}</b></div>
+      <div class="result-row"><span>📈 人气增长</span><b>${r.hype}</b></div>
+      <div class="result-row"><span>👥 粉丝增长</span><b>+${r.fansGain}</b></div>
+      <div class="result-row"><span><img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)> 本场收入</span><b>${fmt(r.sales)} 金</b></div>
+    `;
+  }
+  goToPage('page-live-result');
+  AudioSys.playSfx('coin');
+  updateMain();
+  if((r.droppedPick||0) > 0){
+    setTimeout(()=>{
+      showToast('🧺 有 '+r.droppedPick+' 种水果已售罄，已自动取消勾选～');
+    }, 600);
+  }
+}
+/* ============================================================
+   图鉴
+   ============================================================ */
+let colTab = 'fruit';
+function switchColTab(t){
+  colTab = t;
+  document.querySelectorAll('#col-tabs .tab').forEach(el=>el.classList.toggle('active', el.dataset.col===t));
+  updateCollection();
+}
+function updateCollection(){
+  const body = document.getElementById('col-body');
+  if(!body) return;
+  if(colTab === 'fruit'){
+    body.innerHTML = Object.keys(FRUITS).map(k=>{
+      const f = FRUITS[k];
+      const c = G.collection.fruits[k];
+      const got = c ? c.got : 0;
+      return `<div class="ach-item ${got>0?'got':''}">
+        <span class="ach-ico">${got>0 ? f.icon : '🔒'}</span>
+        <span>${got>0 ? f.name : '???'} — 累计收获 ${got} 个${c && c.perfect ? ` · 完美 ${c.perfect}` : ''}</span>
+      </div>`;
+    }).join('');
+  } else if(colTab === 'dessert'){
+    body.innerHTML = RECIPES.map(r=>{
+      const known = isRecipeUnlocked(r.id);
+      const made = G.collection.recipes[r.id]||0;
+      return `<div class="ach-item ${known?'got':'locked-recipe'}">
+        <span class="ach-ico">${known ? r.icon : '🔒'}</span>
+        <span>${known ? r.name : r.name} —— ${known ? `制作 ${made} 次 · 售价约 ${r.price} 金` : recipeUnlockText(r)}</span>
+      </div>`;
+    }).join('') + `
+      <div class="info-line" style="margin-top:10px;">💡 在「甜品工坊」制作甜点，用水果换更高收益。</div>
+      <button class="pixel-btn choco w-full" style="margin-top:10px;" onclick="goToCraft()"><img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 打开甜品工坊</button>`;
+  } else if(colTab === 'guest'){
+    body.innerHTML = CUSTOMERS.map(c=>{
+      const met = G.collection.customers[c.id]||0;
+      return `<div class="ach-item ${met>0?'got':''}">
+        <span class="ach-ico">${c.icon}</span>
+        <span>${c.name} — ${c.desc}${met>0 ? ` · 交易 ${met} 次` : ' · 尚未结识'}</span>
+      </div>`;
+    }).join('');
+  } else {
+    const achs = [
+      { id:'money5k', name:'第一桶金', icon:'<img class=ui-icon src=./money.png alt=💰 onerror=uiIconErr(this)>', desc:'累计赚取 5000 金' },
+      { id:'money20k', name:'小富即安', icon:'<img class=ui-icon src=./star.png alt=💎 onerror=uiIconErr(this)>', desc:'累计赚取 20000 金' },
+      { id:'harvest50', name:'勤劳果农', icon:'<img class=ui-icon src=./mian.png alt=🌾 onerror=uiIconErr(this)>', desc:'累计收获 50 次' },
+      { id:'perfect10', name:'完美主义', icon:'<img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)>', desc:'收获 10 个完美水果' },
+      { id:'order10', name:'订单达人', icon:'📦', desc:'完成 10 个订单' },
+      { id:'live10', name:'直播新星', icon:'<img class=ui-icon src=./recall.png alt=📺 onerror=uiIconErr(this)>', desc:'完成 10 场直播' },
+      { id:'combo15', name:'连击之王', icon:'🔥', desc:'单场最高连击 15' },
+      { id:'bond80', name:'形影不离', icon:'💞', desc:'好感度达到 80' },
+      { id:'debt0', name:'无债一身轻', icon:'🏦', desc:'还清全部债务' },
+      { id:'fans500', name:'五百粉丝', icon:'👥', desc:'粉丝数达到 500' },
+      { id:'day30', name:'三十天', icon:'<img class=ui-icon src=./day.png alt=📅 onerror=uiIconErr(this)>', desc:'坚持到第 30 天' },
+      { id:'plot12', name:'开垦全部', icon:'<img class=ui-icon src=./tree.png alt=🌳 onerror=uiIconErr(this)>', desc:'开垦全部 12 块地' }
+    ];
+    body.innerHTML = achs.map(a=>{
+      const ok = !!G.achievements[a.id];
+      return `<div class="ach-item ${ok?'got':''}">
+        <span class="ach-ico">${ok ? a.icon : '🔒'}</span>
+        <span>${a.name} — ${a.desc}</span>
+      </div>`;
+    }).join('');
+  }
+}
+function checkAchievements(){
+  const achs = [
+    { id:'money5k', name:'第一桶金', check:()=>G.stats.totalEarned >= 5000 },
+    { id:'money20k', name:'小富即安', check:()=>G.stats.totalEarned >= 20000 },
+    { id:'harvest50', name:'勤劳果农', check:()=>G.stats.totalHarvest >= 50 },
+    { id:'perfect10', name:'完美主义', check:()=>G.stats.totalPerfect >= 10 },
+    { id:'order10', name:'订单达人', check:()=>G.stats.totalOrders >= 10 },
+    { id:'live10', name:'直播新星', check:()=>G.stats.totalLive >= 10 },
+    { id:'combo15', name:'连击之王', check:()=>G.stats.maxCombo >= 15 },
+    { id:'bond80', name:'形影不离', check:()=>G.bond >= 80 },
+    { id:'debt0', name:'无债一身轻', check:()=>G.debt <= 0 },
+    { id:'fans500', name:'五百粉丝', check:()=>G.fans >= 500 },
+    { id:'day30', name:'三十天', check:()=>G.day >= 30 },
+    { id:'plot12', name:'开垦全部', check:()=>unlockedPlots() >= 12 }
+  ];
+  achs.forEach(a=>{
+    if(!G.achievements[a.id]){
+      let ok = false;
+      try{ ok = a.check(); }catch(e){ ok = false; }
+      if(ok){
+        G.achievements[a.id] = true;
+        showToast('🏆 达成成就：'+a.name+' (≧▽≦)');
+        AudioSys.playSfx('success');
+      }
+    }
+  });
+}
+
+/* ============================================================
+   升级
+   ============================================================ */
+function updateUpgrade(){
+  const sp = document.getElementById('up-skill-points');
+  if(sp) sp.textContent = G.skillPoints;
+  const sl = document.getElementById('skill-list');
+  if(sl){
+    sl.innerHTML = SKILLS.map(s=>{
+      const lv = G.skills[s.key]||0;
+      const maxed = lv >= s.max;
+      let unlockLine = '';
+      if(s.key === 'bake'){
+        const next = Object.keys(RECIPE_BAKE_REQ)
+          .filter(id=>!G.recipes.includes(id) && (G.skills.bake||0) < RECIPE_BAKE_REQ[id])
+          .sort((a,b)=>RECIPE_BAKE_REQ[a]-RECIPE_BAKE_REQ[b])[0];
+        if(next) unlockLine = `<div class="up-unlock">🔓 升到 Lv.${RECIPE_BAKE_REQ[next]} 解锁：${getRecipe(next).name}</div>`;
+        else if(lv >= 4) unlockLine = `<div class="up-unlock" style="color:var(--leaf-deep);">✅ 全部烘焙配方已解锁</div>`;
+      }
+      return `<div class="upgrade-card">
+        <div class="up-head">
+          <span>${s.name} Lv.${lv}/${s.max}</span>
+          <button class="pixel-btn small ${maxed?'':'gold'}" onclick="doSkill('${s.key}')" ${maxed?'disabled':''}>
+            ${maxed ? '已满级' : '提升 1 点'}
+          </button>
+        </div>
+        <div class="up-desc">${s.desc}</div>
+        ${unlockLine}
+      </div>`;
+    }).join('');
+  }
+  const el = document.getElementById('equip-list');
+  if(el){
+    el.innerHTML = EQUIPS.map(e=>{
+      const lv = G.equip[e.key]||1;
+      const maxed = lv >= e.max;
+      const cost = maxed ? 0 : e.cost(lv);
+      return `<div class="upgrade-card">
+        <div class="up-head">
+          <span>${e.name} Lv.${lv}/${e.max}</span>
+          <button class="pixel-btn small ${maxed?'':'primary'}" onclick="doEquip('${e.key}')" ${maxed?'disabled':''}>
+            ${maxed ? '已满级' : '升级 '+fmt(cost)+' 金'}
+          </button>
+        </div>
+        <div class="up-desc">${e.desc}</div>
+      </div>`;
+    }).join('');
+  }
+}
+function doSkill(k){
+  const s = SKILLS.find(x=>x.key===k);
+  if(!s) return;
+  const lv = G.skills[k]||0;
+  if(lv >= s.max) return;
+  if(G.skillPoints < s.cost){ showToast('<img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> 技能点不足'); AudioSys.playSfx('fail'); return; }
+  G.skillPoints -= s.cost;
+  G.skills[k] = lv + 1;
+  showToast('<img class=ui-icon src=./star.png alt=🌟 onerror=uiIconErr(this)> '+s.name+' 提升到 Lv.'+(lv+1));
+  AudioSys.playSfx('success');
+  if(k === 'bake') checkRecipeUnlocks(true);
+  checkAchievements();
+  updateUpgrade(); updateMain(); saveGame();
+}
+function doEquip(k){
+  const e = EQUIPS.find(x=>x.key===k);
+  if(!e) return;
+  const lv = G.equip[k]||1;
+  if(lv >= e.max) return;
+  const cost = e.cost(lv);
+  if(G.money < cost){ showToast('💸 金币不足，需要 '+fmt(cost)+' 金'); AudioSys.playSfx('fail'); return; }
+  G.money -= cost;
+  G.equip[k] = lv + 1;
+  showToast('🏪 '+e.name+' 升级到 Lv.'+(lv+1));
+  AudioSys.playSfx('success');
+  checkAchievements();
+  updateUpgrade(); updateMain(); saveGame();
+}
+
+/* ============================================================
+   主线剧情
+   ============================================================ */
+function checkMainStory(){
+  let triggered = false;
+  for(const node of MAIN_STORY){
+    if(G.day >= node.day && !G.mainStorySeen[node.id]){
+      G.mainStorySeen[node.id] = true;
+      G.mainStory[node.id] = true;
+      triggered = true;
+      applyStoryEffect(node);
+      if(!document.getElementById('modal-mask').classList.contains('open')){
+        showStoryModal(node.title, node.body, node.tag, '✅ 知道啦！(๑•̀ㅂ•́)و✧');
+      } else {
+        setTimeout(()=>{ showStoryModal(node.title, node.body, node.tag, '✅ 知道啦！(๑•̀ㅂ•́)و✧'); }, 1200);
+      }
+      break;
+    }
+  }
+  if(triggered){
+    saveGame();
+    updateMain();
+  }
+}
+function applyStoryEffect(node){
+  if(node.id === 'm2'){
+    showToast('📺 直播准备功能已解锁！');
+  }
+  if(node.id === 'm5'){
+    if(!G.recipes.includes('dubai')){
+      G.recipes.push('dubai');
+      setTimeout(()=>{
+        showToast('<img class=ui-icon src=./chocolate.png alt=🍫 onerror=uiIconErr(this)> 解锁配方：迪拜巧克力软曲奇！去「甜品工坊」制作吧～');
+        AudioSys.playSfx('success');
+      }, 600);
+    }
+  }
+  if(node.id === 'm7'){
+    if(G.debt <= 0){
+      showToast('🎉 果园复兴达成！');
+    }
+  }
+}
+
+/* ============================================================
+   设置
+   ============================================================ */
+function loadSettings(){
+  AudioSys.renderSettings();
+  AudioSys.renderStatus();
+  const si = document.getElementById('save-info');
+  if(si){
+    si.textContent = `存档键名：${SAVE_KEY} · 当前第 ${G.day} 天 · 金币 ${fmt(G.money)} · 行动点上限 ${fmtAp(G.maxAp)}`;
+  }
+}
+/* ============================================================
+   初始化
+   ============================================================ */
+function startGame(){
+  const name = (document.getElementById('c-name').value || '').trim() || '小橘';
+  const orchard = (document.getElementById('c-orchard').value || '').trim() || '阳光橘园';
+  const call = (document.getElementById('c-call').value || '').trim() || '搭档';
+  const age = parseInt(document.getElementById('c-age').value, 10) || 24;
+  if(age < 18 || age > 40){ alert('年龄请在 18-40 之间'); return; }
+  const specEl = document.querySelector('#spec-grid .opt-card.selected');
+  const spec = specEl ? specEl.dataset.spec : 'grow';
+
+  G.player = { name, orchardName: orchard, call, age, spec };
+  G.money = 3000;
+  G.debt = 8000;
+  G.initialDebt = 8000;
+  G.day = 1;
+  G.season = '秋';
+  G.weather = '晴';
+  G.maxAp = calcMaxAp(1);
+  G.ap = G.maxAp;
+  G.restCount = 0;
+  G.fans = 0;
+  G.fame = 0;
+  G.bond = 10;
+  G.energy = 100;
+  G.mood = 70;
+  G.charm = 1;
+  G.skillPoints = 0;
+  G.fruits = defaultFruits();
+  G.seeds = defaultSeeds();
+  G.desserts = defaultDesserts();
+  G.mats = defaultMats();
+  G.plots = defaultPlots();
+  G.equip = defaultEquip();
+  G.skills = defaultSkills();
+  G.recipes = ['juice','choco','jam','pie','smoothie','peach_juice','banana_cake','pear_juice'];
+  G.orders = [];
+  G.orderSeq = 0;
+  G.mainStory = {};
+  G.mainStorySeen = {};
+  G.daily = defaultDaily();
+  G.weekly = defaultWeekly();
+  G.dailyInteract = 0;
+  G.weeklySales = 0;
+  G.weeklyFansStart = 0;
+  G.weeklyPerfect = 0;
+  G.achievements = {};
+  G.collection = { fruits:{}, recipes:{}, customers:{} };
+  G.liveHistory = [];
+  G.liveSelected = [];
+  G.stats = { totalEarned:0, totalHarvest:0, totalPerfect:0, totalOrders:0, totalLive:0, liveDeals:0, maxCombo:0 };
+  G.initialized = true;
+  G.storyStep = 0;
+
+  if(spec === 'grow'){
+    G.seeds.orange = 3;
+  } else if(spec === 'live'){
+    G.equip.light = 2;
+  } else if(spec === 'bake'){
+    G.mats.flour = 3;
+    G.mats.choco = 2;
+  }
+  G.seeds.orange = (G.seeds.orange||0) + 3;
+  G.seeds.strawberry = 2;
+  G.seeds.lemon = 2;
+  G.seeds.peach = 2;   /* 新增 */
+  G.seeds.banana = 2;  /* 新增 */
+  /* 【修复】开局赠送 2 个肥料，方便新玩家体验施肥玩法 */
+  G.mats.fertilizer = (G.mats.fertilizer||0) + 2;
+
+  generateOrders();
+  saveGame();
+
+  showLoading('<img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 正在唤醒砂糖橘...', '<img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)>');
+  let p = 0;
+  const iv = setInterval(()=>{
+    p += rand(18,32);
+    updateLoading(Math.min(100,p), '<img class=ui-icon src=./orange.png alt=🍊 onerror=uiIconErr(this)> 正在唤醒砂糖橘...');
+    if(p >= 100){
+      clearInterval(iv);
+      setTimeout(()=>{
+        hideLoading();
+        goToPage('page-main');
+        updateMain();
+        AudioSys.unlock();
+        setTimeout(()=>{ checkMainStory(); }, 500);
+      }, 260);
+    }
+  }, 170);
+}
+
+function continueGame(){
+  if(loadGame()){
+    if(!G.orders.length) generateOrders();
+    checkRecipeUnlocks(false);
+    G.liveSelected = G.liveSelected.filter(k=>getFruitTotal(k) > 0);
+    goToPage('page-main');
+    updateMain();
+    showToast('📂 存档读取成功');
+  } else {
+    showToast('⚠️ 没有找到存档');
+  }
+}
+
+function typeWriter(el, text, speed, cb){
+  let i = 0;
+  el.textContent = '';
+  const timer = setInterval(()=>{
+    el.textContent += text.charAt(i);
+    i++;
+    if(i >= text.length){
+      clearInterval(timer);
+      if(cb) cb();
+    }
+  }, speed);
+}
+
+function initGame(){
+  const cb = document.getElementById('continue-btn');
+  if(loadGame()){
+    if(cb) cb.style.display = 'inline-flex';
+    checkRecipeUnlocks(false);
+    G.liveSelected = G.liveSelected.filter(k=>getFruitTotal(k) > 0);
+    goToPage('page-main');
+    updateMain();
+  } else {
+    if(cb) cb.style.display = 'none';
+    goToPage('page-title');
+  }
+}
+
+/* ============================================================
+   DOM 绑定
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  AudioSys.init();
+
+  const unlockOnce = ()=>{
+    AudioSys.unlock();
+    document.removeEventListener('click', unlockOnce);
+    document.removeEventListener('touchstart', unlockOnce);
+  };
+  document.addEventListener('click', unlockOnce);
+  document.addEventListener('touchstart', unlockOnce);
+
+  document.addEventListener('click', e=>{
+    if(e.target.closest('.pixel-btn,.opt-card,.tab,.bn-item,.ms-item,.basket')){
+      AudioSys.playSfx('click');
+    }
+  }, true);
+
+  document.querySelectorAll('.bn-item').forEach(el=>{
+    el.addEventListener('click', function(){
+      const n = this.dataset.nav;
+      if(n === 'more'){ toggleMoreSheet(); return; }
+      closeMoreSheet();
+      goToPage(n);
+    });
+  });
+  document.addEventListener('click', e=>{
+    const s = document.getElementById('more-sheet');
+    if(!s || !s.classList.contains('show')) return;
+    if(e.target.closest('#more-sheet') || e.target.closest('.bn-item[data-nav="more"]')) return;
+    closeMoreSheet();
+  });
+
+  document.querySelectorAll('#spec-grid .opt-card').forEach(el=>{
+    el.addEventListener('click', function(){
+      document.querySelectorAll('#spec-grid .opt-card').forEach(x=>x.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+
+  const mask = document.getElementById('modal-mask');
+  if(mask){
+    mask.addEventListener('click', function(e){
+      if(e.target === this && this.dataset.static !== '1') closeModal();
+    });
+  }
+
+  const prologueText = '你接手了家里濒临破产的果园。\n\n黄昏时，你走到那棵从小种下的橘子树下，把棉花娃娃砂糖橘放在树根旁。\n\n一滴橘子汁落在他脸上。\n\n他眨了眨眼，凶萌凶萌地坐了起来——\n\n「喂！你就是我的新搭档吗？果园交给本橘就好啦！不过巧克力也要归我哦！(๑•̀ㅂ•́)و✧」';
+  const pEl = document.getElementById('prologue-text');
+  let prologueStarted = false;
+  const startPrologue = ()=>{
+    if(prologueStarted) return;
+    prologueStarted = true;
+    typeWriter(pEl, prologueText, 34);
+  };
+  document.addEventListener('click', e=>{
+    if(e.target.closest('[onclick*="page-prologue"]')){
+      setTimeout(startPrologue, 60);
+    }
+  }, true);
+
+  const basketArea = document.getElementById('basket-area');
+  if(basketArea){
+    basketArea.addEventListener('pointerdown', e=>{
+      const b = e.target.closest('.basket');
+      if(!b) return;
+      const fid = b.dataset.fid;
+      if(!fid) return;
+      onBasketDown(e, fid);
+    });
+  }
+
+  ['dragover','drop'].forEach(ev=>document.addEventListener(ev, e=>e.preventDefault()));
+
+  if(!AudioSys.currentId) AudioSys.currentId = 'title';
+  AudioSys.renderSettings();
+  AudioSys.renderStatus();
+
+  initGame();
+
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden && LIVE.running && !LIVE.paused){
+      LIVE.paused = true;
+    }
+  });
+});
+
+/* ============================================================
+   导出到 window
+   ============================================================ */
+window.goToPage = goToPage;
+window.goToCraft = goToCraft;
+window.startGame = startGame;
+window.continueGame = continueGame;
+window.updateMain = updateMain;
+window.nextDay = nextDay;
+window.doNextDay = doNextDay;
+window.payDebt = payDebt;
+window.doPayDebt = doPayDebt;
+window.restAP = restAP;
+window.doRestAP = doRestAP;
+window.showToast = showToast;
+window.closeModal = closeModal;
+window.showModal = showModal;
+window.showStoryModal = showStoryModal;
+
+// 果园
+window.updateOrchard = updateOrchard;
+window.plotTap = plotTap;
+window.openPlotMenu = openPlotMenu;      /* 【修复】地块操作面板 */
+window.waterPlot = waterPlot;            /* 【修复】浇水 */
+window.useFertilizer = useFertilizer;    /* 【修复】施肥 */
+window.openSeedPicker = openSeedPicker;
+window.plantSeed = plantSeed;
+window.oneKeyPlant = oneKeyPlant;
+window.oneKeyWater = oneKeyWater;
+window.oneKeyHarvest = oneKeyHarvest;
+window.expandPlot = expandPlot;
+window.doExpandPlot = doExpandPlot;
+
+// 仓库 / 甜品
+window.switchWhTab = switchWhTab;
+window.updateWarehouse = updateWarehouse;
+window.sellFruit = sellFruit;
+window.doSellFruit = doSellFruit;
+window.craftRecipe = craftRecipe;
+window.doCraft = doCraft;
+window.sellDessert = sellDessert;
+window.checkRecipeUnlocks = checkRecipeUnlocks;
+window.recipeUnlockText = recipeUnlockText;
+
+// 商店
+window.switchShopTab = switchShopTab;
+window.updateShop = updateShop;
+window.buySeed = buySeed;
+window.buyTool = buyTool;
+window.buyMat = buyMat;
+
+// 任务
+window.updateOrders = updateOrders;
+window.claimDaily = claimDaily;
+window.claimWeekly = claimWeekly;
+window.deliverOrder = deliverOrder;
+window.refreshOrders = refreshOrders;
+
+// 直播
+window.updateLivePrep = updateLivePrep;
+window.toggleLivePick = toggleLivePick;
+window.startLive = startLive;
+window.pauseLive = pauseLive;
+window.resumeLive = resumeLive;
+window.quitLive = quitLive;
+window.endLive = endLive;
+
+// 图鉴
+window.switchColTab = switchColTab;
+window.updateCollection = updateCollection;
+
+// 升级
+window.updateUpgrade = updateUpgrade;
+window.doSkill = doSkill;
+window.doEquip = doEquip;
+
+// 互动
+window.openInteract = openInteract;
+window.doInteract = doInteract;
+
+// 设置
+window.loadSettings = loadSettings;
+window.resetGame = resetGame;
+window.doResetGame = doResetGame;
+window.exportSave = exportSave;
+window.importSave = importSave;
+
+// 音频
+window.onBgmSelectChange = onBgmSelectChange;
+window.onBgmVolChange = onBgmVolChange;
+window.onSfxVolChange = onSfxVolChange;
+window.onMuteChange = onMuteChange;
+window.audioToggleBgm = audioToggleBgm;
+window.audioNextBgm = audioNextBgm;
+window.audioPrevBgm = audioPrevBgm;
+
+// 更多
+window.toggleMoreSheet = toggleMoreSheet;
+window.closeMoreSheet = closeMoreSheet;
+window.navTo = navTo;
+
+// 调试
+window.__G = G;
+window.__FRUITS = FRUITS;
+window.__RECIPES = RECIPES;
+window.__LIVE = LIVE;
+window.__AudioSys = AudioSys;
+window.__AP = AP;
+window.__fmtAp = fmtAp;
+window.__RECIPE_BAKE_REQ = RECIPE_BAKE_REQ;
+window.__FERT_MAX = FERT_MAX;
+
+console.log('🍊 砂糖橘的果园直播间 v1.3.2 已加载！');
+console.log('✅ 修复：图片路径统一为 ./，拖拽 PNG 完美显示');
+console.log('✅ 更新：直播图标使用 recall.png，升级技能图标使用 star.png');
+console.log('✅ 每块地最多施肥 ' + FERT_MAX + ' 次，每次完美率 +10% / 优良率 +5%，不消耗行动点');
+</script>
+</body>
+</html>

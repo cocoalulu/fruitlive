@@ -1,0 +1,38 @@
+/* ============================================================
+   【统一样式】Emoji → PNG 图标
+   - .ui-icon 统一图标尺寸（跟随父级 font-size，1em）
+   - 所有替换后的 <img> 都带 onerror 兜底：加载失败时还原为 Emoji 文本
+   ============================================================ */
+.ui-icon{
+  display:inline-block;
+  width:1em;
+  height:1em;
+  object-fit:contain;
+  vertical-align:-0.14em;      /* 与文字基线对齐，视觉等同 Emoji */
+  image-rendering:pixelated;   /* 像素素材保持锐利 */
+  flex:0 0 auto;
+  pointer-events:none;         /* 图标不拦截点击，按钮/卡片事件照常触发 */
+  -webkit-user-drag:none;
+  user-select:none;
+}
+/* 大号图标容器（候选卡、仓库行、顾客、成就等）里让图标略大一点 */
+.oc-emoji .ui-icon,
+.ir-emoji .ui-icon,
+.b-emoji .ui-icon,
+.cust-face .ui-icon,
+.ach-ico .ui-icon,
+.p-emoji .ui-icon,
+.result-row .ui-icon{
+  width:1.05em;
+  height:1.05em;
+}
+/* 标题行/面板标题里的图标 */
+.pixel-panel-title .ui-icon,
+.pixel-topbar .ui-icon,
+.brand .ui-icon{
+  width:1.1em;
+  height:1.1em;
+  vertical-align:-0.16em;
+}
+/* 砂糖橘形象不参与 emoji 替换，避免被缩放 */
+.doll .ui-icon{width:100%;height:100%;vertical-align:middle;}
